@@ -1,16 +1,18 @@
 import { Outlet } from "react-router-dom"
+import { AppProvider } from "./context/AppContext";
 import Header from "./components/Header"
 
 function App() {
-
   return (
-    <div className="flex flex-col h-screen w-full items-center bg-background">
-      <Header />
-      <main className="flex flex-col w-full h-full items-center justify-center overflow-auto">
-        <Outlet />
-      </main>
-    </div>
-  )
+    <AppProvider>
+      <div className="flex flex-col h-screen w-full items-center bg-background">
+        <Header />
+        <main className="flex flex-col w-full h-full items-center justify-center overflow-auto">
+          <Outlet />
+        </main>
+      </div>
+    </AppProvider>
+  );
 }
 
-export default App
+export default App;
