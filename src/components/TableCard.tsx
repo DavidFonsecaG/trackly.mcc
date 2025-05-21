@@ -1,32 +1,13 @@
 import { useAppContext } from "../context/AppContext";
 import ProgressBar from "./ProgressBar";
 import formatDate from "../utils/formatDate";
+import ApplicationTypeBadge from "./ApplicationTypeBadge";
 
 function TableCard() {
     const {
         students,
         setSelectedStudent,
     } = useAppContext();
-
-    const ApplicationTypeBadge: React.FC<{ type: string }> = ({ type }) => {
-        const colors = {
-            abroad: 'bg-purple-50 text-purple-700',
-            COS: 'bg-blue-50 text-blue-700',
-            'transfer-in': 'bg-teal-50 text-teal-700',
-            domestic: 'bg-orange-50 text-orange-700',
-            reinstatement: 'bg-pink-50 text-pink-700',
-        };
-
-        const displayText = type.split('-').map(word => 
-            word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ');
-
-        return (
-            <span className={`px-2 py-1 rounded-full text-[0.6rem] ${colors[type as keyof typeof colors]}`}>
-            {displayText}
-            </span>
-        );
-    };
 
     const chevron = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
     const chevronUpDown = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path></svg>

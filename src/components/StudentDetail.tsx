@@ -1,6 +1,7 @@
 import { useAppContext } from "../context/AppContext";
 import ProgressBar from "./ProgressBar";
 import formatDate from "../utils/formatDate";
+import ApplicationTypeBadge from "./ApplicationTypeBadge";
 
 const StudentDetail: React.FC = () => {
     const check = <svg xmlns="http://www.w3.org/2000/svg" className="w-2 h-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
@@ -27,7 +28,7 @@ const StudentDetail: React.FC = () => {
                 <div className="text-xs flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="flex items-center justify-between">
-                            <p>{selectedStudent?.applicationType}</p>
+                            <ApplicationTypeBadge type={selectedStudent?.applicationType} />
                             <button 
                                 className="flex size-9 items-center justify-center cursor-pointer hover:primary/50"
                                 onClick={handleBackClick}
