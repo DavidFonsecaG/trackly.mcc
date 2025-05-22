@@ -12,7 +12,7 @@ const ApplicationTypeBadge: React.FC<{ type: string }> = ({ type }) => {
     ).join(' ');
 
     return (
-        <span className={`px-2 py-1 rounded-full text-[0.6rem] ${colors[type as keyof typeof colors]}`}>
+        <span className={`px-2 py-1 rounded-md text-[0.6rem] ${colors[type as keyof typeof colors]}`}>
         {displayText}
         </span>
     );

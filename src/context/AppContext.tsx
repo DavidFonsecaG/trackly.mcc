@@ -5,6 +5,8 @@ import { students as mockStudents, studentDocuments as mockStudentDocuments } fr
 interface AppContextType {
     students: Student[];
     studentDocuments: StudentDocument[];
+    searchTerm: string;
+    updateSearchTearm: (term: string) => void;
     selectedStudent: Student | null;
     setSelectedStudent: (student: Student | null) => void;
     updateDocumentStatus: (
@@ -22,6 +24,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [students, setStudents] = useState<Student[]>(mockStudents);
     const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>(mockStudentDocuments);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+    const [searchTerm, setSearchTerm] = useState("All Terms");
+
+    const updateSearchTearm = (term: string) => {
+      setSearchTerm(term)
+    };
 
     const updateDocumentStatus = (
       studentId: string,
@@ -94,6 +101,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     <AppContext.Provider
       value={{
         students,
+        searchTerm,
+        updateSearchTearm,
         studentDocuments,
         selectedStudent,
         setSelectedStudent,

@@ -4,6 +4,7 @@ export interface Student {
     email: string;
     applicationId: string;
     applicationType: "abroad" | "COS" | "transfer-in" | "domestic" | "reinstatement";
+    term: string;
     program: "English as a Second Language",
     schedule: "4 Day - Morning",
     status: "incomplete" | "complete" | "pending";

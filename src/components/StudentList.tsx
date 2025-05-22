@@ -1,21 +1,36 @@
+import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "./ui/ProgressBar";
 import formatDate from "../utils/formatDate";
-import ApplicationTypeBadge from "./ApplicationTypeBadge";
+import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 
-function TableCard() {
+function StudentList() {
+    const chevron = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    const chevronUpDown = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path></svg>
+    
+    const [open, setOpen] = useState(false);
+
     const {
         students,
         setSelectedStudent,
+        searchTerm,
+        updateSearchTearm,
     } = useAppContext();
 
-    const chevron = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-    const chevronUpDown = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path></svg>
+    const filteredStudents = students.filter((student) => {
+        if (searchTerm === "All Terms") return students
+        return student.term === searchTerm;
+    });
+
+    const terms = () => {
+        const uniqueTerms = new Set(students.map(student => student.term));
+        return ["All Terms", ...uniqueTerms];
+    };
 
     return (
-        <div className="flex pr-4 w-full">
-            <div className="bg-card rounded-3xl w-full">
-                <div className="p-6 flex items-center justify-between bg-card rounded-3xl">
+        <div className="flex pr-4 w-full overflow-y-scroll ">
+            <div className="flex flex-col w-full">
+                <div className="p-6 flex items-center justify-between bg-card rounded-t-3xl">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-xl font-semibold">Applications</h2>
                     </div>
@@ -28,18 +43,35 @@ function TableCard() {
                                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="text" id="table-search-users" className="text-xs block p-2 ps-10 border rounded-full w-80 bg-background dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search"/>
+                                <input type="text" id="table-search-users" className="text-xs/5 block p-2 ps-10 border rounded-full w-80 bg-background dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search"/>
                             </div>
                         </div>
-                        <div className="flex border rounded-full py-2 px-4 text-xs bg-primary text-card items-center gap-1">
-                            Filter
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        <div className="relative inline-block text-left text-xs">
+                            <div>
+                                <button type="button" className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-full bg-primary px-4 py-2 text-white hover:bg-primary/90 cursor-pointer" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={() => (setOpen(!open))}>
+                                    <span className="w-19">{searchTerm}</span>
+                                    <svg className="-mr-1 size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                        <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            {open && <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-card shadow-lg focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" aria-hidden={!open}>
+                                {terms().map((term, index) => (
+                                    <div 
+                                        key={index} 
+                                        className="block px-4 py-2 cursor-pointer hover:bg-background hover:first:rounded-t-lg hover:last:rounded-b-lg" role="menuitem" 
+                                        id="menu-item-0"
+                                        onClick={() => {updateSearchTearm(term); setOpen(!open)}}
+                                    >{term}</div>
+                                ))}
+                            </div>}
                         </div>
                     </div>
                 </div>
 
-                <div className="w-full text-sm text-start">
-                    <table className="w-full text-left dark:text-gray-400 ">
+                <div className="w-full text-sm text-start bg-card rounded-b-3xl pb-6">
+                    <table className="w-full text-left dark:text-gray-400">
                         <thead className="dark:text-gray-400">
                             <tr>
                                 <th scope="col" className="pl-6 pr-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
@@ -78,7 +110,7 @@ function TableCard() {
                             </tr>
                         </thead>
                         <tbody className="text-xs text-primary/50">
-                            {students.map((student, index) => (
+                            {filteredStudents.map((student, index) => (
                                 <tr 
                                     key={index}
                                     onClick={() => setSelectedStudent(student)} 
@@ -99,7 +131,7 @@ function TableCard() {
                                         </div>
                                     </td>
                                     <td className="px-4 py-2 w-80">
-                                        <ProgressBar studentId={student.id} status={student.status}/>
+                                        <ProgressBar studentId={student.id} />
                                     </td>
                                     <td className="px-4 py-2">{formatDate(student.lastUpdated)}</td>
                                     <td className="px-4 pl-4 pr-6 items-end"><span>{chevron}</span></td>
@@ -113,4 +145,4 @@ function TableCard() {
     )
 };
 
-export default TableCard;
+export default StudentList;
