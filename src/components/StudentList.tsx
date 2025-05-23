@@ -3,11 +3,9 @@ import { useAppContext } from "../context/AppContext";
 import ProgressBar from "./ui/ProgressBar";
 import formatDate from "../utils/formatDate";
 import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
+import { ChevronsUpDown, ChevronRight } from "lucide-react";
 
-function StudentList() {
-    const chevron = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-    const chevronUpDown = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path></svg>
-    
+function StudentList() {    
     const [open, setOpen] = useState(false);
 
     const {
@@ -22,10 +20,7 @@ function StudentList() {
         return student.term === searchTerm;
     });
 
-    const terms = () => {
-        const uniqueTerms = new Set(students.map(student => student.term));
-        return ["All Terms", ...uniqueTerms];
-    };
+    const terms = ["All Terms", ...new Set(students.map(student => student.term))];
 
     return (
         <div className="flex pr-4 w-full overflow-y-scroll ">
@@ -57,7 +52,7 @@ function StudentList() {
                             </div>
 
                             {open && <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-card shadow-lg focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" aria-hidden={!open}>
-                                {terms().map((term, index) => (
+                                {terms.map((term, index) => (
                                     <div 
                                         key={index} 
                                         className="block px-4 py-2 cursor-pointer hover:bg-background hover:first:rounded-t-lg hover:last:rounded-b-lg" role="menuitem" 
@@ -77,31 +72,31 @@ function StudentList() {
                                 <th scope="col" className="pl-6 pr-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
                                     <p className="flex items-center gap-3">
                                         Type
-                                        {chevronUpDown}
+                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                     </p>
                                 </th>
                                 <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
                                     <p className="flex items-center gap-3">
                                         Student
-                                        {chevronUpDown}
+                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                     </p>
                                 </th>
                                 <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
                                     <p className="flex items-center gap-3">
                                         Program
-                                        {chevronUpDown}
+                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                     </p>
                                 </th>
                                 <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
                                     <p className="flex items-center gap-3">
                                         Status
-                                        {chevronUpDown}
+                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                     </p>
                                 </th>
                                 <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
                                     <p className="flex items-center gap-3">
                                         Last Updated
-                                        {chevronUpDown}
+                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                     </p>
                                 </th>
                                 <th scope="col" className="px-4 pl-4 pr-6 border-y">
@@ -134,7 +129,7 @@ function StudentList() {
                                         <ProgressBar studentId={student.id} />
                                     </td>
                                     <td className="px-4 py-2">{formatDate(student.lastUpdated)}</td>
-                                    <td className="px-4 pl-4 pr-6 items-end"><span>{chevron}</span></td>
+                                    <td className="px-4 pl-4 pr-6 items-end"><span>{<ChevronRight className="w-4 h-4"/>}</span></td>
                                 </tr>
                             ))}
                         </tbody>

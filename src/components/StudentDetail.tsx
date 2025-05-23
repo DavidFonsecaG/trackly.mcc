@@ -2,10 +2,9 @@ import { useAppContext } from "../context/AppContext";
 import ProgressBar from "./ui/ProgressBar";
 import formatDate from "../utils/formatDate";
 import type { Document } from "../types";
+import { Check, X } from "lucide-react";
 
 const StudentDetail: React.FC = () => {
-    const check = <svg xmlns="http://www.w3.org/2000/svg" className="w-2 h-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-    const close = <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
     
     const { selectedStudent, setSelectedStudent, getStudentDocuments, updateDocumentStatus } = useAppContext();
     if (!selectedStudent) return null;
@@ -41,7 +40,7 @@ const StudentDetail: React.FC = () => {
                             <button 
                                 className="flex size-7 rounded-md items-center justify-center cursor-pointer hover:text-primary/50"
                                 onClick={handleBackClick}
-                                >{close}</button>
+                                >{<X className="w-4 h-4" />}</button>
                         </div>
                         <p className="text-base font-medium">{selectedStudent?.name}</p>
                         <p className="text-primary/50">{selectedStudent?.program}</p>
@@ -56,7 +55,7 @@ const StudentDetail: React.FC = () => {
                                     onClick={() => {handleToggleSubmitted(doc)}} 
                                     className={`flex items-center justify-center w-4 h-4 rounded-sm cursor-pointer ${doc.submitted ? 'bg-primary text-white' : 'border border-primary/20'}`}
                                 >
-                                    {doc.submitted && check}
+                                    {doc.submitted && <Check className="w-2 h-2" strokeWidth="4"/>}
                                 </button>
                                 <div>
                                     <p className="cursor-pointer" onClick={() => {handleToggleSubmitted(doc)}}>{doc.name}</p>
