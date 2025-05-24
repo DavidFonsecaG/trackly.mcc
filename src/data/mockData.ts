@@ -119,17 +119,29 @@ export const students: Student[] = [
         lastUpdated: "2025-01-21T15:20:00Z",
     },
     {
-      id: "100",
+      id: "9",
       name: "John Snow",
       email: "john.snow@example.com",
-      applicationId: "SPR25-DOMESL-008",
+      applicationId: "SPR25-DOMESL-009",
       applicationType: "domestic",
       term: "Spring 2025",
       program: "English as a Second Language",
       schedule: "4 Day - Morning",
       status: "incomplete",
       lastUpdated: "2025-01-21T15:20:00Z",
-  },
+    },
+    {
+      id: "10",
+      name: "Peter Parker",
+      email: "peter.parker@example.com",
+      applicationId: "SPR25-DOMESL-010",
+      applicationType: "reinstatement",
+      term: "Spring 2025",
+      program: "English as a Second Language",
+      schedule: "4 Day - Morning",
+      status: "incomplete",
+      lastUpdated: "2025-01-21T15:20:00Z",
+    },
 ];
 
 // export const studentDocuments: StudentDocument[] = students.map(student => ({

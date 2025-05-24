@@ -23,8 +23,8 @@ function StudentList() {
     const terms = ["All Terms", ...new Set(students.map(student => student.term))];
 
     return (
-        <div className="flex pr-4 w-full overflow-y-scroll ">
-            <div className="flex flex-col w-full">
+        <div className="flex w-full ">
+            <div className="flex flex-col min-w-full">
                 <div className="p-6 flex items-center justify-between bg-card rounded-t-3xl">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-xl font-semibold">Applications</h2>
@@ -51,11 +51,11 @@ function StudentList() {
                                 </button>
                             </div>
 
-                            {open && <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-lg bg-card shadow-lg focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" aria-hidden={!open}>
+                            {open && <div className="absolute right-0 mt-2 w-56 p-1.5 origin-top-right rounded-xl bg-card border shadow-lg focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" aria-hidden={!open}>
                                 {terms.map((term, index) => (
                                     <div 
                                         key={index} 
-                                        className="block px-4 py-2 cursor-pointer hover:bg-background hover:first:rounded-t-lg hover:last:rounded-b-lg" role="menuitem" 
+                                        className="block px-4 py-2 cursor-pointer hover:bg-background rounded-lg" role="menuitem" 
                                         id="menu-item-0"
                                         onClick={() => {updateSearchTearm(term); setOpen(!open)}}
                                     >{term}</div>

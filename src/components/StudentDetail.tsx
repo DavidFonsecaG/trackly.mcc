@@ -26,7 +26,7 @@ const StudentDetail: React.FC = () => {
 
     return (
         <div 
-            className="z-90 flex items-center justify-center fixed w-full h-full top-0 bg-primary/20"
+            className="z-100 flex items-center justify-center fixed inset-0 w-full h-full top-0 bg-primary/20"
             role="dialog"
             aria-modal="true"
             aria-label="Student Details" 
