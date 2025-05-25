@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
+	const { login } = useAuth();
 
 	const [formValues, handleInputChange] = useForm({
 		email: "",
@@ -12,7 +14,7 @@ const LoginPage = () => {
 
 	const handleLogin = (e: { preventDefault: () => void; }) => {
 		e.preventDefault();
-		console.log(email, password);
+		login(email, password);
 	};
 
 	return (

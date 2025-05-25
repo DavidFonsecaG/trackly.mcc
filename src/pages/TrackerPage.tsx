@@ -2,7 +2,6 @@ import StudentDetail from "../components/StudentDetail";
 import StudentList from "../components/StudentList";
 import { useAppContext } from "../context/AppContext";
 
-
 function TrackerPage() {
     const { selectedStudent } = useAppContext();
        
@@ -11,7 +10,7 @@ function TrackerPage() {
             <StudentList />
             {selectedStudent && <StudentDetail />}
         </div>
-    )
-}
+    );
+};
 
 export default TrackerPage;

@@ -1,28 +1,24 @@
-import { createBrowserRouter } from "react-router-dom";
+import Layout from "../components/Layout";
 import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
-import App from "../App";
 import TrackerPage from "../pages/TrackerPage";
 import LoginPage from "../pages/LoginPage";
+import { Route, Routes as RouterRoutes } from "react-router-dom";
 
-export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: (
-            <PrivateRoute>
-                <App/>
-            </PrivateRoute>
-        ),
-        children: [
-            { index: true, element: <TrackerPage />}
-        ]
-    },
-    {
-        path: "/login",
-        element: (
-            <PublicRoute>
-                <LoginPage/>
-            </PublicRoute>
-        ),
-    }
-]);
+function Routes() {
+    return(
+        <RouterRoutes>
+            <Route path="/login" element={<LoginPage />} />
+            {/* <Route path="/" element={<PrivateRoute/>}>
+                <Route element={<Layout/>}>
+                    <Route index element={<TrackerPage/>} />
+                </Route>
+            </Route> */}
+            <Route path="/" element={<Layout/>}>
+                <Route index element={<TrackerPage/>} />
+                <Route path="/settings" element={<div>Settings Page</div>} />
+            </Route>
+        </RouterRoutes>
+    );
+};
+
+export default Routes;
