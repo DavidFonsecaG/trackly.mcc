@@ -1,8 +1,10 @@
-import { useAppContext } from "../context/AppContext";
-import ProgressBar from "./ui/ProgressBar";
-import formatDate from "../utils/formatDate";
-import type { Document } from "../types";
+import { useEffect, useRef } from "react";
 import { Check, X } from "lucide-react";
+import { useAppContext } from "../context/AppContext";
+import formatDate from "../utils/formatDate";
+import ProgressBar from "./ui/ProgressBar";
+import type { Document } from "../types";
+import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 
 const StudentDetail: React.FC = () => {
     
@@ -10,10 +12,6 @@ const StudentDetail: React.FC = () => {
     if (!selectedStudent) return null;
 
     const documents = getStudentDocuments(selectedStudent?.id) || [];
-
-    const handleBackClick = () => {
-        setSelectedStudent(null);
-    };
 
     const handleToggleSubmitted = (doc: Document) => {
         updateDocumentStatus(
@@ -24,6 +22,24 @@ const StudentDetail: React.FC = () => {
         )
     };
 
+    const handleBackClick = () => {
+        setSelectedStudent(null);
+    };
+
+    let cardRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        let handler = (e: MouseEvent) => {
+            if(cardRef.current && !cardRef.current.contains(e.target as Node)) {
+                handleBackClick();
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        return() => {
+            document.removeEventListener("mousedown", handler);
+        };
+    }, []);
+
     return (
         <div 
             className="z-100 flex items-center justify-center fixed inset-0 w-full h-full top-0 bg-primary/20"
@@ -32,11 +48,12 @@ const StudentDetail: React.FC = () => {
             aria-label="Student Details" 
             aria-hidden={!selectedStudent}
         >
-            <div className="w-lg px-6 py-6 bg-card rounded-3xl shadow-2xl">
+            <div className="w-lg px-6 py-6 bg-card rounded-3xl shadow-2xl" ref={cardRef}>
                 <div className="text-xs flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="flex items-center justify-between">
-                            <p className="px-2 py-1 rounded-md text-[0.6rem] border">{selectedStudent?.applicationType}</p>
+                            {/* <p className="px-2 py-1 rounded-md text-[0.6rem] border">{selectedStudent?.applicationType}</p> */}
+                            <ApplicationTypeBadge type={selectedStudent?.applicationType}/>
                             <button 
                                 className="flex size-7 rounded-md items-center justify-center cursor-pointer hover:text-primary/50"
                                 onClick={handleBackClick}

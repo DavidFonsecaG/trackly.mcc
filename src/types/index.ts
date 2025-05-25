@@ -1,3 +1,9 @@
+export interface User {
+    id: string;
+    email: string;
+    name?: string;
+};
+
 export interface Student {
     id: string;
     name: string;

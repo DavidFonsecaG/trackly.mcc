@@ -6,7 +6,7 @@ interface AppContextType {
     students: Student[];
     studentDocuments: StudentDocument[];
     searchTerm: string;
-    updateSearchTearm: (term: string) => void;
+    updateSearchTerm: (term: string) => void;
     selectedStudent: Student | null;
     setSelectedStudent: (student: Student | null) => void;
     updateDocumentStatus: (
@@ -26,7 +26,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
     const [searchTerm, setSearchTerm] = useState("All Terms");
 
-    const updateSearchTearm = (term: string) => {
+    const updateSearchTerm = (term: string) => {
       setSearchTerm(term)
     };
 
@@ -58,40 +58,40 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         });
       });
 
-        setStudents((prevStudents) => {
-          return prevStudents.map((student) => {
-            if (student.id === studentId) {
-              const updatedStudentDocs = studentDocuments.find(
-                (sd) => sd.studentId === studentId
+      setStudents((prevStudents) => {
+        return prevStudents.map((student) => {
+          if (student.id === studentId) {
+            const updatedStudentDocs = studentDocuments.find(
+              (sd) => sd.studentId === studentId
+            );
+            
+            if (updatedStudentDocs) {
+              const requiredDocs = updatedStudentDocs.documents.filter(
+                (doc) => doc.required
+              );
+              const submittedRequiredDocs = requiredDocs.filter(
+                (doc) => doc.submitted
               );
               
-              if (updatedStudentDocs) {
-                const requiredDocs = updatedStudentDocs.documents.filter(
-                  (doc) => doc.required
-                );
-                const submittedRequiredDocs = requiredDocs.filter(
-                  (doc) => doc.submitted
-                );
-                
-                let status: 'complete' | 'incomplete' | 'pending' = 'incomplete';
-                
-                if (submittedRequiredDocs.length === requiredDocs.length) {
-                  status = 'complete';
-                } else if (submittedRequiredDocs.length > 0) {
-                  status = 'pending';
-                }
-                
-                return {
-                  ...student,
-                  status,
-                  lastUpdated: new Date().toISOString(),
-                };
+              let status: 'complete' | 'incomplete' | 'pending' = 'incomplete';
+              
+              if (submittedRequiredDocs.length === requiredDocs.length) {
+                status = 'complete';
+              } else if (submittedRequiredDocs.length > 0) {
+                status = 'pending';
               }
+              
+              return {
+                ...student,
+                status,
+                lastUpdated: new Date().toISOString(),
+              };
             }
-            return student;
-          });
+          }
+          return student;
         });
-      };
+      });
+    };
 
     const getStudentDocuments = (studentId: string) => {
         return studentDocuments.find((doc) => doc.studentId === studentId)?.documents;
@@ -102,7 +102,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       value={{
         students,
         searchTerm,
-        updateSearchTearm,
+        updateSearchTerm,
         studentDocuments,
         selectedStudent,
         setSelectedStudent,

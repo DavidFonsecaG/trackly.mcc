@@ -1,11 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface User {
-    id: string;
-    email: string;
-    name?: string;
-};
+import type { User } from '../types';
 
 interface AuthContextType {
     user: User | null;

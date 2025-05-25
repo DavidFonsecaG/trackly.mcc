@@ -10,7 +10,7 @@ const ProgressBar: FC<ProgressBarProps> = ({ studentId }) => {
 
     const colors = {
         incomplete: 'bg-rose-500',
-        complete: 'bg-emerald-500',
+        complete: 'bg-green-600',
         pending: 'bg-amber-400',
     };
 

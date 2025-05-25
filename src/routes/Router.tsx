@@ -1,5 +1,5 @@
-import Layout from "../components/Layout";
-import PrivateRoute from "./PrivateRoute";
+import Layout from "../pages/Layout";
+// import PrivateRoute from "./PrivateRoute";
 import TrackerPage from "../pages/TrackerPage";
 import LoginPage from "../pages/LoginPage";
 import { Route, Routes as RouterRoutes } from "react-router-dom";

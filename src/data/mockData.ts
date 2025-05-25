@@ -123,7 +123,7 @@ export const students: Student[] = [
       name: "John Snow",
       email: "john.snow@example.com",
       applicationId: "SPR25-DOMESL-009",
-      applicationType: "domestic",
+      applicationType: "COS",
       term: "Spring 2025",
       program: "English as a Second Language",
       schedule: "4 Day - Morning",

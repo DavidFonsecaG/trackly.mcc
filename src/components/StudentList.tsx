@@ -1,18 +1,17 @@
-import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
-import ProgressBar from "./ui/ProgressBar";
-import formatDate from "../utils/formatDate";
-import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 import { ChevronsUpDown, ChevronRight } from "lucide-react";
+import formatDate from "../utils/formatDate";
+import ProgressBar from "./ui/ProgressBar";
+import FilterButton from "./ui/FilterButton";
+import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 
 function StudentList() {    
-    const [open, setOpen] = useState(false);
 
     const {
         students,
         setSelectedStudent,
         searchTerm,
-        updateSearchTearm,
+        updateSearchTerm,
     } = useAppContext();
 
     const filteredStudents = students.filter((student) => {
@@ -24,7 +23,7 @@ function StudentList() {
 
     return (
         <div className="flex w-full ">
-            <div className="flex flex-col min-w-full">
+            <div className="flex flex-col min-w-full shadow-sm rounded-3xl">
                 <div className="p-6 flex items-center justify-between bg-card rounded-t-3xl">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-xl font-semibold">Applications</h2>
@@ -41,27 +40,11 @@ function StudentList() {
                                 <input type="text" id="table-search-users" className="text-xs/5 block p-2 ps-10 border rounded-full w-80 bg-background dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search"/>
                             </div>
                         </div>
-                        <div className="relative inline-block text-left text-xs">
-                            <div>
-                                <button type="button" className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-full bg-primary px-4 py-2 text-white hover:bg-primary/90 cursor-pointer" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={() => (setOpen(!open))}>
-                                    <span className="w-19">{searchTerm}</span>
-                                    <svg className="-mr-1 size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                        <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            {open && <div className="absolute right-0 mt-2 w-56 p-1.5 origin-top-right rounded-xl bg-card border shadow-lg focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" aria-hidden={!open}>
-                                {terms.map((term, index) => (
-                                    <div 
-                                        key={index} 
-                                        className="block px-4 py-2 cursor-pointer hover:bg-background rounded-lg" role="menuitem" 
-                                        id="menu-item-0"
-                                        onClick={() => {updateSearchTearm(term); setOpen(!open)}}
-                                    >{term}</div>
-                                ))}
-                            </div>}
-                        </div>
+                        <FilterButton 
+                            terms={terms} 
+                            searchTerm={searchTerm} 
+                            updateSearchTerm={updateSearchTerm} 
+                        />
                     </div>
                 </div>
 
