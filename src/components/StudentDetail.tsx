@@ -52,7 +52,6 @@ const StudentDetail: React.FC = () => {
                 <div className="text-xs flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="flex items-center justify-between">
-                            {/* <p className="px-2 py-1 rounded-md text-[0.6rem] border">{selectedStudent?.applicationType}</p> */}
                             <ApplicationTypeBadge type={selectedStudent?.applicationType}/>
                             <button 
                                 className="flex size-7 rounded-md items-center justify-center cursor-pointer hover:text-primary/50"
@@ -65,7 +64,7 @@ const StudentDetail: React.FC = () => {
                     <div>
                         <ProgressBar studentId={selectedStudent.id} />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-6">
                         {documents.map((doc, index) => (
                             <div key={index} className="flex gap-1.5">
                                 <button
@@ -77,6 +76,7 @@ const StudentDetail: React.FC = () => {
                                 <div>
                                     <p className="cursor-pointer" onClick={() => {handleToggleSubmitted(doc)}}>{doc.name}</p>
                                     <p className="text-primary/50">{doc.submitted ? `Submitted on ${formatDate(doc.submissionDate)}` : 'No submission date'}</p>
+                                    {/* <input className="font-light text-[.65rem] text-primary/70" value={doc.notes}/> */}
                                 </div>
                             </div>
                         ))}

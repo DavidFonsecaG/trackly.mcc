@@ -1,25 +1,4 @@
-import { requiredDocumentsByType, type Student, type StudentDocument } from "../types";
-
-// const createDocuments = (type: keyof typeof requiredDocumentsByType) => {
-
-//     const requiredDocs = requiredDocumentsByType[type].map((name, index) => ({
-//         id: `d${index + 1}`,
-//         name,
-//         required: true,
-//         submitted: false,
-//     }));
-
-//     const optionalDocs = [
-//         {
-//             id: 'opt1',
-//             name: 'Financial Support Letter',
-//             required: false,
-//             submitted: false,
-//         }
-//     ];
-
-//     return [...requiredDocs, ...optionalDocs];
-// };
+import type { Student, StudentDocument } from "../types";
 
 export const students: Student[] = [
     {
@@ -98,9 +77,9 @@ export const students: Student[] = [
         id: "7",
         name: "Charlotte Thomas",
         email: "charlotte.thomas@example.com",
-        applicationId: "FALL25-TRNESL-007",
+        applicationId: "SPR25-TRNESL-007",
         applicationType: "transfer-in",
-        term: "Fall 2025",
+        term: "Spring 2025",
         program: "English as a Second Language",
         schedule: "4 Day - Morning",
         status: "incomplete",
@@ -110,9 +89,9 @@ export const students: Student[] = [
         id: "8",
         name: "Benjamin Taylor",
         email: "benjamin.taylor@example.com",
-        applicationId: "FALL25-DOMESL-008",
+        applicationId: "SPR25-DOMESL-008",
         applicationType: "domestic",
-        term: "Fall 2025",
+        term: "Spring 2025",
         program: "English as a Second Language",
         schedule: "4 Day - Morning",
         status: "incomplete",
@@ -143,11 +122,6 @@ export const students: Student[] = [
       lastUpdated: "2025-01-21T15:20:00Z",
     },
 ];
-
-// export const studentDocuments: StudentDocument[] = students.map(student => ({
-//     studentId: student.id,
-//     documents: createDocuments(student.applicationType),
-// }));
 
 export const studentDocuments: StudentDocument[] = [
   {
@@ -260,6 +234,34 @@ export const studentDocuments: StudentDocument[] = [
       { id: "d7", name: "High School Attestation Form", required: true, submitted: false, notes: "Awaiting confirmation." },
       { id: "d8", name: "Foreign Address Form", required: true, submitted: false, notes: "Not received." },
       { id: "d9", name: "Placement Test", required: true, submitted: false, notes: "No record yet." },
+    ],
+  },
+  {
+    studentId: "9",
+    documents: [
+      { id: "d1", name: "Application Form", required: true, submitted: true, submissionDate: "2025-01-12T10:00:00Z", notes: "Confirmed." },
+      { id: "d2", name: "Application Fee", required: true, submitted: true, submissionDate: "2025-01-12T10:30:00Z", notes: "Receipt received." },
+      { id: "d3", name: "Passport", required: true, submitted: false, notes: "Still pending." },
+      { id: "d4", name: "Diploma", required: true, submitted: false, notes: "Will upload next week." },
+      { id: "d5", name: "Bank Statement", required: true, submitted: false, notes: "Incomplete pages." },
+      { id: "d6", name: "Financial Support Letter", required: true, submitted: false, notes: "Needs notarization." },
+      { id: "d7", name: "High School Attestation Form", required: true, submitted: false, notes: "Awaiting confirmation." },
+      { id: "d8", name: "Foreign Address Form", required: true, submitted: false, notes: "Not received." },
+      { id: "d9", name: "Placement Test", required: true, submitted: false, notes: "No record yet." },
+    ],
+  },
+  {
+    studentId: "10",
+    documents: [
+      { id: "d1", name: "Application Form", required: true, submitted: true, submissionDate: "2025-01-12T10:00:00Z" },
+      { id: "d2", name: "Application Fee", required: true, submitted: true, submissionDate: "2025-01-12T10:30:00Z" },
+      { id: "d3", name: "Passport", required: true, submitted: false },
+      { id: "d4", name: "Diploma", required: true, submitted: false },
+      { id: "d5", name: "Bank Statement", required: true, submitted: false},
+      { id: "d6", name: "Financial Support Letter", required: true, submitted: false },
+      { id: "d7", name: "High School Attestation Form", required: true, submitted: false },
+      { id: "d8", name: "Foreign Address Form", required: true, submitted: false },
+      { id: "d9", name: "Placement Test", required: true, submitted: false },
     ],
   },
 ];

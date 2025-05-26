@@ -16,6 +16,7 @@ interface AppContextType {
         notes?: string
     ) => void;
     getStudentDocuments: (studentId: string) => Document[] | undefined;
+    addNewStudent: (student: Student) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -97,6 +98,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         return studentDocuments.find((doc) => doc.studentId === studentId)?.documents;
     };
 
+    const addNewStudent = (student: Student) => {
+      setStudents((prevStudents) => [...prevStudents, student]);
+    };
+
   return (
     <AppContext.Provider
       value={{
@@ -108,6 +113,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setSelectedStudent,
         updateDocumentStatus,
         getStudentDocuments,
+        addNewStudent,
       }}
     >
       {children}

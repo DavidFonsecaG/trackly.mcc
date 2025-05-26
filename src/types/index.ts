@@ -87,7 +87,7 @@ export const requiredDocumentsByType = {
         'Foreign Address Form',
         'Placement Test',
     ],
-    approvedAbroad: [
+    'approved-abroad': [
         'Application Form',
         'Application Fee',
         'Passport',
@@ -98,7 +98,7 @@ export const requiredDocumentsByType = {
         'Foreign Address Form',
         'Placement Test',
     ],
-    approvedChange: [
+    'approved-COS': [
         'Application Form',
         'Application Fee',
         'Passport',

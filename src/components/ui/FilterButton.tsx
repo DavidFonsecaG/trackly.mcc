@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 interface FilterButtonTypes{
     searchTerm: string,
@@ -24,13 +25,11 @@ const FilterButton: React.FC<FilterButtonTypes> = ({searchTerm, terms, updateSea
     }, []);
 
     return (
-        <div className="relative inline-block text-left text-xs">
+        <div className="relative text-left text-xs">
             <div ref={filterRef}>
-                <button type="button" className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-full bg-primary px-4 py-2 text-white hover:bg-primary/90 cursor-pointer" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={() => (setOpen(!open))}>
+                <button type="button" className="inline-flex h-9 w-full items-center justify-center gap-x-1.5 rounded-full bg-card border-[1.5px] px-4 cursor-pointer hover:shadow-sm" id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={() => (setOpen(!open))}>
                     <span className="w-19">{searchTerm}</span>
-                    <svg className="-mr-1 size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                        <path fillRule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-                    </svg>
+                    <ChevronDown className="w-4 h-4"/>
                 </button>
 
                 {open && 
@@ -38,10 +37,10 @@ const FilterButton: React.FC<FilterButtonTypes> = ({searchTerm, terms, updateSea
                     {terms.map((term, index) => (
                         <div 
                             key={index} 
-                            className={`block px-4 py-2 cursor-pointer rounded-lg ${searchTerm === term ? "bg-background" : "hover:bg-background "}`} role="menuitem" 
+                            className={`flex px-4 py-2 cursor-pointer rounded-lg ${searchTerm === term ? "bg-background items-center justify-between" : "text-primary/50 hover:text-primary"}`} role="menuitem" 
                             id="menu-item-0"
                             onClick={() => {updateSearchTerm(term); setOpen(false)}}
-                        >{term}</div>
+                        >{term}{searchTerm === term && <div className="rounded-full bg-blue-500 h-2 w-2"></div>}</div>
                     ))}
                     </div>
                 }

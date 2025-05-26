@@ -4,6 +4,7 @@ import formatDate from "../utils/formatDate";
 import ProgressBar from "./ui/ProgressBar";
 import FilterButton from "./ui/FilterButton";
 import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
+import AddButton from "./ui/AddButton";
 
 function StudentList() {    
 
@@ -45,6 +46,7 @@ function StudentList() {
                             searchTerm={searchTerm} 
                             updateSearchTerm={updateSearchTerm} 
                         />
+                        <AddButton />
                     </div>
                 </div>
 
