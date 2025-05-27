@@ -9,7 +9,7 @@ export interface Student {
     name: string;
     email: string;
     applicationId: string;
-    applicationType: "abroad" | "COS" | "transfer-in" | "domestic" | "reinstatement";
+    applicationType: "abroad" | "COS" | "transfer-in" | "domestic" | "reinstatement" | "approved-abroad" | "approved-COS";
     term: string;
     program: "English as a Second Language",
     schedule: "4 Day - Morning",
@@ -46,23 +46,29 @@ export const requiredDocumentsByType = {
     'transfer-in': [
         'Application Form',
         'Application Fee',
+        'I-20',
         'Passport',
+        'Visa',
+        'I-94',
         'Diploma',
+        'Trascript',
         'Bank Statement',
         'Financial Support Letter',
-        'High School Attestation Form',
-        'Foreign Address Form',
         'Placement Test',
     ],
     COS: [
         'Application Form',
         'Application Fee',
         'Passport',
+        'Visa',
+        'I-94',
         'Diploma',
         'Bank Statement',
         'Financial Support Letter',
         'High School Attestation Form',
         'Foreign Address Form',
+        'I-539',
+        'Explanation Letter',
         'Placement Test',
     ],
     domestic: [

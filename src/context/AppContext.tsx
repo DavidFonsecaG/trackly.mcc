@@ -10,23 +10,24 @@ interface AppContextType {
     selectedStudent: Student | null;
     setSelectedStudent: (student: Student | null) => void;
     updateDocumentStatus: (
-        studentId: string,
-        documentId: string,
-        submitted: boolean,
-        notes?: string
+      studentId: string,
+      documentId: string,
+      submitted: boolean,
+      notes?: string
     ) => void;
     getStudentDocuments: (studentId: string) => Document[] | undefined;
-    addNewStudent: (student: Student) => void;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-export const AppProvider = ({ children }: { children: ReactNode }) => {
+    setStudent: (student: Student) => void;
+    setStudentDocument: (documents: StudentDocument) => void;
+  }
+  
+  const AppContext = createContext<AppContextType | undefined>(undefined);
+  
+  export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [students, setStudents] = useState<Student[]>(mockStudents);
     const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>(mockStudentDocuments);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
     const [searchTerm, setSearchTerm] = useState("All Terms");
-
+    
     const updateSearchTerm = (term: string) => {
       setSearchTerm(term)
     };
@@ -98,8 +99,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         return studentDocuments.find((doc) => doc.studentId === studentId)?.documents;
     };
 
-    const addNewStudent = (student: Student) => {
+    const setStudent = (student: Student) => {
       setStudents((prevStudents) => [...prevStudents, student]);
+    };
+
+    const setStudentDocument = (documents: StudentDocument) => {
+      setStudentDocuments((prevDocs) => [...prevDocs, documents]);
     };
 
   return (
@@ -113,7 +118,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setSelectedStudent,
         updateDocumentStatus,
         getStudentDocuments,
-        addNewStudent,
+        setStudent,
+        setStudentDocument,
       }}
     >
       {children}

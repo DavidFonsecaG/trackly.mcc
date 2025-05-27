@@ -48,7 +48,7 @@ const StudentDetail: React.FC = () => {
             aria-label="Student Details" 
             aria-hidden={!selectedStudent}
         >
-            <div className="w-lg px-6 py-6 bg-card rounded-3xl shadow-2xl" ref={cardRef}>
+            <div className="w-lg p-6 bg-card rounded-3xl shadow-2xl" ref={cardRef}>
                 <div className="text-xs flex flex-col gap-6">
                     <div className="flex flex-col">
                         <div className="flex items-center justify-between">
@@ -56,7 +56,8 @@ const StudentDetail: React.FC = () => {
                             <button 
                                 className="flex size-7 rounded-md items-center justify-center cursor-pointer hover:text-primary/50"
                                 onClick={handleBackClick}
-                                >{<X className="w-4 h-4" />}</button>
+                                >{<X className="w-4 h-4" />}
+                            </button>
                         </div>
                         <p className="text-base font-medium">{selectedStudent?.name}</p>
                         <p className="text-primary/50">{selectedStudent?.program}</p>
