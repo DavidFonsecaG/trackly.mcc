@@ -26,7 +26,7 @@ interface AppContextType {
     const [students, setStudents] = useState<Student[]>(mockStudents);
     const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>(mockStudentDocuments);
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
-    const [searchTerm, setSearchTerm] = useState("All Terms");
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem("Filter") || "All Terms");
     
     const updateSearchTerm = (term: string) => {
       setSearchTerm(term)

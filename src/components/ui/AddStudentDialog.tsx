@@ -9,6 +9,9 @@ interface AddStudentDialogProps{
 };
 
 const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
+    const [openTerm, setOpenTerm] = useState(false);
+    const terms = ["Fall 2025", "Winter 2026", "Spring 2026"];
+
     const { students, setStudent, setStudentDocument } = useAppContext();
     const initialState: Student = {
         id: `${students.length + 1}`,
@@ -105,7 +108,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                     <form className="flex flex-col h-full gap-6">
                         <div className="space-y-5">
                             <div className="space-y-2">
-                                <label htmlFor="appType" className="block font-medium leading-none">Type</label>
+                                <label className="block font-medium leading-none">Type</label>
                                 <div className="flex flex-wrap rounded-md py-1 gap-2">
                                     {Object.keys(requiredDocumentsByType).map((type) => (
                                         <button 
@@ -129,6 +132,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     value={newStudent.name}
                                     onChange={handleInputChange}
                                     required
+                                    autoComplete="off"
                                     className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50"
                                 />
                             </div>
@@ -142,6 +146,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     value={newStudent.email}
                                     onChange={handleInputChange}
                                     required
+                                    autoComplete="off"
                                     className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50"
                                 />
                             </div>
@@ -158,18 +163,37 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50"
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label htmlFor="term" className="block font-medium leading-none">Term</label>
+                            <div className="relative">
+                                <label htmlFor="term" className="block w-fit mb-2 font-medium leading-none">Term</label>
                                 <input
                                     id="term"
                                     name="term"
                                     type="text"
                                     placeholder="Select a term"
                                     value={newStudent.term}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50"
+                                    onFocus={() => setOpenTerm(true)}
+                                    onBlur={() => setTimeout(() => setOpenTerm(false), 150)}
+                                    readOnly
+                                    autoComplete="off" 
+                                    className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 hover:placeholder:text-primary focus:outline-none cursor-pointer"
                                 />
+
+                                {openTerm && (
+                                    <div className="absolute -bottom-25 w-full p-1.5 bg-card rounded-b-lg border border-t-0 shadow-lg z-10">
+                                    {terms.map((term, index) => (
+                                        <div
+                                        key={index}
+                                        className={`px-4 py-2 rounded-lg cursor-pointer ${newStudent.term === term ? "bg-background items-center justify-between text-primary" : "text-primary/50 hover:text-primary"}`}
+                                        onClick={() => {
+                                            setNewStudent(prev => ({ ...prev, term }));
+                                            setOpenTerm(false);
+                                        }}
+                                        >
+                                        {term}
+                                        </div>
+                                    ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-end gap-2">
