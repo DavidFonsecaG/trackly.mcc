@@ -18,7 +18,7 @@ function Header() {
               <Settings className="w-4 h-4" />
             </Link>
             {user 
-              ? <AvatarButton handleLogout={handleLogout} user={user}/> 
+              ? <AvatarButton user={user!} handleLogout={handleLogout} /> 
               : <Link to="/login" className="flex py-2 px-5 items-center rounded-full bg-card text-xs cursor-pointer font-medium text-primary hover:shadow-sm hover:text-blue-500">Log In</Link>}
           </div>
         </div>

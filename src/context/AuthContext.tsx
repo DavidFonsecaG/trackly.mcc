@@ -1,47 +1,56 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { User } from '../types';
+import api from '../api/axios';
 
 interface AuthContextType {
     user: User | null;
-    token: string;
-    login: (email: string, password: string) => void;
-    logout: () => void;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
 
-  const login = (email: string, password: string) => {
-    const newToken = `${email}:${password}`;
-    setToken(newToken);
-    setUser({ id: '1', email, name: 'John Doe' });
-    navigate("/");
+  const login = async (email: string, password: string) => {
+    try {
+      const res = await api.post("auth/login", { email, password });
+      setUser(res.data);
+      navigate("/");
+    } catch (err: any) {
+      console.error("Login failed:", err.response?.data?.message || err.message );
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken("");
-    localStorage.removeItem("token");
-    navigate("/login");
+  const logout = async () => {
+    try {
+      await api.post("/auth/logout");
+      setUser(null);
+      navigate("/login");
+    } catch (err: any) {
+      console.error("Login failed:", err.response?.data?.message || err.message );
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const res = await api.get("/auth/me");
+      setUser(res.data);
+    } catch (err) {
+      // silently fail
+    }
   };
 
   useEffect(() => {
-
-    if (!user) {
-      return
-    };
-
-    localStorage.setItem('token', JSON.stringify(token));
-  }, [user])
+    fetchUser();
+  }, []);
 
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
