@@ -1,31 +1,23 @@
 import { useState } from "react";
 
-interface useFormProps {
-    email: string,
-    password: string,
-}
-
-type UseFormReturn = [
-  useFormProps,
+export const useForm = <T extends Record<string, string>>(initialState: T): [
+  T,
   (e: React.ChangeEvent<HTMLInputElement>) => void,
   () => void
-];
+] => {
+  const [values, setValues] = useState<T>(initialState);
 
-export const useForm = (initialState: useFormProps): UseFormReturn => {
+  const reset = () => {
+    setValues(initialState);
+  };
 
-    const [values, setValues] = useState(initialState);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setValues(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-    const reset = () => {
-        setValues(initialState);
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setValues({
-            ...values,
-            [name]: value
-        });
-    };
-
-    return [values, handleInputChange, reset];
+  return [values, handleInputChange, reset];
 };

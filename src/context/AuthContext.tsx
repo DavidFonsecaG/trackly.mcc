@@ -4,9 +4,10 @@ import type { User } from '../types';
 import api from '../api/axios';
 
 interface AuthContextType {
-    user: User | null;
-    login: (email: string, password: string) => Promise<void>;
-    logout: () => Promise<void>;
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await api.post("auth/login", { email, password });
+      const res = await api.post("/auth/login", { email, password });
       setUser(res.data);
       navigate("/");
     } catch (err: any) {
@@ -35,6 +36,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const signup = async (name: string, email: string, password: string) => {
+    try {
+      const res = await api.post("/auth/register", {name, email, password});
+      setUser(res.data);
+      navigate("/");
+    } catch (err: any) {
+      console.error("Signup failed:", err.response?.data?.message || err.message );
+    }
+  };
+
   const fetchUser = async () => {
     try {
       const res = await api.get("/auth/me");
@@ -48,9 +59,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     fetchUser();
   }, []);
 
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );
