@@ -93,7 +93,7 @@ const LoginPage = () => {
 										id="password"
 										name="password"
 										type="password"
-										autoComplete="password"
+										autoComplete="current-password"
 										placeholder="password"
 										value={password}
 										onChange={handleInputChange}

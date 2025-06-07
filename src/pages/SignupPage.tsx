@@ -110,7 +110,7 @@ const SignupPage = () => {
                                         id="password"
                                         name="password"
                                         type="password"
-                                        autoComplete="password"
+                                        autoComplete="new-password"
                                         placeholder="password"
                                         value={password}
                                         onChange={handleInputChange}

@@ -12,12 +12,10 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
     const [openTerm, setOpenTerm] = useState(false);
     const terms = ["Fall 2025", "Winter 2026", "Spring 2026"];
 
-    const { students, setStudent, setStudentDocument } = useAppContext();
-    const initialState: Student = {
-        id: `${students.length + 1}`,
+    const { setStudent, setStudentDocument } = useAppContext();
+    const initialState: Partial<Student> = {
         name: "",
         email: "",
-        applicationId: "",
         applicationType: "abroad",
         term: "",
         program: "English as a Second Language",
@@ -25,7 +23,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
         status: "incomplete",
         lastUpdated: new Date().toISOString(),
     };
-    const [newStudent, setNewStudent] = useState<Student>(initialState);
+    const [newStudent, setNewStudent] = useState<Partial<Student>>(initialState);
     const [appType, setAppType] = useState<keyof typeof requiredDocumentsByType | null>(null);
     const [studentDocuments, setStudentDocuments] = useState<StudentDocument | null>(null);    
 
@@ -41,7 +39,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
         setAppType(type);
         setNewStudent((prev) => ({ ...prev, applicationType: type }));
         setStudentDocuments({
-            studentId: newStudent.id,
+            studentId: "324234234",
             documents: requiredDocumentsByType[type].map((name, index) => ({
                 id: `d${index + 1}`,
                 name,
@@ -56,7 +54,6 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
             alert("Please complete all required fields!");
             return;
         };
-
         setStudent(newStudent);
         setStudentDocument(studentDocuments);
         setOpen(false);

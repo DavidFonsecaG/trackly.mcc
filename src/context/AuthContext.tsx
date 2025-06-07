@@ -46,17 +46,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getCookie = (name: string): string | null => {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? decodeURIComponent(match[2]) : null;
+  };
+
   const fetchUser = async () => {
     try {
       const res = await api.get("/auth/me");
       setUser(res.data);
-    } catch (err) {
-      // silently fail
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        setUser(null);
+      } else {
+        console.error("Failed to fetch user:", err.response?.data?.message || err.message);
+      }
     }
   };
 
   useEffect(() => {
-    fetchUser();
+    fetchUser().catch((err) =>
+      console.error("Failed to fetch user:", err)
+    );
   }, []);
 
   return (

@@ -8,7 +8,6 @@ export interface Student {
     id: string;
     name: string;
     email: string;
-    applicationId: string;
     applicationType: "abroad" | "COS" | "transfer-in" | "domestic" | "reinstatement" | "approved-abroad" | "approved-COS";
     term: string;
     program: "English as a Second Language",

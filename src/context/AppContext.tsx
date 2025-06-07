@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import type { Student, StudentDocument, Document } from "../types";
 import { students as mockStudents, studentDocuments as mockStudentDocuments } from "../data/mockData";
 import { useAuth } from "./AuthContext";
+import { useStudentFetcher } from "../hooks/useStudentFetcher";
+import { useStudentActions } from "../hooks/useStudentActions";
 
 interface AppContextType {
   students: Student[];
@@ -17,7 +19,7 @@ interface AppContextType {
     notes?: string
   ) => void;
   getStudentDocuments: (studentId: string) => Document[] | undefined;
-  setStudent: (student: Student) => void;
+  setStudent: (student: Partial<Student>) => void;
   setStudentDocument: (documents: StudentDocument) => void;
 }
 
@@ -25,6 +27,9 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
+  const { fetchStudents } = useStudentFetcher();
+  const { createStudent } = useStudentActions();
+
   const [students, setStudents] = useState<Student[]>([]);
   const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -104,8 +109,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       ?.documents;
   };
 
-  const setStudent = (student: Student) => {
-    setStudents((prevStudents) => [...prevStudents, student]);
+  const setStudent = async (student: Partial<Student>) => {
+    try {
+      const createdStudent = await createStudent(student);
+      setStudents((prevStudents) => [...prevStudents, createdStudent]);
+    } catch (err: any) {
+      console.error("Failed to create student:", err.response?.data?.message || err.message);
+    }
   };
 
   const setStudentDocument = (documents: StudentDocument) => {
@@ -114,14 +124,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (user !== null) {
-      setStudents([]);
       setStudentDocuments([]);
       setSelectedStudent(null);
+      fetchStudents().then(setStudents).catch((err: any) => console.error("Failed to fecth students", err.response?.data?.message || err.message))
     } else {
       setStudents(mockStudents);
       setStudentDocuments(mockStudentDocuments);
     }
-  }, []);
+  }, [user]);
 
   return (
     <AppContext.Provider
