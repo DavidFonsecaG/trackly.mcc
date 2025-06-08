@@ -24,7 +24,7 @@ const SignupPage = () => {
 
     return (
         <div className="flex w-full min-h-screen bg-background">
-            <div className="hidden w-2/4 lg:block p-4">
+            <div className="hidden lg:block w-2/4 py-4 pl-4">
                 <div className="flex flex-col h-full w-full bg-primary rounded-3xl text-white p-8">
                     <Link to="/" className="flex gap-3 text-2xl items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-card" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
@@ -39,7 +39,7 @@ const SignupPage = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col w-2/4 items-center justify-center sm:px-6  lg:px-20">
+            <div className="flex flex-col w-full lg:w-2/4 items-center justify-center px-6 lg:px-20">
                 <div className="w-full max-w-sm mx-auto lg:w-96">
                     <div className="text-center">
                         <div className="flex mb-4 items-center justify-center">

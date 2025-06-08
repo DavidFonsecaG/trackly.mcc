@@ -5,6 +5,7 @@ import api from '../api/axios';
 
 interface AuthContextType {
   user: User | null;
+  loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
@@ -14,13 +15,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const login = async (email: string, password: string) => {
     try {
       const res = await api.post("/auth/login", { email, password });
       setUser(res.data);
-      navigate("/");
+      navigate("/login/loading");
     } catch (err: any) {
       console.error("Login failed:", err.response?.data?.message || err.message );
     }
@@ -46,32 +48,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getCookie = (name: string): string | null => {
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    return match ? decodeURIComponent(match[2]) : null;
-  };
-
   const fetchUser = async () => {
     try {
       const res = await api.get("/auth/me");
       setUser(res.data);
     } catch (err: any) {
       if (err.response?.status === 401) {
-        setUser(null);
+        //
       } else {
         console.error("Failed to fetch user:", err.response?.data?.message || err.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUser().catch((err) =>
-      console.error("Failed to fetch user:", err)
-    );
+    fetchUser()
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, signup }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );

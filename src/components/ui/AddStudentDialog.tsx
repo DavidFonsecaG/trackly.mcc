@@ -87,7 +87,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
 
     return (
         <div 
-            className="z-100 flex items-center justify-center fixed inset-0 w-full h-full top-0 bg-primary/20"
+            className="z-100 flex items-center justify-center fixed inset-0 w-full h-full p-3 top-0 bg-primary/20"
             role="dialog"
             aria-modal="true"
             aria-label="Student Details"

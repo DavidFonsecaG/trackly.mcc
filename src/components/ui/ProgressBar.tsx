@@ -7,13 +7,7 @@ interface ProgressBarProps {
 
 const ProgressBar: FC<ProgressBarProps> = ({ studentId }) => {
     const { getStudentDocuments } = useAppContext();
-
-    const colors = {
-        incomplete: 'bg-rose-500',
-        complete: 'bg-green-600',
-        pending: 'bg-amber-400',
-    };
-
+    
     const getCompletionPercentage = (studentId: string) => {
         const studentDoc = getStudentDocuments(studentId)
         if (!studentDoc) return 0;
@@ -25,8 +19,15 @@ const ProgressBar: FC<ProgressBarProps> = ({ studentId }) => {
         return Math.round((submittedRequiredDocs.length / requiredDocs.length ) * 100);
     };
 
+    const percentage = getCompletionPercentage(studentId);
+
+    const colors = {
+        incomplete: 'bg-rose-500',
+        complete: 'bg-green-600',
+        pending: 'bg-amber-400',
+    };
+
     const getColor = () => {
-        const percentage = getCompletionPercentage(studentId);
         if (percentage === 100)
             return "complete"
         if (percentage < 99 && percentage > 30)
@@ -39,10 +40,10 @@ const ProgressBar: FC<ProgressBarProps> = ({ studentId }) => {
             <div className="w-full bg-gray-200 rounded-full">
                 <div 
                     className={`h-2 rounded-full ${colors[getColor() as keyof typeof colors]}`} 
-                    style={{width: `${getCompletionPercentage(studentId)}%`}}
+                    style={{width: `${percentage}%`}}
                 ></div>
             </div> 
-            <p className="text-end">{getCompletionPercentage(studentId)}%</p>
+            <p className="hidden sm:flex text-end">{percentage}%</p>
         </div>
     );
 };

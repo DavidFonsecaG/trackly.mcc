@@ -123,13 +123,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (user !== null) {
+    console.log("--> User:", user)
+    if (user) {
       setStudentDocuments([]);
       setSelectedStudent(null);
       fetchStudents().then(setStudents).catch((err: any) => console.error("Failed to fecth students", err.response?.data?.message || err.message))
-    } else {
-      setStudents(mockStudents);
-      setStudentDocuments(mockStudentDocuments);
     }
   }, [user]);
 

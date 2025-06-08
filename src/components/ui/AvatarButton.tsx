@@ -26,9 +26,9 @@ const AvatarButton: React.FC<AvatarButtonTypes> = ({handleLogout, user}) => {
     }, []);
 
     return (
-        <div className="relative h-9 text-xs" ref={menuRef}>
+        <div className="relative h-10 text-xs" ref={menuRef}>
             <button onClick={() => (setOpen(!open))}
-            id="avatar-button" aria-expanded="true" aria-haspopup="true" className="size-9 rounded-full bg-[url(avatar.jpg)] bg-cover cursor-pointer hover:ring-2 hover:ring-blue-500"></button>
+            id="avatar-button" aria-expanded="true" aria-haspopup="true" className="size-10 rounded-full bg-[url(avatar.jpg)] bg-cover cursor-pointer hover:ring-2 hover:ring-blue-500"></button>
             {open && 
                 <div className="absolute right-0 min-w-56 p-1.5 origin-bottom-right rounded-xl bg-card border shadow-lg text-primary focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" aria-hidden={!open}>
                     <div className="flex flex-col px-4 py-2 mb-2 rounded-lg border">
