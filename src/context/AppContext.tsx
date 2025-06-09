@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Student, StudentDocument, Document } from "../types";
-import { students as mockStudents, studentDocuments as mockStudentDocuments } from "../data/mockData";
 import { useAuth } from "./AuthContext";
 import { useStudentFetcher } from "../hooks/useStudentFetcher";
 import { useStudentActions } from "../hooks/useStudentActions";
@@ -19,16 +18,15 @@ interface AppContextType {
     notes?: string
   ) => void;
   getStudentDocuments: (studentId: string) => Document[] | undefined;
-  setStudent: (student: Partial<Student>) => void;
-  setStudentDocument: (documents: StudentDocument) => void;
+  setStudent: (student: Partial<Student>, studentDocument: Partial<StudentDocument>) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
-  const { fetchStudents } = useStudentFetcher();
-  const { createStudent } = useStudentActions();
+  const { fetchStudents, fetchStudentDocuments } = useStudentFetcher();
+  const { createStudent, createStudentDocuments } = useStudentActions();
 
   const [students, setStudents] = useState<Student[]>([]);
   const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>([]);
@@ -109,25 +107,34 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       ?.documents;
   };
 
-  const setStudent = async (student: Partial<Student>) => {
+  const setStudent = async (newStudent: Partial<Student>, newStudentDocument: Partial<StudentDocument>) => {
     try {
-      const createdStudent = await createStudent(student);
+      const createdStudent = await createStudent(newStudent);
       setStudents((prevStudents) => [...prevStudents, createdStudent]);
+
+      const createdStudentDocument = await createStudentDocuments(createdStudent.id, newStudentDocument);
+      setStudentDocuments((prevDocs) => [...prevDocs, createdStudentDocument]);
+      console.log(studentDocuments)
+
     } catch (err: any) {
-      console.error("Failed to create student:", err.response?.data?.message || err.message);
+      console.error("Failed to create student and documents:", err.response?.data?.message || err.message);
     }
   };
 
-  const setStudentDocument = (documents: StudentDocument) => {
-    setStudentDocuments((prevDocs) => [...prevDocs, documents]);
-  };
-
   useEffect(() => {
-    console.log("--> User:", user)
     if (user) {
+      fetchStudents()
+        .then((students) => {
+          setStudents(students);
+          return fetchStudentDocuments(students.map(s => s.id));
+        })
+        .then(setStudentDocuments)
+        .catch((err: any) => 
+          console.error("Failed to fecth students", err.response?.data?.message || err.message)
+        );
+    } else {
+      setStudents([]);
       setStudentDocuments([]);
-      setSelectedStudent(null);
-      fetchStudents().then(setStudents).catch((err: any) => console.error("Failed to fecth students", err.response?.data?.message || err.message))
     }
   }, [user]);
 
@@ -143,7 +150,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateDocumentStatus,
         getStudentDocuments,
         setStudent,
-        setStudentDocument,
       }}
     >
       {children}

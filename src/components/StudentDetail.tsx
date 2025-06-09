@@ -12,7 +12,6 @@ const StudentDetail: React.FC = () => {
     if (!selectedStudent) return null;
 
     const documents = getStudentDocuments(selectedStudent?.id) || [];
-
     const handleToggleSubmitted = (doc: Document) => {
         updateDocumentStatus(
             selectedStudent.id,

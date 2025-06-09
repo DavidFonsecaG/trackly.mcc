@@ -12,7 +12,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
     const [openTerm, setOpenTerm] = useState(false);
     const terms = ["Fall 2025", "Winter 2026", "Spring 2026"];
 
-    const { setStudent, setStudentDocument } = useAppContext();
+    const { setStudent } = useAppContext();
     const initialState: Partial<Student> = {
         name: "",
         email: "",
@@ -25,7 +25,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
     };
     const [newStudent, setNewStudent] = useState<Partial<Student>>(initialState);
     const [appType, setAppType] = useState<keyof typeof requiredDocumentsByType | null>(null);
-    const [studentDocuments, setStudentDocuments] = useState<StudentDocument | null>(null);    
+    const [studentDocuments, setStudentDocuments] = useState<Partial<StudentDocument> | null>(null);    
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -39,7 +39,6 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
         setAppType(type);
         setNewStudent((prev) => ({ ...prev, applicationType: type }));
         setStudentDocuments({
-            studentId: "324234234",
             documents: requiredDocumentsByType[type].map((name, index) => ({
                 id: `d${index + 1}`,
                 name,
@@ -54,8 +53,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
             alert("Please complete all required fields!");
             return;
         };
-        setStudent(newStudent);
-        setStudentDocument(studentDocuments);
+        setStudent(newStudent, studentDocuments);
         setOpen(false);
     };
 

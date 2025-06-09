@@ -51,76 +51,37 @@ function StudentList() {
                 </div>
 
                 <div className="flex w-full text-sm text-start bg-card rounded-b-3xl pt-3 md:pb-6">
-                    <table className="md:hidden w-full text-left dark:text-gray-400">
-                        {/* <thead className="hidden dark:text-gray-400">
-                            <tr>
-                                <th scope="col" className="pl-6 pr-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
-                                    <p className="flex items-center gap-3">
-                                        Type
-                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
-                                    </p>
-                                </th>
-                                <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
-                                    <p className="flex items-center gap-3">
-                                        Student
-                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
-                                    </p>
-                                </th>
-                                <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
-                                    <p className="flex items-center gap-3">
-                                        Program
-                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
-                                    </p>
-                                </th>
-                                <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
-                                    <p className="flex items-center gap-3">
-                                        Status
-                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
-                                    </p>
-                                </th>
-                                <th scope="col" className="px-4 py-4 font-medium leading-none border-y cursor-pointer hover:text-primary/70">
-                                    <p className="flex items-center gap-3">
-                                        Last Updated
-                                        {<ChevronsUpDown className="w-3.5 h-3.5" />}
-                                    </p>
-                                </th>
-                                <th scope="col" className="px-4 pl-4 pr-6 border-y">
-                                    <span className="sr-only">View</span>
-                                </th>
-                            </tr>
-                        </thead> */}
-                        <tbody className="flex flex-col text-xs text-primary/50 gap-2">
+                    <div className="md:hidden w-full text-left dark:text-gray-400">
+                        <div className="flex flex-col text-xs text-primary/50 gap-2">
                             {filteredStudents.map((student, index) => (
-                                <tr 
+                                <div 
                                     key={index}
                                     onClick={() => setSelectedStudent(student)} 
                                     className="flex flex-col p-3 rounded-2xl gap-2 hover:bg-gray-50/70 hover:ring hover:ring-gray-100 cursor-pointer dark:bg-gray-800 dark:border-gray-700 transition-colors dark:hover:bg-gray-600">
                                     <div className="flex justify-between">
                                         <div className="flex flex-col gap-2">
-                                            <td>
+                                            <div>
                                                 <ApplicationTypeBadge type={student.applicationType} />
-                                            </td>
-                                            <th scope="row" className=" whitespace-nowrap dark:text-white">
-                                                <div>
-                                                    <p className="text-primary font-semibold">{student.name}</p>
-                                                    <p className="font-normal">{student.email}</p>
-                                                </div>  
-                                            </th>
+                                            </div>
+                                            <div className=" whitespace-nowrap dark:text-white">
+                                                <p className="text-primary font-semibold">{student.name}</p>
+                                                <p className="font-normal">{student.email}</p>
+                                            </div>
                                         </div>
-                                        <td className="flex items-end text-end">
+                                        <div className="flex items-end text-end">
                                             <div>
                                                 <p className="text-primary">{student.schedule}</p>
                                                 <p>{student.program}</p>
                                             </div>
-                                        </td>
+                                        </div>
                                     </div>
-                                    <td className="w-full">
+                                    <div className="w-full">
                                         <ProgressBar studentId={student.id} />
-                                    </td>
-                                </tr>
+                                    </div>
+                                </div>
                             ))}
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                     <div className="hidden md:flex w-full">
                         <table className="w-full text-left dark:text-gray-400">
                             <thead className="dark:text-gray-400">
