@@ -8,20 +8,22 @@ import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 
 const StudentDetail: React.FC = () => {
     
-    const { selectedStudent, setSelectedStudent, getStudentDocuments, updateDocumentStatus } = useAppContext();
+    const { selectedStudent, setSelectedStudent, getStudentDocuments, updateDocumentStatus, updateStudentDocs } = useAppContext();
     if (!selectedStudent) return null;
 
     const documents = getStudentDocuments(selectedStudent?.id) || [];
+
     const handleToggleSubmitted = (doc: Document) => {
         updateDocumentStatus(
             selectedStudent.id,
             doc.id,
             !doc.submitted,
             doc.notes,
-        )
+        );
     };
 
     const handleBackClick = () => {
+        updateStudentDocs(selectedStudent.id);
         setSelectedStudent(null);
     };
 
