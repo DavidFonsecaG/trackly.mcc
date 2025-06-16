@@ -1,18 +1,21 @@
 import { useAppContext } from "../context/AppContext";
-import { ChevronsUpDown, ChevronRight } from "lucide-react";
+import { ChevronsUpDown, Trash2 } from "lucide-react";
 import formatDate from "../utils/formatDate";
 import ProgressBar from "./ui/ProgressBar";
 import FilterButton from "./ui/FilterButton";
 import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 import AddButton from "./ui/AddButton";
+import type { Student } from "../types";
 
-function StudentList() {    
+
+const StudentList = () => {    
 
     const {
         students,
         setSelectedStudent,
         searchTerm,
         updateSearchTerm,
+        removeStudent,
     } = useAppContext();
 
     const filteredStudents = students.filter((student) => {
@@ -21,6 +24,15 @@ function StudentList() {
     });
 
     const terms = ["All Terms", ...new Set(students.map(student => student.term))];
+
+    const handleRowClick = (student: Student) => {
+        setSelectedStudent(student);
+    };
+
+    const handleDelete = (e: React.MouseEvent, studentId: string) => {
+        e.stopPropagation();
+        removeStudent(studentId);
+    };
 
     return (
         <div className="flex w-full">
@@ -56,7 +68,7 @@ function StudentList() {
                             {filteredStudents.map((student, index) => (
                                 <div 
                                     key={index}
-                                    onClick={() => setSelectedStudent(student)} 
+                                    onClick={() => handleRowClick(student)} 
                                     className="flex flex-col p-3 rounded-2xl gap-2 hover:bg-gray-50/70 hover:ring hover:ring-gray-100 cursor-pointer dark:bg-gray-800 dark:border-gray-700 transition-colors dark:hover:bg-gray-600">
                                     <div className="flex justify-between">
                                         <div className="flex flex-col gap-2">
@@ -116,8 +128,8 @@ function StudentList() {
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="hidden lg:table-cell pl-4 py-4 border-b">
-                                        <span className="sr-only">View</span>
+                                    <th scope="col" className="hidden lg:table-cell px-4 py-4 border-b">
+                                        <span className="sr-only">Options</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -125,8 +137,8 @@ function StudentList() {
                                 {filteredStudents.map((student, index) => (
                                     <tr 
                                         key={index}
-                                        onClick={() => setSelectedStudent(student)} 
-                                        className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 transition-colors cursor-pointer dark:hover:bg-gray-600">
+                                        onClick={() => handleRowClick(student)}
+                                        className="group border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 transition-colors cursor-pointer dark:hover:bg-gray-600">
                                         <td className="pl-4 py-2">
                                             <ApplicationTypeBadge type={student.applicationType} />
                                         </td>
@@ -142,11 +154,17 @@ function StudentList() {
                                                 <p>{student.program}</p>
                                             </div>
                                         </td>
-                                        <td className="pl-4 py-2 md:w-50 lg:w-70 xl:w-90">
+                                        <td className="pl-4 py-2 md:w-50 lg:w-70 xl:w-100">
                                             <ProgressBar studentId={student.id} />
                                         </td>
                                         <td className="hidden lg:table-cell pl-4 py-2">{formatDate(student.lastUpdated)}</td>
-                                        <td className="hidden lg:table-cell pl-4 py-2 items-end"><span>{<ChevronRight className="w-4 h-4"/>}</span></td>
+                                        <td className="hidden lg:table-cell px-4 py-2 w-4 items-end">
+                                            <span
+                                                onClick={(e) => { handleDelete(e, student.id) }}
+                                                className="flex justify-center opacity-0  text-zinc-400 hover:text-red-400 group-hover:opacity-100 transition-opacity duration-200">
+                                                <Trash2 className="w-4 h-4 action-button"/>
+                                            </span>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

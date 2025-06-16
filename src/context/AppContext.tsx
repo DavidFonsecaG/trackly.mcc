@@ -21,6 +21,9 @@ interface AppContextType {
   getStudentDocuments: (studentId: string) => Document[] | undefined;
   setStudent: (student: Partial<Student>, studentDocument: Partial<StudentDocument>) => void;
   updateStudentDocs: (studentId: string) => void;
+  removeStudent: (studentId: string) => void;
+  notification: string | null;
+  setNotification: (message: string | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -28,13 +31,14 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const { fetchStudents, fetchStudentDocuments } = useStudentFetcher();
-  const { createStudent } = useStudentActions();
-  const { createStudentDocuments, updateStudentDocuments } = useDocumentActions();
+  const { createStudent, deleteStudent } = useStudentActions();
+  const { createStudentDocuments, updateStudentDocuments, deleteStudentDocument } = useDocumentActions();
 
   const [students, setStudents] = useState<Student[]>([]);
   const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [searchTerm, setSearchTerm] = useState(localStorage.getItem("Filter") || "All Terms");
+  const [notification, setNotification] = useState<string | null>(null);
 
   const setStudent = async (newStudent: Partial<Student>, newStudentDocument: Partial<StudentDocument>) => {
     try {
@@ -43,8 +47,22 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
       const createdStudentDocument = await createStudentDocuments(createdStudent.id, newStudentDocument);
       setStudentDocuments((prevDocs) => [...prevDocs, createdStudentDocument]);
+
     } catch (err: any) {
       console.error("Failed to create student and documents:", err.response?.data?.message || err.message);
+    }
+  };
+
+  const removeStudent = async (studentId: string) => {
+    try {
+      const deletedStudent = await deleteStudent(studentId);
+      setStudents((prevStudents) => prevStudents.filter((student) => student.id !== studentId));
+
+      const deletedStudentDocument = await deleteStudentDocument(studentId);
+      setStudentDocuments((prevDocs) => prevDocs.filter((studentDoc) => studentDoc.studentId !== studentId));
+      setNotification("Student deleted");
+    } catch (err: any) {
+      console.log("Failed to delete student and documents:", err.response?.data?.message || err.message);
     }
   };
 
@@ -59,7 +77,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (!doc) return;
 
       const updatedStudentDoc = await updateStudentDocuments(studentId, doc);
-      console.log("Synced to backend:", updatedStudentDoc);
 
       setStudentDocuments((prevDocs) =>
         prevDocs.map((d) => (d.studentId === studentId ? updatedStudentDoc : d))
@@ -69,12 +86,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const updateDocumentStatus = (
-    studentId: string,
-    documentId: string,
-    submitted: boolean,
-    notes?: string
-  ) => {
+  const updateDocumentStatus = (studentId: string, documentId: string, submitted: boolean, notes?: string) => {
     setStudentDocuments((prevDocs) =>
       prevDocs.map((studentDoc) =>
         studentDoc.studentId === studentId
@@ -153,7 +165,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateDocumentStatus,
         getStudentDocuments,
         setStudent,
-        updateStudentDocs
+        updateStudentDocs,
+        removeStudent,
+        notification,
+        setNotification
       }}
     >
       {children}

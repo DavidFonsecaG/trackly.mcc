@@ -7,5 +7,10 @@ export const useStudentActions = () => {
         return res.data;
     };
 
-    return { createStudent };
+    const deleteStudent = async (studentId: string): Promise<Student> => {
+        const res = await api.delete(`/student/delete/${studentId}`);
+        return res.data;
+    };
+
+    return { createStudent, deleteStudent };
 };
