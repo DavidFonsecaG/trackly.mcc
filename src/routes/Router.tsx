@@ -12,7 +12,8 @@ function Router() {
 			<Route path="/login/loading" element={<Loader />}/>
 			<Route path="/signup" element={<SignupPage />} />
 			<Route path="/" element={<Layout />}>
-				<Route index element={<TrackerPage />} />
+				<Route index element={<div>Dashboard Page</div>} />
+				<Route path="/tracker" element={<TrackerPage />} />
 				<Route path="/settings" element={<div>Settings Page</div>} />
 				<Route path="/profile" element={<div>Profile Page</div>} />
 			</Route>

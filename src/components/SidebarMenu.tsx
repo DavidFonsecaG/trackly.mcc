@@ -1,7 +1,14 @@
-import { Link } from "react-router-dom";
-import { House, Moon, Sun } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { House, GalleryVerticalEnd, Moon, Sun } from "lucide-react";
 
 function SidebarMenu() {
+    const location = useLocation().pathname;
+
+    const links = [
+        {to: "/", icon: House},
+        {to: "/tracker", icon: GalleryVerticalEnd},
+    ];
+
     return (
         <div className="flex flex-col p-4 h-full">
             <div className="flex mb-4 items-center">
@@ -11,9 +18,11 @@ function SidebarMenu() {
             </div>
             <div className="flex flex-col h-full items-center justify-between">
                 <div className="flex flex-col gap-3">
-                    <Link to="/" className="flex size-9 items-center justify-center bg-card rounded-lg hover:shadow-sm">
-                        <House className="h-4 w-4" />
-                    </Link>
+                    {links.map((item) => (
+                        <Link to={item.to} className={`flex size-9 items-center justify-center rounded-lg ${location === item.to ? "bg-card shadow-sm" : "text-primary/50 hover:text-primary"}`}>
+                            <item.icon className="h-4 w-4"/>
+                        </Link>                        
+                    ))}
                 </div>
                 <div className="flex flex-col w-9 p-1 bg-card rounded-full items-center gap-1 cursor-pointer hover:shadow-sm">
                     <button className="flex size-7 rounded-full items-center justify-center text-primary/50">
