@@ -12,12 +12,7 @@ interface AppContextType {
   updateSearchTerm: (term: string) => void;
   selectedStudent: Student | null;
   setSelectedStudent: (student: Student | null) => void;
-  updateDocumentStatus: (
-    studentId: string,
-    documentId: string,
-    submitted: boolean,
-    notes?: string
-  ) => void;
+  updateDocumentStatus: (studentId: string, documentId: string, submitted: boolean, notes?: string) => void;
   getStudentDocuments: (studentId: string) => Document[] | undefined;
   setStudent: (student: Partial<Student>, studentDocument: Partial<StudentDocument>) => void;
   updateStudentDocs: (studentId: string) => void;
@@ -63,8 +58,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
       const deletedStudentDocument = await deleteStudentDocument(studentId);
       setStudentDocuments((prevDocs) => prevDocs.filter((studentDoc) => studentDoc.studentId !== studentId));
+
       setDeleted({deletedStudent, deletedStudentDocument});
       setNotification("Student deleted");
+
     } catch (err: any) {
       console.log("Failed to delete student and documents:", err.response?.data?.message || err.message);
     }

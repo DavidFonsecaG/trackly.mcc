@@ -39,7 +39,7 @@ const StudentDetail: React.FC = () => {
         return() => {
             document.removeEventListener("mousedown", handler);
         };
-    }, []);
+    }, [documents]);
 
     return (
         <div 
