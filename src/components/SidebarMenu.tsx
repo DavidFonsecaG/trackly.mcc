@@ -18,8 +18,8 @@ function SidebarMenu() {
             </div>
             <div className="flex flex-col h-full items-center justify-between">
                 <div className="flex flex-col gap-3">
-                    {links.map((item) => (
-                        <Link to={item.to} className={`flex size-9 items-center justify-center rounded-lg ${location === item.to ? "bg-card shadow-sm" : "text-primary/50 hover:text-primary"}`}>
+                    {links.map((item, index) => (
+                        <Link key={index} to={item.to} className={`flex size-9 items-center justify-center rounded-lg ${location === item.to ? "bg-card shadow-sm" : "text-primary/50 hover:text-primary"}`}>
                             <item.icon className="h-4 w-4"/>
                         </Link>                        
                     ))}
