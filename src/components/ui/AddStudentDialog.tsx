@@ -25,7 +25,18 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
     };
     const [newStudent, setNewStudent] = useState<Partial<Student>>(initialState);
     const [appType, setAppType] = useState<keyof typeof requiredDocumentsByType | null>(null);
-    const [studentDocuments, setStudentDocuments] = useState<Partial<StudentDocument> | null>(null);    
+    const [studentDocuments, setStudentDocuments] = useState<Partial<StudentDocument> | null>(null);
+    const [errors, setErrors] = useState({
+        name: false,
+        email: false,
+        program: false,
+        term: false,
+        applicationType: false,
+    });
+    
+    const isValidEmail = (email: string) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -49,10 +60,21 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
     };
 
     const handleSubmit = () => {
-        if (!appType || !newStudent.name || !newStudent.email || !newStudent.program || !newStudent.term || !studentDocuments){
-            alert("Please complete all required fields!");
-            return;
+        const newErrors = {
+            name: !newStudent.name,
+            email: !newStudent.email || !isValidEmail(newStudent.email),
+            program: !newStudent.program,
+            term: !newStudent.term,
+            applicationType: !appType,
         };
+
+        setErrors(newErrors);
+
+        const hasErrors = Object.values(newErrors).some(Boolean);
+        if (hasErrors) return;
+
+        if (!studentDocuments) return;
+
         setStudent(newStudent, studentDocuments);
         setOpen(false);
     };
@@ -128,7 +150,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     onChange={handleInputChange}
                                     required
                                     autoComplete="off"
-                                    className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50"
+                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.name ? "border-red-300" : ""}`}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -142,7 +164,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     onChange={handleInputChange}
                                     required
                                     autoComplete="off"
-                                    className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50"
+                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.email ? "border-red-300" : ""}`}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -155,7 +177,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     value={newStudent.program}
                                     onChange={handleInputChange}
                                     required
-                                    className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50"
+                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.program ? "border-red-300" : ""}`}
                                 />
                             </div>
                             <div className="relative">
@@ -170,7 +192,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     onBlur={() => setTimeout(() => setOpenTerm(false), 150)}
                                     readOnly
                                     autoComplete="off" 
-                                    className="block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 hover:placeholder:text-primary focus:outline-none cursor-pointer"
+                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 hover:placeholder:text-primary focus:outline-none cursor-pointer ${errors.term ? "border-red-300" : ""}`}
                                 />
 
                                 {openTerm && (
