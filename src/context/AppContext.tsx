@@ -24,6 +24,8 @@ interface AppContextType {
   removeStudent: (studentId: string) => void;
   notification: string | null;
   setNotification: (message: string | null) => void;
+  deleted: {deletedStudent: Student, deletedStudentDocument: StudentDocument} | null;
+  setDeleted: (deleted: {deletedStudent: Student, deletedStudentDocument: StudentDocument} | null ) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -39,6 +41,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [searchTerm, setSearchTerm] = useState(localStorage.getItem("Filter") || "All Terms");
   const [notification, setNotification] = useState<string | null>(null);
+  const [deleted, setDeleted] = useState<{deletedStudent: Student, deletedStudentDocument: StudentDocument} | null>(null);
 
   const setStudent = async (newStudent: Partial<Student>, newStudentDocument: Partial<StudentDocument>) => {
     try {
@@ -60,6 +63,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
       const deletedStudentDocument = await deleteStudentDocument(studentId);
       setStudentDocuments((prevDocs) => prevDocs.filter((studentDoc) => studentDoc.studentId !== studentId));
+      setDeleted({deletedStudent, deletedStudentDocument});
       setNotification("Student deleted");
     } catch (err: any) {
       console.log("Failed to delete student and documents:", err.response?.data?.message || err.message);
@@ -168,7 +172,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         updateStudentDocs,
         removeStudent,
         notification,
-        setNotification
+        setNotification,
+        deleted,
+        setDeleted,
       }}
     >
       {children}
