@@ -6,6 +6,7 @@ import FilterButton from "./ui/FilterButton";
 import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 import AddButton from "./ui/AddButton";
 import type { Student } from "../types";
+import { useState } from "react";
 
 
 const StudentList = () => {    
@@ -18,12 +19,45 @@ const StudentList = () => {
         removeStudent,
     } = useAppContext();
 
-    const filteredStudents = students.filter((student) => {
-        if (searchTerm === "All Terms") return students
+    const [sortConfig, setSortConfig] = useState<{ key: keyof Student; direction: "asc" | "desc"} | null>(null);
+
+    const filteredStudents = students
+    .filter((student) => {
+        if (searchTerm === "All Terms") return true;
         return student.term === searchTerm;
+    })
+    .sort((a, b) => {
+        if (!sortConfig) return 0;
+
+        const { key, direction } = sortConfig;
+        let aValue = a[key];
+        let bValue = b[key];
+
+        // if (key === "lastUpdated") {
+        //     aValue = new Date(aValue);
+        //     bValue = new Date(bValue);
+        // }
+
+        if (aValue! < bValue!) return direction === "asc" ? -1 : 1;
+        if (aValue! > bValue!) return direction === "asc" ? 1 : -1;
+        return 0;
     });
 
+    const handleSort = (key: keyof Student) => {
+        setSortConfig((prev) => {
+            if (prev?.key === key) {
+                return {
+                    key,
+                    direction: prev.direction === "asc" ? "desc" : "asc",
+                };
+            } else {
+                return { key, direction: "asc"};
+            }
+        });
+    };
+
     const terms = ["All Terms", ...new Set(students.map(student => student.term))];
+
 
     const handleRowClick = (student: Student) => {
         setSelectedStudent(student);
@@ -98,31 +132,31 @@ const StudentList = () => {
                         <table className="w-full text-left dark:text-gray-400">
                             <thead className="dark:text-gray-400">
                                 <tr className="text-xs text-primary/50">
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary">
+                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("applicationType")}>
                                         <p className="flex items-center gap-3">
                                             Type
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary">
+                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("name")}>
                                         <p className="flex items-center gap-3">
                                             Student
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary">
+                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("program")}>
                                         <p className="flex items-center gap-3">
                                             Program
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary">
+                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
                                         <p className="flex items-center gap-3">
                                             Status
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="hidden lg:table-cell pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary">
+                                    <th scope="col" className="hidden lg:table-cell pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("lastUpdated")}>
                                         <p className="flex items-center gap-3">
                                             Last Updated
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
