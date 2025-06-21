@@ -1,5 +1,5 @@
 import { useAppContext } from "../context/AppContext";
-import { ChevronsUpDown, Trash2 } from "lucide-react";
+import { ChevronsUpDown, EllipsisVertical } from "lucide-react";
 import formatDate from "../utils/formatDate";
 import ProgressBar from "./ui/ProgressBar";
 import FilterButton from "./ui/FilterButton";
@@ -150,7 +150,7 @@ const StudentList = () => {
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
+                                    <th scope="col" className="px-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
                                         <p className="flex items-center gap-3">
                                             Status
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
@@ -188,15 +188,15 @@ const StudentList = () => {
                                                 <p>{student.program}</p>
                                             </div>
                                         </td>
-                                        <td className="pl-4 py-2 md:w-50 lg:w-70 xl:w-100">
+                                        <td className="px-4 py-2 md:w-50 lg:w-70 xl:w-100">
                                             <ProgressBar studentId={student.id} />
                                         </td>
                                         <td className="hidden lg:table-cell pl-4 py-2">{formatDate(student.lastUpdated)}</td>
                                         <td className="hidden lg:table-cell px-4 py-2 w-4 items-end">
                                             <span
                                                 onClick={(e) => { handleDelete(e, student.id) }}
-                                                className="flex justify-center opacity-0  text-zinc-400 hover:text-red-400 group-hover:opacity-100 transition-opacity duration-200">
-                                                <Trash2 className="w-4 h-4 action-button"/>
+                                                className="flex justify-center opacity-0  text-primary/50 hover:text-primary group-hover:opacity-100 transition-opacity duration-200">
+                                                <EllipsisVertical className="w-4 h-4 action-button"/>
                                             </span>
                                         </td>
                                     </tr>

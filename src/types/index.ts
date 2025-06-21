@@ -8,10 +8,10 @@ export interface Student {
     id: string;
     name: string;
     email: string;
-    applicationType: "abroad" | "COS" | "transfer-in" | "domestic" | "reinstatement" | "approved-abroad" | "approved-COS";
+    applicationType: "abroad" | "COS" | "transfer-in" | "domestic" | "reinstatement" | "abroad-approved" | "COS-approved" | "COEL";
     term: string;
-    program: "English as a Second Language",
-    schedule: "4 Day - Morning",
+    program: "English as a Second Language" | "Professional English" | "English for Academic Purposes" | "English for Healthcare" | "AAS in Business" | "AAS in Marketing" | "AAS in Accounting" | "AAS in Information Technology",
+    schedule: "4 Day - Morning" | "2 Day - Morning" | "3 Day - Evening",
     status: "incomplete" | "complete" | "pending";
     lastUpdated: string;
 }
@@ -20,7 +20,7 @@ export interface Document {
     id: string;
     name: string;
     required: boolean;
-    submitted: boolean;
+    submitted: boolean | null;
     submissionDate?: string;
     notes?: string; 
 }
@@ -31,29 +31,86 @@ export interface StudentDocument {
 }
 
 export const requiredDocumentsByType = {
+    'transfer-in': [
+        'Application Form',
+        'Application Fee',
+        'Passport',
+        'Visa',
+        'I-94',
+        'Transfer Request Form',
+        'I-20',
+        'Bank Statement',
+        'Financial Support Letter',
+        'Trascript',
+        'Credentials',
+        'Essay',
+        'Test',
+        'Acceptance Letter',
+        'Enrollment Agreement',
+    ],
+    'abroad-approved': [
+        'Visa',
+        'I-94',
+        'Enrollment Agreement',
+    ],
+    'COS-approved': [
+        'Approval Notice',
+        'Enrollment Agreement',
+    ],
+    'COEL': [
+        'Application Form',
+        'Passport',
+        'Bank Statement',
+        'Financial Support Letter',
+        'Essay',
+        'Test',
+        'Acceptance Letter',
+        'Enrollment Agreement',
+    ],
+    domestic: [
+        'Application Form',
+        'Application Fee',
+        'ID',
+        'Credentials',
+        'Essay',
+        'Test',
+        'Acceptance Letter',
+        'Enrollment Agreement',
+    ],
+    reinstatement: [
+        'Application Form',
+        'Application Fee',
+        'Passport',
+        'Visa',
+        'I-94',
+        'Transfer Request Form',
+        'I-20',
+        'Bank Statement',
+        'Financial Support Letter',
+        'Transcripts',
+        'Credentials',
+        'Foreign Address Form',
+        'High School Attestation Form',
+        'I-539 / G-28',
+        'Explanation Letter',
+        'Essay',
+        'Test',
+        'Tution',
+        'Acceptance Letter',
+        'Enrollment Agreement',
+    ],
     abroad: [
         'Application Form',
         'Application Fee',
         'Passport',
-        'Diploma',
         'Bank Statement',
         'Financial Support Letter',
-        'High School Attestation Form',
+        'Credentials',
         'Foreign Address Form',
+        'High School Attestation Form',
+        'Essay',
         'Placement Test',
-    ],
-    'transfer-in': [
-        'Application Form',
-        'Application Fee',
-        'I-20',
-        'Passport',
-        'Visa',
-        'I-94',
-        'Diploma',
-        'Trascript',
-        'Bank Statement',
-        'Financial Support Letter',
-        'Placement Test',
+        'Acceptance Letter',
     ],
     COS: [
         'Application Form',
@@ -61,57 +118,16 @@ export const requiredDocumentsByType = {
         'Passport',
         'Visa',
         'I-94',
-        'Diploma',
+        'I-20 / DS-2019',
         'Bank Statement',
         'Financial Support Letter',
-        'High School Attestation Form',
+        'Credentials',
         'Foreign Address Form',
-        'I-539',
+        'High School Attestation Form',
+        'I-539 / G-28',
         'Explanation Letter',
-        'Placement Test',
-    ],
-    domestic: [
-        'Application Form',
-        'Application Fee',
-        'Passport',
-        'Diploma',
-        'Bank Statement',
-        'Financial Support Letter',
-        'High School Attestation Form',
-        'Foreign Address Form',
-        'Placement Test',
-    ],
-    reinstatement: [
-        'Application Form',
-        'Application Fee',
-        'Passport',
-        'Diploma',
-        'Bank Statement',
-        'Financial Support Letter',
-        'High School Attestation Form',
-        'Foreign Address Form',
-        'Placement Test',
-    ],
-    'approved-abroad': [
-        'Application Form',
-        'Application Fee',
-        'Passport',
-        'Diploma',
-        'Bank Statement',
-        'Financial Support Letter',
-        'High School Attestation Form',
-        'Foreign Address Form',
-        'Placement Test',
-    ],
-    'approved-COS': [
-        'Application Form',
-        'Application Fee',
-        'Passport',
-        'Diploma',
-        'Bank Statement',
-        'Financial Support Letter',
-        'High School Attestation Form',
-        'Foreign Address Form',
-        'Placement Test',
+        'Essay',
+        'Test',
+        'Acceptance Letter',
     ],
 } as const;

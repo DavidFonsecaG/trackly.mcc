@@ -12,7 +12,7 @@ interface AppContextType {
   updateSearchTerm: (term: string) => void;
   selectedStudent: Student | null;
   setSelectedStudent: (student: Student | null) => void;
-  updateDocumentStatus: (studentId: string, documentId: string, submitted: boolean, notes?: string) => void;
+  updateDocumentStatus: (studentId: string, documentId: string, submitted: boolean | null, required: boolean, notes?: string) => void;
   getStudentDocuments: (studentId: string) => Document[] | undefined;
   setStudent: (student: Partial<Student>, studentDocument: Partial<StudentDocument>) => void;
   updateStudentDocs: (studentId: string) => void;
@@ -78,16 +78,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (!doc) return;
 
       const updatedStudentDoc = await updateStudentDocuments(studentId, doc);
+      setStudentDocuments((prevDocs) => prevDocs.map((d) => (d.studentId === studentId ? updatedStudentDoc : d)));
 
-      setStudentDocuments((prevDocs) =>
-        prevDocs.map((d) => (d.studentId === studentId ? updatedStudentDoc : d))
-      );
     } catch (err: any) {
       console.error("Failed to sync student documents:", err.response?.data?.message || err.message);
     }
   };
 
-  const updateDocumentStatus = (studentId: string, documentId: string, submitted: boolean, notes?: string) => {
+  const updateDocumentStatus = (studentId: string, documentId: string, submitted: boolean | null, required: boolean = true, notes?: string) => {
     setStudentDocuments((prevDocs) =>
       prevDocs.map((studentDoc) =>
         studentDoc.studentId === studentId
@@ -98,6 +96,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
                   ? {
                       ...doc,
                       submitted,
+                      required,
                       submissionDate: submitted ? new Date().toISOString() : undefined,
                       notes: notes !== undefined ? notes : doc.notes,
                     }

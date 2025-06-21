@@ -30,6 +30,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
         name: false,
         email: false,
         program: false,
+        schedule: false,
         term: false,
         applicationType: false,
     });
@@ -64,6 +65,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
             name: !newStudent.name,
             email: !newStudent.email || !isValidEmail(newStudent.email),
             program: !newStudent.program,
+            schedule: !newStudent.schedule,
             term: !newStudent.term,
             applicationType: !appType,
         };
@@ -112,8 +114,8 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
             aria-modal="true"
             aria-label="Student Details"
         >
-            <div className="w-md p-6 bg-card rounded-3xl shadow-2xl" ref={cardAddRef}>
-                <div className="text-xs flex flex-col gap-6">
+            <div className="w-md p-5 bg-card rounded-3xl shadow-2xl" ref={cardAddRef}>
+                <div className="text-xs flex flex-col gap-5">
                     <div className="flex justify-between items-center">
                         <span className="text-lg font-semibold">New Application</span>
                         <button 
@@ -175,6 +177,19 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     type="text"
                                     placeholder="Select a program"
                                     value={newStudent.program}
+                                    onChange={handleInputChange}
+                                    required
+                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.program ? "border-red-300" : ""}`}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label htmlFor="schedule" className="block font-medium leading-none">Schedule</label>
+                                <input
+                                    id="schedule"
+                                    name="schedule"
+                                    type="text"
+                                    placeholder="Select a schedule"
+                                    value={newStudent.schedule}
                                     onChange={handleInputChange}
                                     required
                                     className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.program ? "border-red-300" : ""}`}
