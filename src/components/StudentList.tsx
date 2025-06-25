@@ -7,6 +7,7 @@ import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
 import AddButton from "./ui/AddButton";
 import type { Student } from "../types";
 import { useState } from "react";
+import Tooltip from "./ui/Tooltip";
 
 
 const StudentList = () => {    
@@ -19,7 +20,8 @@ const StudentList = () => {
         removeStudent,
     } = useAppContext();
 
-    const [sortConfig, setSortConfig] = useState<{ key: keyof Student; direction: "asc" | "desc"} | null>(null);
+    const [sortConfig, setSortConfig] = useState<{ key: keyof Student; direction: "asc" | "desc"}>({key: "applicationType", direction: "asc"});
+    const [tooltip, setTooltip] = useState<{ docId: string; x: number; y: number } | null>(null);
 
     const filteredStudents = students
     .filter((student) => {
@@ -57,7 +59,6 @@ const StudentList = () => {
     };
 
     const terms = ["All Terms", ...new Set(students.map(student => student.term))];
-
 
     const handleRowClick = (student: Student) => {
         setSelectedStudent(student);
@@ -194,7 +195,8 @@ const StudentList = () => {
                                         <td className="hidden lg:table-cell pl-4 py-2">{formatDate(student.lastUpdated)}</td>
                                         <td className="hidden lg:table-cell px-4 py-2 w-4 items-end">
                                             <span
-                                                onClick={(e) => { handleDelete(e, student.id) }}
+                                                // onClick={(e) => { handleDelete(e, student.id) }}
+                                                onClick={(e) => {e.preventDefault(); e.stopPropagation(); setTooltip({docId: "doc.id", x: e.clientX, y: e.clientY})}}
                                                 className="flex justify-center opacity-0  text-primary/50 hover:text-primary group-hover:opacity-100 transition-opacity duration-200">
                                                 <EllipsisVertical className="w-4 h-4 action-button"/>
                                             </span>
@@ -203,6 +205,14 @@ const StudentList = () => {
                                 ))}
                             </tbody>
                         </table>
+                                {tooltip && (
+                                    <Tooltip
+                                        x={tooltip.x}
+                                        y={tooltip.y}
+                                        onWaive={() => console.log("clicked")}
+                                        onClose={() => setTooltip(null)}
+                                    />
+                                )}
                     </div>
                 </div>
             </div>

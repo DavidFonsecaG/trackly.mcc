@@ -17,7 +17,7 @@ const Tooltip: React.FC<TooltipProps> = ({ x, y, onWaive, onClose }) => {
   return (
     <div
       className="fixed z-50 w-30 bg-card border rounded-lg shadow-lg p-1 cursor-pointer"
-      style={{ top: y, left: x }}
+      style={{ top: y, left: (x - 120) }}
       onClick={(e) => {
         e.stopPropagation();
         onWaive();
