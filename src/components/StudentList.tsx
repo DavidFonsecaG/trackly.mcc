@@ -1,5 +1,5 @@
 import { useAppContext } from "../context/AppContext";
-import { ChevronsUpDown, EllipsisVertical } from "lucide-react";
+import { ChevronDown, ChevronsUpDown, EllipsisVertical } from "lucide-react";
 import formatDate from "../utils/formatDate";
 import ProgressBar from "./ui/ProgressBar";
 import FilterButton from "./ui/FilterButton";
@@ -157,6 +157,12 @@ const StudentList = () => {
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
+                                    <th scope="col" className="px-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
+                                        <p className="flex items-center gap-3">
+                                            Progress
+                                            {<ChevronsUpDown className="w-3.5 h-3.5" />}
+                                        </p>
+                                    </th>
                                     <th scope="col" className="hidden lg:table-cell pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("lastUpdated")}>
                                         <p className="flex items-center gap-3">
                                             Last Updated
@@ -187,6 +193,12 @@ const StudentList = () => {
                                             <div>
                                                 <p className="text-primary">{student.schedule}</p>
                                                 <p>{student.program}</p>
+                                            </div>
+                                        </td>
+                                        <td className="pl-4 py-2">
+                                            <div className="flex gap-1 items-center border px-2 py-1 rounded-md">
+                                                <p>{student.status}</p>
+                                                <ChevronDown className="size-3"/>
                                             </div>
                                         </td>
                                         <td className="px-4 py-2 md:w-50 lg:w-70 xl:w-100">

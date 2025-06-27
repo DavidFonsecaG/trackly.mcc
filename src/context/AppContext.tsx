@@ -123,6 +123,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           status = "pending";
         }
 
+        console.log({
+          status,
+          submitted: submittedRequiredDocs.length,
+          required: requiredDocs.length
+        })
+
         return {
           ...student,
           status,
