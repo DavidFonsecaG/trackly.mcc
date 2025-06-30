@@ -21,6 +21,7 @@ interface AppContextType {
   setNotification: (message: string | null) => void;
   deleted: {deletedStudent: Student, deletedStudentDocument: StudentDocument} | null;
   setDeleted: (deleted: {deletedStudent: Student, deletedStudentDocument: StudentDocument} | null ) => void;
+  syncStudentWithServer: (studentId: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -28,7 +29,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const { fetchStudents, fetchStudentDocuments } = useStudentFetcher();
-  const { createStudent, deleteStudent } = useStudentActions();
+  const { createStudent, deleteStudent, updateStudentOnServer } = useStudentActions();
   const { createStudentDocuments, updateStudentDocuments, deleteStudentDocument } = useDocumentActions();
 
   const [students, setStudents] = useState<Student[]>([]);
@@ -67,9 +68,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getStudentDocuments = (studentId: string) => {
-    return studentDocuments.find((doc) => doc.studentId === studentId)
-      ?.documents;
+  const syncStudentWithServer = async (studentId: string) => {
+    try {
+      const localStudent = students.find((s) => s.id === studentId);
+      if (!localStudent) return;
+
+      await updateStudentOnServer(localStudent);
+
+    } catch (err: any) {
+      console.error("Failed to sync student:", err.response?.data?.message || err.message);
+    }
   };
 
   const updateStudentDocs = async (studentId: string) => {
@@ -85,7 +93,18 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const updateDocumentStatus = (studentId: string, documentId: string, submitted: boolean | null, required: boolean = true, notes?: string) => {
+  const getStudentDocuments = (studentId: string) => {
+    return studentDocuments.find((doc) => doc.studentId === studentId)
+      ?.documents;
+  };
+
+  const updateDocumentStatus = (
+    studentId: string,
+    documentId: string,
+    submitted: boolean | null,
+    required: boolean = true,
+    notes?: string
+  ) => {
     setStudentDocuments((prevDocs) =>
       prevDocs.map((studentDoc) =>
         studentDoc.studentId === studentId
@@ -106,41 +125,38 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           : studentDoc
       )
     );
-
-    setStudents((prevStudents) =>
-      prevStudents.map((student) => {
-        if (student.id !== studentId) return student;
-
-        const updatedDocs = studentDocuments.find((sd) => sd.studentId === studentId)?.documents ?? [];
-
-        const requiredDocs = updatedDocs.filter((doc) => doc.required);
-        const submittedRequiredDocs = requiredDocs.filter((doc) => doc.submitted);
-
-        let status: "complete" | "incomplete" | "pending" = "incomplete";
-        if (submittedRequiredDocs.length === requiredDocs.length) {
-          status = "complete";
-        } else if (submittedRequiredDocs.length > 0) {
-          status = "pending";
-        }
-
-        console.log({
-          status,
-          submitted: submittedRequiredDocs.length,
-          required: requiredDocs.length
-        })
-
-        return {
-          ...student,
-          status,
-          lastUpdated: new Date().toISOString(),
-        };
-      })
-    );
   };
 
   const updateSearchTerm = (term: string) => {
     setSearchTerm(term);
   };
+
+  useEffect(() => {
+    if (!selectedStudent) return;
+
+    const updatedDocs = studentDocuments.find((doc) => doc.studentId === selectedStudent.id)?.documents || [];
+    const requiredDocs = updatedDocs.filter((doc) => doc.required);
+    const submittedRequiredDocs = requiredDocs.filter((doc) => doc.submitted);
+
+    let status: "incomplete" | "complete" | "submitted" = "incomplete";
+    if (submittedRequiredDocs.length === requiredDocs.length) status = "complete";
+
+    if (status !== selectedStudent.status) {
+      const updatedStudent = {
+        ...selectedStudent,
+        status,
+        lastUpdated: new Date().toISOString(),
+      };
+
+      setSelectedStudent(updatedStudent);
+
+      setStudents((prevStudents) =>
+        prevStudents.map((s) =>
+          s.id === selectedStudent.id ? updatedStudent : s
+        )
+      );
+    }
+  }, [studentDocuments, selectedStudent]);
 
   useEffect(() => {
     if (user) {
@@ -177,6 +193,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setNotification,
         deleted,
         setDeleted,
+        syncStudentWithServer
       }}
     >
       {children}

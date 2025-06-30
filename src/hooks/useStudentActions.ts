@@ -12,5 +12,10 @@ export const useStudentActions = () => {
         return res.data;
     };
 
-    return { createStudent, deleteStudent };
+    const updateStudentOnServer = async (student: Student): Promise<Student> => {
+        const res = await api.post("/student/update", {student});
+        return res.data
+    };
+
+    return { createStudent, deleteStudent, updateStudentOnServer };
 };

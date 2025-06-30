@@ -3,14 +3,16 @@ import { X } from "lucide-react";
 import { requiredDocumentsByType, type StudentDocument, type Student } from "../../types";
 import ApplicationTypeBadge from "./ApplicationTypeBadge";
 import { useAppContext } from "../../context/AppContext";
+import DropdownInput from "./DropdownInput";
 
 interface AddStudentDialogProps{
     setOpen: (open: boolean) => void,
 };
 
 const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
-    const [openTerm, setOpenTerm] = useState(false);
     const terms = ["Fall 2025", "Winter 2026", "Spring 2026"];
+    const programs = ["English as a Second Language", "Professional English", "English for Academic Purposes", "English for Healthcare", "AAS in Business", "AAS in Marketing", "AAS in Accounting", "AAS in Information Technology"];
+    const schedules = ["4 Day - Morning", "2 Day - Morning", "3 Day - Evening"];
 
     const { setStudent } = useAppContext();
     const initialState: Partial<Student> = {
@@ -18,8 +20,8 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
         email: "",
         applicationType: "abroad",
         term: "",
-        program: "English as a Second Language",
-        schedule: "4 Day - Morning",
+        program: "",
+        schedule: "",
         status: "incomplete",
         lastUpdated: new Date().toISOString(),
     };
@@ -34,7 +36,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
         term: false,
         applicationType: false,
     });
-    
+
     const isValidEmail = (email: string) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
@@ -128,7 +130,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                         <div className="space-y-5">
                             <div className="space-y-2">
                                 <label className="block font-medium leading-none">Type</label>
-                                <div className="flex flex-wrap rounded-md py-1 gap-2">
+                                <div className="flex flex-wrap rounded-lg px-3 py-2 gap-1.5 border">
                                     {Object.keys(requiredDocumentsByType).map((type) => (
                                         <button 
                                             key={type}
@@ -169,64 +171,27 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                                     className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.email ? "border-red-300" : ""}`}
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label htmlFor="program" className="block font-medium leading-none">Program</label>
-                                <input
-                                    id="program"
-                                    name="program"
-                                    type="text"
-                                    placeholder="Select a program"
-                                    value={newStudent.program}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.program ? "border-red-300" : ""}`}
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label htmlFor="schedule" className="block font-medium leading-none">Schedule</label>
-                                <input
-                                    id="schedule"
-                                    name="schedule"
-                                    type="text"
-                                    placeholder="Select a schedule"
-                                    value={newStudent.schedule}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.program ? "border-red-300" : ""}`}
-                                />
-                            </div>
-                            <div className="relative">
-                                <label htmlFor="term" className="block w-fit mb-2 font-medium leading-none">Term</label>
-                                <input
-                                    id="term"
-                                    name="term"
-                                    type="text"
-                                    placeholder="Select a term"
-                                    value={newStudent.term}
-                                    onFocus={() => setOpenTerm(true)}
-                                    onBlur={() => setTimeout(() => setOpenTerm(false), 150)}
-                                    readOnly
-                                    autoComplete="off" 
-                                    className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 hover:placeholder:text-primary focus:outline-none cursor-pointer ${errors.term ? "border-red-300" : ""}`}
-                                />
-
-                                {openTerm && (
-                                    <div className="absolute -bottom-25 w-full p-1.5 bg-card rounded-b-lg border border-t-0 shadow-lg z-10">
-                                    {terms.map((term, index) => (
-                                        <div
-                                        key={index}
-                                        className={`px-4 py-2 rounded-lg cursor-pointer ${newStudent.term === term ? "bg-background items-center justify-between text-primary" : "text-primary/50 hover:text-primary"}`}
-                                        onClick={() => {
-                                            setNewStudent(prev => ({ ...prev, term }));
-                                            setOpenTerm(false);
-                                        }}
-                                        >
-                                        {term}
-                                        </div>
-                                    ))}
-                                    </div>
-                                )}
-                            </div>
+                            <DropdownInput 
+                                label="Program"
+                                options={programs}
+                                value={newStudent.program || ""}
+                                onSelect={(val) => setNewStudent((prev) => ({ ...prev, program: val }))}
+                                error={errors.program}
+                            />
+                            <DropdownInput 
+                                label="Schedule"
+                                options={schedules}
+                                value={newStudent.schedule || ""}
+                                onSelect={(val) => setNewStudent((prev) => ({ ...prev, schedule: val }))}
+                                error={errors.schedule}
+                            />
+                            <DropdownInput 
+                                label="Term"
+                                options={terms}
+                                value={newStudent.term || ""}
+                                onSelect={(val) => setNewStudent((prev) => ({ ...prev, term: val }))}
+                                error={errors.term}
+                            />
                         </div>
                         <div className="flex justify-end gap-2">
                             <button

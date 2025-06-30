@@ -9,7 +9,7 @@ import Tooltip from "./ui/Tooltip";
 
 const StudentDetail: React.FC = () => {
     
-    const { selectedStudent, setSelectedStudent, getStudentDocuments, updateDocumentStatus, updateStudentDocs } = useAppContext();
+    const { selectedStudent, setSelectedStudent, getStudentDocuments, updateDocumentStatus, updateStudentDocs, syncStudentWithServer } = useAppContext();
     if (!selectedStudent) return null;
 
     const documents = getStudentDocuments(selectedStudent?.id) || [];
@@ -29,6 +29,7 @@ const StudentDetail: React.FC = () => {
 
     const handleBackClick = () => {
         updateStudentDocs(selectedStudent.id);
+        syncStudentWithServer(selectedStudent.id);
         setSelectedStudent(null);
     };
     
@@ -61,7 +62,7 @@ const StudentDetail: React.FC = () => {
         return() => {
             document.removeEventListener("mousedown", handler);
         };
-    }, [documents]);
+    }, [documents, selectedStudent]);
 
     const displayInitials = (name: string) => {
         return name.split(" ").map(word => word.charAt(0).toUpperCase()).join("")

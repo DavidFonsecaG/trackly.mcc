@@ -8,11 +8,11 @@ export interface Student {
     id: string;
     name: string;
     email: string;
-    applicationType: "abroad" | "COS" | "transfer-in" | "domestic" | "reinstatement" | "abroad-approved" | "COS-approved" | "COEL";
+    applicationType: string;
     term: string;
-    program: "English as a Second Language" | "Professional English" | "English for Academic Purposes" | "English for Healthcare" | "AAS in Business" | "AAS in Marketing" | "AAS in Accounting" | "AAS in Information Technology",
-    schedule: "4 Day - Morning" | "2 Day - Morning" | "3 Day - Evening",
-    status: "incomplete" | "complete" | "pending";
+    program: string;
+    schedule: string;
+    status: "incomplete" | "complete" | "submitted";
     lastUpdated: string;
 }
 
