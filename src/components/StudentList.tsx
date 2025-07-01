@@ -1,5 +1,5 @@
 import { useAppContext } from "../context/AppContext";
-import { ChevronDown, ChevronsUpDown, EllipsisVertical } from "lucide-react";
+import { ChevronsUpDown, EllipsisVertical } from "lucide-react";
 import formatDate from "../utils/formatDate";
 import ProgressBar from "./ui/ProgressBar";
 import DropdownButton from "./ui/DropdownButton";
@@ -10,19 +10,19 @@ import { useState } from "react";
 import Tooltip from "./ui/Tooltip";
 import SearchBar from "./ui/SearchBar";
 
-
 const StudentList = () => {    
 
     const {
         students,
         setSelectedStudent,
+        setEditStudent,
         searchTerm,
         updateSearchTerm,
         removeStudent,
     } = useAppContext();
 
     const [sortConfig, setSortConfig] = useState<{ key: keyof Student; direction: "asc" | "desc"}>({key: "applicationType", direction: "asc"});
-    const [tooltip, setTooltip] = useState<{ docId: string; x: number; y: number } | null>(null);
+    const [tooltip, setTooltip] = useState<{ student: Student; x: number; y: number } | null>(null);
 
     const filteredStudents = students
     .filter((student) => {
@@ -65,8 +65,7 @@ const StudentList = () => {
         setSelectedStudent(student);
     };
 
-    const handleDelete = (e: React.MouseEvent, studentId: string) => {
-        e.stopPropagation();
+    const handleDelete = (studentId: string) => {
         removeStudent(studentId);
     };
 
@@ -144,15 +143,15 @@ const StudentList = () => {
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="px-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
+                                    {/* <th scope="col" className="px-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
                                         <p className="flex items-center gap-3">
                                             Status
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
-                                    </th>
+                                    </th> */}
                                     <th scope="col" className="px-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
                                         <p className="flex items-center gap-3">
-                                            Progress
+                                            Status
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
@@ -188,20 +187,16 @@ const StudentList = () => {
                                                 <p>{student.program}</p>
                                             </div>
                                         </td>
-                                        <td className="pl-4 py-2">
-                                            <div className="flex gap-1 items-center border px-2 py-1 rounded-md">
-                                                <p>{student.status}</p>
-                                                <ChevronDown className="size-3"/>
-                                            </div>
-                                        </td>
+                                        {/* <td className="pl-4 py-2">
+                                            <StatusBadgeDropdown activeOption={student.status} options={["incomplete", "complete", "submitted"]} action={(option: string)=>console.log(option)}/>
+                                        </td> */}
                                         <td className="px-4 py-2 md:w-50 lg:w-70 xl:w-100">
                                             <ProgressBar studentId={student.id} />
                                         </td>
                                         <td className="hidden lg:table-cell pl-4 py-2">{formatDate(student.lastUpdated)}</td>
                                         <td className="hidden lg:table-cell px-4 py-2 w-4 items-end">
                                             <span
-                                                // onClick={(e) => { handleDelete(e, student.id) }}
-                                                onClick={(e) => {e.preventDefault(); e.stopPropagation(); setTooltip({docId: "doc.id", x: e.clientX, y: e.clientY})}}
+                                                onClick={(e) => {e.preventDefault(); e.stopPropagation(); setTooltip({student, x: e.clientX, y: e.clientY})}}
                                                 className="flex justify-center opacity-0  text-primary/50 hover:text-primary group-hover:opacity-100 transition-opacity duration-200">
                                                 <EllipsisVertical className="w-4 h-4 action-button"/>
                                             </span>
@@ -214,7 +209,10 @@ const StudentList = () => {
                             <Tooltip
                                 x={tooltip.x}
                                 y={tooltip.y}
-                                onWaive={() => console.log("clicked")}
+                                actions={{
+                                    Edit: () => setEditStudent(tooltip.student),
+                                    Delete: () => handleDelete(tooltip.student.id),
+                                }}
                                 onClose={() => setTooltip(null)}
                             />
                         )}

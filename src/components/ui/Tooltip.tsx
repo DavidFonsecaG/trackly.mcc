@@ -3,11 +3,11 @@ import { useEffect } from "react";
 interface TooltipProps {
   x: number;
   y: number;
-  onWaive: () => void;
+  actions: { [label: string]: () => void };
   onClose: () => void;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ x, y, onWaive, onClose }) => {
+const Tooltip: React.FC<TooltipProps> = ({ x, y, actions, onClose }) => {
   useEffect(() => {
     const handleClick = () => onClose();
     document.addEventListener("click", handleClick);
@@ -18,14 +18,17 @@ const Tooltip: React.FC<TooltipProps> = ({ x, y, onWaive, onClose }) => {
     <div
       className="fixed z-50 w-30 bg-card border rounded-lg shadow-lg p-1 cursor-pointer"
       style={{ top: y, left: (x - 120) }}
-      onClick={(e) => {
-        e.stopPropagation();
-        onWaive();
-        onClose();
-      }}
     >
-        <div className="px-3 py-1 text-xs rounded-md hover:bg-background">Add Note</div>
-        <div className="px-3 py-1 text-xs rounded-md hover:bg-background">Waive</div>
+      {Object.entries(actions).map(([label, handler], index) => (
+        <div
+          key={index}
+          onClick={(e) => {
+            e.stopPropagation();
+            handler();
+            onClose();
+          }} 
+          className="px-3 py-1 text-xs rounded-md hover:bg-background">{label}</div>
+      ))}
     </div>
   );
 };

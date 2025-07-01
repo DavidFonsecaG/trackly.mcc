@@ -12,9 +12,12 @@ interface AppContextType {
   updateSearchTerm: (term: string) => void;
   selectedStudent: Student | null;
   setSelectedStudent: (student: Student | null) => void;
+  editStudent: Student | null;
+  setEditStudent: (student: Student | null) => void;
   updateDocumentStatus: (studentId: string, documentId: string, submitted: boolean | null, required: boolean, notes?: string) => void;
   getStudentDocuments: (studentId: string) => Document[] | undefined;
   setStudent: (student: Partial<Student>, studentDocument: Partial<StudentDocument>) => void;
+  updateStudent: (editedStudent: Student, editedStudentDocuments: StudentDocument) => void;
   updateStudentDocs: (studentId: string) => void;
   removeStudent: (studentId: string) => void;
   notification: string | null;
@@ -35,6 +38,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [students, setStudents] = useState<Student[]>([]);
   const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [editStudent, setEditStudent] = useState<Student | null>(null);
   const [searchTerm, setSearchTerm] = useState(localStorage.getItem("Filter") || "All Terms");
   const [notification, setNotification] = useState<string | null>(null);
   const [deleted, setDeleted] = useState<{deletedStudent: Student, deletedStudentDocument: StudentDocument} | null>(null);
@@ -49,6 +53,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     } catch (err: any) {
       console.error("Failed to create student and documents:", err.response?.data?.message || err.message);
+    }
+  };
+
+  const updateStudent = async (editedStudent: Student, editedStudentDocuments: StudentDocument) => {
+    try {
+      const updatedStudent = await updateStudentOnServer(editedStudent);
+      setStudents((prevStudents) => prevStudents.map((student) => (student.id === editedStudent.id ? updatedStudent : student)));
+      const updatedStudentDoc = await updateStudentDocuments(editedStudent.id, editedStudentDocuments);
+      setStudentDocuments((prevDocs) => prevDocs.map((d) => (d.studentId === editedStudent.id ? updatedStudentDoc : d)));
+    } catch (err: any) {
+      console.error("Failed to updated student and documents:", err.response?.data?.message || err.message);
     }
   };
 
@@ -184,9 +199,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         studentDocuments,
         selectedStudent,
         setSelectedStudent,
+        editStudent,
+        setEditStudent,
         updateDocumentStatus,
         getStudentDocuments,
         setStudent,
+        updateStudent,
         updateStudentDocs,
         removeStudent,
         notification,

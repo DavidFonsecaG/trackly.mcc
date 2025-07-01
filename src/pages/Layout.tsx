@@ -5,7 +5,7 @@ import Header from "../components/Header";
 function Layout() {
         
     return (
-        <div className="flex h-screen w-full bg-background overflow-hidden">
+        <div className="relative flex h-screen w-full bg-background overflow-hidden">
             <div className="hidden md:flex h-full">
                 <SidebarMenu />
             </div>

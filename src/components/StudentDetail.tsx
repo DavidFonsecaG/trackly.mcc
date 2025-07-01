@@ -161,7 +161,7 @@ const StudentDetail: React.FC = () => {
                             <Tooltip
                                 x={tooltip.x}
                                 y={tooltip.y}
-                                onWaive={() => updateDocumentStatus(selectedStudent.id, tooltip.docId, null, false, "")}
+                                actions={{Waive: () => updateDocumentStatus(selectedStudent.id, tooltip.docId, null, false, "")}}
                                 onClose={() => setTooltip(null)}
                             />
                         )}
