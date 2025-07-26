@@ -125,43 +125,43 @@ const StudentList = () => {
                         <table className="w-full text-left dark:text-gray-400">
                             <thead className="dark:text-gray-400">
                                 <tr className="text-xs text-primary/50">
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("applicationType")}>
+                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b-[1.5px] border-b-neutral-200/60 cursor-pointer hover:text-primary" onClick={() => handleSort("applicationType")}>
                                         <p className="flex items-center gap-3">
                                             Type
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("name")}>
+                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b-[1.5px] border-b-neutral-200/60 cursor-pointer hover:text-primary" onClick={() => handleSort("name")}>
                                         <p className="flex items-center gap-3">
                                             Student
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("program")}>
+                                    <th scope="col" className="pl-4 py-4 font-medium leading-none border-b-[1.5px] border-b-neutral-200/60 cursor-pointer hover:text-primary" onClick={() => handleSort("program")}>
                                         <p className="flex items-center gap-3">
                                             Program
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    {/* <th scope="col" className="px-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
+                                    {/* <th scope="col" className="px-4 py-4 font-medium leading-none border-b-[1.5px] border-b-neutral-200/60 cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
                                         <p className="flex items-center gap-3">
                                             Status
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th> */}
-                                    <th scope="col" className="px-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
+                                    <th scope="col" className="px-4 py-4 font-medium leading-none border-b-[1.5px] border-b-neutral-200/60 cursor-pointer hover:text-primary" onClick={() => handleSort("status")}>
                                         <p className="flex items-center gap-3">
                                             Status
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="hidden lg:table-cell pl-4 py-4 font-medium leading-none border-b cursor-pointer hover:text-primary" onClick={() => handleSort("lastUpdated")}>
+                                    <th scope="col" className="hidden lg:table-cell pl-4 py-4 font-medium leading-none border-b-[1.5px] border-b-neutral-200/60 cursor-pointer hover:text-primary" onClick={() => handleSort("lastUpdated")}>
                                         <p className="flex items-center gap-3">
                                             Last Updated
                                             {<ChevronsUpDown className="w-3.5 h-3.5" />}
                                         </p>
                                     </th>
-                                    <th scope="col" className="hidden lg:table-cell px-4 py-4 border-b">
+                                    <th scope="col" className="hidden lg:table-cell px-4 py-4 border-b-[1.5px] border-b-neutral-200/60">
                                         <span className="sr-only">Options</span>
                                     </th>
                                 </tr>
@@ -171,7 +171,7 @@ const StudentList = () => {
                                     <tr 
                                         key={index}
                                         onClick={() => handleRowClick(student)}
-                                        className="group border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 transition-colors cursor-pointer dark:hover:bg-gray-600">
+                                        className="group border-b-[1.5px] border-b-neutral-200/60 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 transition-colors cursor-pointer dark:hover:bg-gray-600">
                                         <td className="pl-4 py-2">
                                             <ApplicationTypeBadge type={student.applicationType} />
                                         </td>
@@ -197,7 +197,7 @@ const StudentList = () => {
                                         <td className="hidden lg:table-cell px-4 py-2 w-4 items-end">
                                             <span
                                                 onClick={(e) => {e.preventDefault(); e.stopPropagation(); setTooltip({student, x: e.clientX, y: e.clientY})}}
-                                                className="flex justify-center opacity-0  text-primary/50 hover:text-primary group-hover:opacity-100 transition-opacity duration-200">
+                                                className="flex justify-center rounded-full size-6 items-center opacity-0 text-primary/50 hover:text-primary hover:bg-gray-200 group-hover:opacity-100 transition-opacity duration-200">
                                                 <EllipsisVertical className="w-4 h-4 action-button"/>
                                             </span>
                                         </td>

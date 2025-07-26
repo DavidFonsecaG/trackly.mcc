@@ -130,7 +130,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
                         <div className="space-y-5">
                             <div className="space-y-2">
                                 <label className="block font-medium leading-none">Type</label>
-                                <div className="flex flex-wrap rounded-lg px-3 py-2 gap-1.5 border">
+                                <div className={`flex flex-wrap rounded-lg px-3 py-2 gap-1.5 border ${errors.applicationType ? "border-red-300" : ""}`}>
                                     {Object.keys(requiredDocumentsByType).map((type) => (
                                         <button 
                                             key={type}
