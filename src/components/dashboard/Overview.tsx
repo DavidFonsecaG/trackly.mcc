@@ -72,7 +72,7 @@ function Overview() {
                                 {students.map((name) => (
                                     <div className="flex-1 px-1 py-8 text-center max-3xl:nth-[n+6]:hidden max-[1349px]:nth-[n+5]:hidden max-md:shrink-0 max-md:flex-auto max-md:w-30 max-md:!block">
                                         <div className="">
-                                            <img alt="Gladyce" loading="lazy" width="64" height="64" decoding="async" data-nimg="1" className="inline-block align-top opacity-0 transition-opacity opacity-100 size-16 rounded-full object-cover opacity-100"  srcSet="/_next/image?url=%2Fimages%2Favatars%2F1.png&amp;w=64&amp;q=75 1x, /_next/image?url=%2Fimages%2Favatars%2F1.png&amp;w=128&amp;q=75 2x" src="/_next/image?url=%2Fimages%2Favatars%2F1.png&amp;w=128&amp;q=75"/>
+                                            <img alt="Gladyce" loading="lazy" width="64" height="64" decoding="async" data-nimg="1" className="inline-block align-top transition-opacity size-16 rounded-full object-cover opacity-100"  srcSet="/_next/image?url=%2Fimages%2Favatars%2F1.png&amp;w=64&amp;q=75 1x, /_next/image?url=%2Fimages%2Favatars%2F1.png&amp;w=128&amp;q=75 2x" src="/_next/image?url=%2Fimages%2Favatars%2F1.png&amp;w=128&amp;q=75"/>
                                         </div>
                                         <div className="mt-4 text-button text-t-secondary max-md:truncate">{name}</div>
                                     </div>
