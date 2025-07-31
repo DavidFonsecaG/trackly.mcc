@@ -4,6 +4,7 @@ import { requiredDocumentsByType, type StudentDocument, type Student } from "../
 import ApplicationTypeBadge from "./ApplicationTypeBadge";
 import { useAppContext } from "../../context/AppContext";
 import DropdownInput from "./DropdownInput";
+import displayInitials from "../../utils/displayInitials";
 
 const EditStudentDialog = () => {
     const { editStudent, setEditStudent, updateStudent, getStudentDocuments } = useAppContext();
@@ -99,10 +100,6 @@ const EditStudentDialog = () => {
 
     const handleClose = () => {
         setEditStudent(null)
-    };
-        
-    const displayInitials = (name: string) => {
-        return name.split(" ").map(word => word.charAt(0).toUpperCase()).join("")
     };
 
     let cardAddRef = useRef<HTMLDivElement>(null);
