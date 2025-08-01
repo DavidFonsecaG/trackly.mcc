@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { Plus } from "lucide-react";
 import AddStudentDialog from "./AddStudentDialog";
 
-const AddButton: React.FC = () => {
-    const [open, setOpen] = useState(false);
+const AddButton: React.FC<{open: boolean, setOpen: (arg: boolean) => void}> = ({ open, setOpen}) => {
 
     return (
         <div className="text-left text-xs">

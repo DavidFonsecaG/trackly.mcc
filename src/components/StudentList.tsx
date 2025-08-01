@@ -23,6 +23,7 @@ const StudentList = () => {
 
     const [sortConfig, setSortConfig] = useState<{ key: keyof Student; direction: "asc" | "desc"}>({key: "applicationType", direction: "asc"});
     const [tooltip, setTooltip] = useState<{ student: Student; x: number; y: number } | null>(null);
+    const [openAddDialog, setOpenAddDialog] = useState(false);
 
     const filteredStudents = students
     .filter((student) => {
@@ -45,6 +46,8 @@ const StudentList = () => {
         if (aValue! > bValue!) return direction === "asc" ? 1 : -1;
         return 0;
     });
+
+    console.log(filteredStudents)
 
     const handleSort = (key: keyof Student) => {
         setSortConfig((prev) => {
@@ -85,7 +88,7 @@ const StudentList = () => {
                             saveLocalStorage={true}
                             nameLocalStorage="Filter"
                         />
-                        <AddButton />
+                        <AddButton open={openAddDialog} setOpen={setOpenAddDialog}/>
                     </div>
                 </div>
 
@@ -96,7 +99,7 @@ const StudentList = () => {
                                 <div 
                                     key={index}
                                     onClick={() => handleRowClick(student)} 
-                                    className="flex flex-col p-3 rounded-2xl gap-2 hover:bg-gray-50/70 hover:ring hover:ring-gray-100 cursor-pointer dark:bg-gray-800 dark:border-gray-700 transition-colors dark:hover:bg-gray-600">
+                                    className="flex flex-col p-3 rounded-2xl gap-2 hover:bg-background/30 hover:inset-ring-[1.5px] hover:inset-ring-gray-100 cursor-pointer dark:bg-gray-800 dark:border-gray-700 transition-colors dark:hover:bg-gray-600">
                                     <div className="flex justify-between">
                                         <div className="flex flex-col gap-2">
                                             <div>
@@ -119,6 +122,11 @@ const StudentList = () => {
                                     </div>
                                 </div>
                             ))}
+                            <div
+                                onClick={() => (setOpenAddDialog(true))} 
+                                className="flex p-3 h-24 text-base rounded-2xl justify-center items-center ring ring-gray-100 hover:bg-gray-50/70 hover:ring-gray-200 cursor-pointer dark:bg-gray-800 dark:border-gray-700 transition-colors dark:hover:bg-gray-600">
+                                +
+                            </div>
                         </div>
                     </div>
                     <div className="hidden md:flex w-full">
@@ -185,6 +193,11 @@ const StudentList = () => {
                                         </td>
                                     </tr>
                                 ))}
+                                <tr
+                                    onClick={() => (setOpenAddDialog(true))} 
+                                    className="h-18 text-md cursor-pointer border-b-[1.5px] border-b-neutral-200/60 hover:bg-gray-50 hover:text-primary">
+                                        <td colSpan={6} className="text-lg text-center py-4">+</td>
+                                </tr>                             
                             </tbody>
                         </table>
                         {tooltip && (

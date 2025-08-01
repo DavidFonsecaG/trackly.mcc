@@ -27,7 +27,7 @@ function Overview() {
                         </div>
                     </div>
                     <div className="flex w-full text-sm text-start bg-card rounded-b-3xl pt-3 md:pb-6">
-                        <div className="flex rounded-4xl p-1.5 bg-background/30 w-full border-[1.5px]">
+                        <div className="flex rounded-4xl p-1.5 bg-background/30 w-full inset-ring-[1.5px] inset-ring-gray-100">
                             <div className="flex flex-col w-1/2 rounded-3xl p-6 cursor-pointer bg-card shadow-sm">
                                 <div className="flex gap-3 mb-2 items-center text-base/none font-semibold">
                                     <User className="size-5"/>
@@ -84,7 +84,7 @@ function Overview() {
 
                                 <div className="flex-1 px-2 py-8 text-center max-md:shrink-0 max-md:flex-auto max-md:w-30">
                                     <Link className="group inline-flex flex-col justify-center items-center hover:text-primary" to="/tracker">
-                                        <div className="flex justify-center items-center size-16 rounded-full border border-s-stroke2 transition-colors group-hover:border-primary/60 group-hover:shadow-md">
+                                        <div className="flex justify-center items-center size-16 rounded-full ring-[1.5px] ring-gray-100 transition-colors group-hover:ring-primary/30 group-hover:shadow-md">
                                             <ArrowRight className="w-4 h-4"/>
                                         </div>
                                         <div className="mt-4 text-button text-t-secondary transition-colors group-hover:text-t-primary">View all</div>
@@ -109,7 +109,7 @@ function Overview() {
                                 <Link
                                     key={idx} 
                                     to={`/tracker?params=${formatSlug(app.type)}`}
-                                    className="group flex items-center p-3 cursor-pointer font-semibold rounded-3xl hover:bg-background/30 hover:inset-ring-[1.5px] hover:inset-ring-neutral-200">
+                                    className="group flex items-center p-3 cursor-pointer font-semibold rounded-3xl hover:bg-background/30 hover:inset-ring-[1.5px] hover:inset-ring-gray-100">
                                     <div className="flex justify-center items-center size-16 rounded-lg bg-blue-200">
                                         <span>{displayInitials(app.type)}</span>
                                     </div>
