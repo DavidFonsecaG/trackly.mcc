@@ -2,13 +2,11 @@ import { useAppContext } from "../context/AppContext";
 import { EllipsisVertical } from "lucide-react";
 import formatDate from "../utils/formatDate";
 import ProgressBar from "./ui/ProgressBar";
-import DropdownButton from "./ui/DropdownButton";
 import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
-import AddButton from "./ui/AddButton";
 import type { Student } from "../types";
 import { useState } from "react";
 import Tooltip from "./ui/Tooltip";
-import SearchBar from "./ui/SearchBar";
+import ListHeader from "./ui/studentList/ListHeader";
 
 const StudentList = () => {    
 
@@ -16,6 +14,7 @@ const StudentList = () => {
         students,
         setSelectedStudent,
         setEditStudent,
+        setAddStudent,
         searchTerm,
         updateSearchTerm,
         removeStudent,
@@ -47,8 +46,6 @@ const StudentList = () => {
         return 0;
     });
 
-    console.log(filteredStudents)
-
     const handleSort = (key: keyof Student) => {
         setSortConfig((prev) => {
             if (prev?.key === key) {
@@ -75,22 +72,12 @@ const StudentList = () => {
     return (
         <div className="flex w-full">
             <div className="flex flex-col min-w-full p-3 shadow-sm bg-card rounded-3xl">
-                <div className="p-3 flex items-center justify-between rounded-t-3xl">
-                    <div className="flex flex-col gap-1">
-                        <h2 className="md:text-xl font-semibold">Applications</h2>
-                    </div>
-                    <div className="flex gap-2">
-                        <SearchBar />                        
-                        <DropdownButton
-                            activeOption={searchTerm}
-                            options={terms}
-                            action={updateSearchTerm}
-                            saveLocalStorage={true}
-                            nameLocalStorage="Filter"
-                        />
-                        <AddButton open={openAddDialog} setOpen={setOpenAddDialog}/>
-                    </div>
-                </div>
+                <ListHeader
+                    searchTerm={searchTerm}
+                    terms={terms}
+                    updateSearchTerm={updateSearchTerm}
+                    setAddStudent={setAddStudent}
+                />
 
                 <div className="flex w-full text-sm text-start bg-card rounded-b-3xl pt-3 md:pb-6">
                     <div className="md:hidden w-full text-left dark:text-gray-400">

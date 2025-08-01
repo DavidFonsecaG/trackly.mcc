@@ -5,16 +5,14 @@ import ApplicationTypeBadge from "./ApplicationTypeBadge";
 import { useAppContext } from "../../context/AppContext";
 import DropdownInput from "./DropdownInput";
 
-interface AddStudentDialogProps{
-    setOpen: (open: boolean) => void,
-};
+const AddStudentDialog = () => {
+    const { addStudent, setAddStudent, setStudent } = useAppContext();
+    if (!addStudent) return null;
 
-const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
     const terms = ["Fall 2025", "Winter 2026", "Spring 2026"];
     const programs = ["English as a Second Language", "Professional English", "English for Academic Purposes", "English for Healthcare", "AAS in Business", "AAS in Marketing", "AAS in Accounting", "AAS in Information Technology"];
     const schedules = ["4 Day - Morning", "2 Day - Morning", "3 Day - Evening"];
 
-    const { setStudent } = useAppContext();
     const initialState: Partial<Student> = {
         name: "",
         email: "",
@@ -80,11 +78,11 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
         if (!studentDocuments) return;
 
         setStudent(newStudent, studentDocuments);
-        setOpen(false);
+        setAddStudent(false);
     };
 
     const handleClose = () => {
-        setOpen(false)
+        setAddStudent(false)
     };
 
     let cardAddRef = useRef<HTMLDivElement>(null);
@@ -92,7 +90,7 @@ const AddStudentDialog = ({setOpen}: AddStudentDialogProps) => {
     useEffect(() => {
         let handler = (e: MouseEvent) => {
             if(cardAddRef.current && !cardAddRef.current.contains(e.target as Node)){
-                setOpen(false);
+                handleClose();
             }
         };
         document.addEventListener("mousedown", handler);

@@ -14,6 +14,8 @@ interface AppContextType {
   setSelectedStudent: (student: Student | null) => void;
   editStudent: Student | null;
   setEditStudent: (student: Student | null) => void;
+  addStudent: boolean;
+  setAddStudent: (arg: boolean) => void;
   updateDocumentStatus: (studentId: string, documentId: string, submitted: boolean | null, required: boolean, notes?: string) => void;
   getStudentDocuments: (studentId: string) => Document[] | undefined;
   setStudent: (student: Partial<Student>, studentDocument: Partial<StudentDocument>) => void;
@@ -39,6 +41,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [editStudent, setEditStudent] = useState<Student | null>(null);
+  const [addStudent, setAddStudent] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState(localStorage.getItem("Filter") || "All Terms");
   const [notification, setNotification] = useState<string | null>(null);
   const [deleted, setDeleted] = useState<{deletedStudent: Student, deletedStudentDocument: StudentDocument} | null>(null);
@@ -201,6 +204,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setSelectedStudent,
         editStudent,
         setEditStudent,
+        addStudent,
+        setAddStudent,
         updateDocumentStatus,
         getStudentDocuments,
         setStudent,
