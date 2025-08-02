@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, Minus, X, Plus, File } from "lucide-react";
-import { useAppContext } from "../context/AppContext";
-import formatDate from "../utils/formatDate";
-import ProgressBar from "./ui/ProgressBar";
-import type { Document } from "../types";
-import ApplicationTypeBadge from "./ui/ApplicationTypeBadge";
-import Tooltip from "./ui/Tooltip";
+import { useAppContext } from "../../context/AppContext";
+import formatDate from "../../utils/formatDate";
+import ProgressBar from "./ProgressBar";
+import type { Document } from "../../types";
+import ApplicationTypeBadge from "./ApplicationTypeBadge";
+import Tooltip from "./Tooltip";
 
 const StudentDetail: React.FC = () => {
     

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import AvatarButton from "./ui/AvatarButton";
+import { useAuth } from "../../context/AuthContext";
+import AvatarButton from "../ui/AvatarButton";
 import { Settings, AlignJustify } from "lucide-react";
 
 function Header() {

@@ -1,6 +1,6 @@
 import { useAppContext } from "../context/AppContext";
-import StudentList from "../components/StudentList";
-import StudentDetail from "../components/StudentDetail";
+import StudentList from "../components/studentList/StudentList";
+import StudentDetail from "../components/ui/StudentDetail";
 import EditStudentDialog from "../components/ui/EditStudentDialog";
 import AddStudentDialog from "../components/ui/AddStudentDialog";
 import Toast from "../components/ui/Toast";
