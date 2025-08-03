@@ -3,13 +3,17 @@ import MainStats from "./MainStats";
 import RecentStudents from "./RecentStudents";
 
 interface OverviewCardTypes {
-    stats: {type: string, amount: string, change: boolean, percentage: string; }[];
-    students: { first: string; last: string; color: string; }[];
+    stats: { status: string; amount: number; change: boolean; percentage: string; }[];
+    students: { name: string; color: string; }[];
+    active: string;
+    setActive: (arg: string) => void;
 }
 
 const OverviewCard: React.FC<OverviewCardTypes> = ({
     stats,
     students,
+    active,
+    setActive,
 }) => {
     return (
         <Card>
@@ -18,6 +22,8 @@ const OverviewCard: React.FC<OverviewCardTypes> = ({
             </div>
             <MainStats
                 stats={stats}
+                active={active}
+                setActive={setActive}                
             />
             <RecentStudents 
                 students={students}

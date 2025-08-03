@@ -3,7 +3,7 @@ import displayInitials from "../../utils/displayInitials";
 import { ArrowRight } from "lucide-react";
 
 interface RecentStudentsTypes {
- students: { first: string; last: string; color: string; }[];
+ students: { name: string; color: string; }[];
 };
 
 const RecentStudents: React.FC<RecentStudentsTypes> = ({
@@ -18,16 +18,16 @@ const RecentStudents: React.FC<RecentStudentsTypes> = ({
                 <div className="text-sm text-primary/50">Send a welcome message to all new students.</div>
             </div>
             <div className="flex text-sm text-primary/60 font-medium max-md:overflow-auto max-md:-mx-6 max-md:px-6 max-md:scrollbar-none">
-                {students.map((student, idx) => (
-                    <div 
+                {students.map(({name, color}, idx) => (
+                    <div
                         key={idx}
                         className="flex-1 px-1 py-8 text-center max-3xl:nth-[n+6]:hidden max-[1349px]:nth-[n+5]:hidden max-md:shrink-0 max-md:flex-auto max-md:w-30 max-md:!block">
                         <div className="flex justify-center">
-                            <div className={`flex items-center justify-center size-16 rounded-full bg-radial-[at_25%_25%] ${student.color}`}>
-                                <span className="text-primary">{displayInitials(student.first + " " + student.last)}</span>
+                            <div className={`flex items-center justify-center size-16 rounded-full bg-radial-[at_25%_25%] ${color}`}>
+                                <span className="text-primary">{displayInitials(name)}</span>
                             </div>
                         </div>
-                        <div className="mt-4 text-button text-t-secondary max-md:truncate">{student.first}</div>
+                        <div className="mt-4 text-button text-t-secondary max-md:truncate">{name.split(" ")[0]}</div>
                     </div>
                 ))}
                 <div className="flex-1 px-2 py-8 text-center max-md:shrink-0 max-md:flex-auto max-md:w-30">

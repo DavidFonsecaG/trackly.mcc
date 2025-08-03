@@ -5,6 +5,7 @@ import ApplicationTypeBadge from "./ApplicationTypeBadge";
 import { useAppContext } from "../../context/AppContext";
 import DropdownInput from "./DropdownInput";
 import displayInitials from "../../utils/displayInitials";
+import createColor from "../../utils/createColor";
 
 const EditStudentDialog = () => {
     const { editStudent, setEditStudent, updateStudent, getStudentDocuments } = useAppContext();
@@ -135,7 +136,7 @@ const EditStudentDialog = () => {
                 <div className="flex flex-col p-6 text-xs gap-7">
                     <div className="flex justify-between">
                         <div className="flex items-center">
-                            <div className="flex items-center justify-center text-white text-2xl size-18 rounded-md bg-blue-300">{displayInitials(editStudent?.name)}</div>
+                            <div className={`flex items-center justify-center text-white text-2xl size-18 rounded-full bg-radial-[at_25%_25%] ${createColor(editStudent?.name)}`}>{displayInitials(editStudent?.name)}</div>
                             <div className="flex flex-col ml-2">
                                 <ApplicationTypeBadge type={editStudent?.applicationType}/>
                                 <p className="text-base font-medium">{editStudent?.name}</p>

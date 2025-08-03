@@ -6,6 +6,7 @@ import ProgressBar from "./ProgressBar";
 import type { Document } from "../../types";
 import ApplicationTypeBadge from "./ApplicationTypeBadge";
 import Tooltip from "./Tooltip";
+import createColor from "../../utils/createColor";
 
 const StudentDetail: React.FC = () => {
     
@@ -80,7 +81,7 @@ const StudentDetail: React.FC = () => {
                 <div className="flex flex-col p-6 text-xs gap-7">
                     <div className="flex justify-between">
                         <div className="flex items-center">
-                            <div className="flex items-center justify-center text-white text-2xl size-18 rounded-md bg-blue-300">{displayInitials(selectedStudent?.name)}</div>
+                            <div className={`flex items-center justify-center text-white text-2xl size-18 rounded-full bg-radial-[at_25%_25%] ${createColor(selectedStudent?.name)}`}>{displayInitials(selectedStudent?.name)}</div>
                             <div className="flex flex-col ml-2">
                                 <ApplicationTypeBadge type={selectedStudent?.applicationType}/>
                                 <p className="text-base font-medium">{selectedStudent?.name}</p>

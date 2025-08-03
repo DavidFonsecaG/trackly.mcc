@@ -1,40 +1,61 @@
+import { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
 import OverviewCard from "./OverviewCard";
 import TotalAppsCard from "./TotalAppsCard";
-
-const stats = [
-    {"type": "In Progress", "amount": "23", "change": false, "percentage": "36%"},
-    {"type": "Completed", "amount": "23", "change": true, "percentage": "36%"},
-];
-const students = [
-    {"first": "Gladyce", "last": "Williams", "color": "from-purple-200 to-purple-300"}, 
-    {"first": "John", "last": "Smith", "color": "from-yellow-200 to-yellow-300"}, 
-    {"first": "David", "last": "Fonseca", "color": "from-emerald-200 to-emerald-300"}, 
-    {"first": "Mark", "last": "Mudder", "color": "from-cyan-200 to-cyan-300"}
-];
-const apps = [
-    {"type": "Abroad", "amount": 4, "url": "1"},
-    {"type": "Transfer In", "amount": 4, "url": "2"},
-    {"type": "Change Of Status", "amount": 4, "url": "3"},
-    {"type": "COEL", "amount": 4, "url": "4"},
-    {"type": "Domestic", "amount": 4, "url": "5"},
-    {"type": "Reinstatement", "amount": 4, "url": "6"},
-    {"type": "Abroad approved", "amount": 4, "url": "7"},
-    {"type": "COS approved", "amount": 4, "url": "8"}
-];
+import createColor from "../../utils/createColor";
 
 function Dashboard() {
+
+    const [ active, setActive ] = useState("complete");
+    const { students } = useAppContext();
+
+    const stats = Object.entries(
+        students.reduce<Record<string, number>>((acc, student) => {
+            const status = student.status;
+            if (!status) return acc;
+
+            acc[status] = (acc[status] || 0) + 1;
+            return acc;
+        }, {})
+    ).map(([status, amount]) => ({
+        status,
+        amount,
+        change: true,
+        percentage: "23%",
+    }));
+
+    const recentStudents = students
+        .filter((student) => student.status === active)
+        .map((student) => ({
+                name: student.name,
+                color: createColor(student.name),
+            }));
+    
+            
+    const totalApps = Object.entries(
+        students.reduce<Record<string, number>>((acc, student) => {
+            const type = student.applicationType;
+            if (!type) return acc;
+
+            acc[type] = (acc[type] || 0) + 1;
+            return acc;
+        }, {})
+    );
+
     return (
         <div className="flex w-full gap-4">
             <div className="w-full">
                 <OverviewCard
                     stats={stats}
-                    students={students}
+                    students={recentStudents}
+                    active={active}
+                    setActive={setActive}
                 />
             </div>
 
             <div className="w-md">
                 <TotalAppsCard 
-                    apps={apps}
+                    apps={totalApps}
                 />
             </div>
         </div>

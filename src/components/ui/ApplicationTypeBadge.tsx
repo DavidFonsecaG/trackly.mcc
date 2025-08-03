@@ -1,3 +1,5 @@
+import capitalizeString from "../../utils/capitalizeString";
+
 const ApplicationTypeBadge: React.FC<{ type: string }> = ({ type }) => {
     const colors = {
         abroad: 'bg-indigo-700/5 text-indigo-700 border-indigo-700/15',
@@ -10,13 +12,9 @@ const ApplicationTypeBadge: React.FC<{ type: string }> = ({ type }) => {
         COEL: 'bg-cyan-700/5 text-cyan-700 border-cyan-700/15',
     };
 
-    const displayText = type.split('-').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
-
     return (
         <span className={`w-fit px-2 py-1 rounded-md text-[0.6rem] border-[1.5px] ${colors[type as keyof typeof colors]}`}>
-        {displayText}
+        {capitalizeString(type)}
         </span>
     );
 };
