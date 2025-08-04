@@ -6,14 +6,13 @@ import createColor from "../../utils/createColor";
 
 function Dashboard() {
 
-    const [ active, setActive ] = useState("complete");
     const { students } = useAppContext();
-
+    
     const stats = Object.entries(
         students.reduce<Record<string, number>>((acc, student) => {
             const status = student.status;
             if (!status) return acc;
-
+            
             acc[status] = (acc[status] || 0) + 1;
             return acc;
         }, {})
@@ -24,13 +23,14 @@ function Dashboard() {
         percentage: "23%",
     }));
 
+    const [ active, setActive ] = useState<string>("incomplete");
+
     const recentStudents = students
         .filter((student) => student.status === active)
         .map((student) => ({
                 name: student.name,
                 color: createColor(student.name),
-            }));
-    
+            }));    
             
     const totalApps = Object.entries(
         students.reduce<Record<string, number>>((acc, student) => {

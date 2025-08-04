@@ -15,7 +15,7 @@ const TotalAppsCard: React.FC<TotalAppsCardTypes> = ({
             <div className="flex items-center p-3">
                 <h2 className="md:text-lg font-semibold">Total Applications</h2>
             </div>
-            <div className="pt-3 ">
+            <div className="pt-3">
                 <div className="flex flex-col gap-1">
                     {apps.map(([type, amount], idx) => (
                         <Link

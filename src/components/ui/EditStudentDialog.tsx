@@ -159,7 +159,7 @@ const EditStudentDialog = () => {
                             <div className="space-y-5">
                                 <div className="space-y-2">
                                     <label className="block font-medium leading-none">Type</label>
-                                    <div className="flex flex-wrap rounded-lg px-3 py-2 gap-1.5 border">
+                                    <div className="flex flex-wrap rounded-lg px-3 py-2 gap-1.5 border-[1.5px] border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300">
                                         {Object.keys(requiredDocumentsByType).map((type) => (
                                             <button 
                                                 key={type}
@@ -173,7 +173,7 @@ const EditStudentDialog = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label htmlFor="name" className="block font-medium leading-none">Name</label>
+                                    <label className="block font-medium leading-none">Name</label>
                                     <input
                                         id="name"
                                         name="name"
@@ -183,12 +183,16 @@ const EditStudentDialog = () => {
                                         onChange={handleInputChange}
                                         required
                                         autoComplete="off"
-                                        className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.name ? "border-red-300" : ""}`}
+                                        className={`block w-full rounded-lg px-4 h-9 bg-card placeholder:font-normal placeholder:text-primary/50 border-[1.5px]  ${
+                                            errors.name 
+                                            ? "border-red-300 hover:border-red-500 focus:border-red-500" 
+                                            : "border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300"
+                                        }`}
                                     />
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                     <div className="space-y-2">
-                                        <label htmlFor="email" className="block font-medium leading-none">Email</label>
+                                        <label className="block font-medium leading-none">Email</label>
                                         <input
                                             id="email"
                                             name="email"
@@ -198,7 +202,11 @@ const EditStudentDialog = () => {
                                             onChange={handleInputChange}
                                             required
                                             autoComplete="off"
-                                            className={`block w-full rounded-lg px-4 h-9 bg-card border placeholder:font-normal placeholder:text-primary/50 ${errors.email ? "border-red-300" : ""}`}
+                                            className={`block w-full rounded-lg px-4 h-9 bg-card placeholder:font-normal placeholder:text-primary/50 border-[1.5px]  ${
+                                                errors.email 
+                                                ? "border-red-300 hover:border-red-500 focus:border-red-500" 
+                                                : "border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300"
+                                            }`}                                            
                                         />
                                     </div>
                                     <DropdownInput 

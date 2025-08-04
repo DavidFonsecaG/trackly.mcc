@@ -74,14 +74,14 @@ const StudentDetail: React.FC = () => {
             className="z-100 flex items-center justify-center fixed inset-0 w-full h-full p-3 top-0 bg-primary/20"
             role="dialog"
             aria-modal="true"
-            aria-label="Student Details" 
+            aria-label="Student Details"
             aria-hidden={!selectedStudent}
         >
             <div className="w-lg md:w-3xl max-h-full bg-card rounded-3xl shadow-2xl" ref={cardRef}>
                 <div className="flex flex-col p-6 text-xs gap-7">
                     <div className="flex justify-between">
                         <div className="flex items-center">
-                            <div className={`flex items-center justify-center text-white text-2xl size-18 rounded-full bg-radial-[at_25%_25%] ${createColor(selectedStudent?.name)}`}>{displayInitials(selectedStudent?.name)}</div>
+                            <div className={`flex items-center justify-center text-2xl size-18 rounded-full bg-radial-[at_25%_25%] ${createColor(selectedStudent?.name)}`}>{displayInitials(selectedStudent?.name)}</div>
                             <div className="flex flex-col ml-2">
                                 <ApplicationTypeBadge type={selectedStudent?.applicationType}/>
                                 <p className="text-base font-medium">{selectedStudent?.name}</p>
