@@ -1,4 +1,5 @@
 import Card from "../ui/Card";
+import CardTitle from "../ui/CardTitle";
 import MainStats from "./MainStats";
 import RecentStudents from "./RecentStudents";
 
@@ -17,9 +18,7 @@ const OverviewCard: React.FC<OverviewCardTypes> = ({
 }) => {
     return (
         <Card>
-            <div className="flex items-center p-3">
-                <h2 className="md:text-lg font-semibold">Overview</h2>  
-            </div>
+            <CardTitle title="Overview" />
             <MainStats
                 stats={stats}
                 active={active}
