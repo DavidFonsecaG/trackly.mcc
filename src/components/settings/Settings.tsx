@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import ProfileSettings from "./ProfileSettings";
 import CardTitle from "../ui/CardTitle";
 import PasswordSettings from "./PasswordSettings";
+import TrackerSettings from "./TrackerSettings";
 
 
 const Settings = () => {
@@ -49,6 +50,7 @@ const Settings = () => {
                 <ProfileSettings 
                     user={user}
                 />
+                <TrackerSettings />
                 <PasswordSettings />
             </div>
         </div>

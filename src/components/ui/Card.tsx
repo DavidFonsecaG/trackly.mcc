@@ -1,7 +1,6 @@
 interface CardTypes {
     className?: string;
     children: React.ReactNode 
-    
 }
 
 const Card: React.FC<CardTypes> = ({
