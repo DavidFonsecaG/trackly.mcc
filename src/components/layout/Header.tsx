@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import AvatarButton from "../ui/AvatarButton";
 import { Settings, AlignJustify } from "lucide-react";
 
 function Header() {
   const { user, logout } = useAuth();
+
+  const location = useLocation().pathname;
 
   const handleLogout = () => {
     logout();
@@ -24,7 +26,7 @@ function Header() {
             </div>
           </div>
           <div className="flex gap-3">
-            <Link to="/settings" className="flex size-10 rounded-full bg-card items-center justify-center text-primary/50 text-sm hover:text-primary hover:shadow-sm">
+            <Link to="/settings" className={`flex size-10 rounded-full bg-card items-center justify-center text-sm ${location === "/settings" ? "shadow-sm" : "text-primary/50 hover:text-primary hover:shadow-sm"}`}>
               <Settings className="w-4 h-4" />
             </Link>
             {user 

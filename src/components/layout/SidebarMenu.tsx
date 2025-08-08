@@ -24,11 +24,11 @@ function SidebarMenu() {
                         </Link>                        
                     ))}
                 </div>
-                <div className="flex flex-col w-9 p-1 bg-card rounded-full items-center gap-1 cursor-pointer hover:shadow-sm">
-                    <button className="flex size-7 rounded-full items-center justify-center text-primary/50">
+                <div className="flex group flex-col w-9 p-1 bg-card rounded-full items-center gap-1 cursor-pointer hover:shadow-sm">
+                    <button className="flex size-7 rounded-full items-center justify-center text-primary/50 cursor-pointer group-hover:text-primary">
                         <Moon className="h-4 w-4" />
                     </button>
-                    <button className="flex size-7 bg-background rounded-full items-center justify-center">
+                    <button className="flex size-7 bg-background rounded-full items-center justify-center cursor-pointer group-hover:text-primary">
                         <Sun className="h-4 w-4" />
                     </button>
                 </div> 

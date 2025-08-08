@@ -2,7 +2,13 @@ import Card from "../ui/Card";
 import CardBody from "../ui/CardBody";
 import CardTitle from "../ui/CardTitle";
 
-const PasswordSettings = () => {
+interface PasswordSettingsTypes {
+
+};
+
+const PasswordSettings: React.FC<PasswordSettingsTypes> = ({
+    
+}) => {
     return (
         <Card>
             <CardTitle title={"Password"} />

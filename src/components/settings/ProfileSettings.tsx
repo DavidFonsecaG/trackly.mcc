@@ -8,7 +8,7 @@ interface ProfileSettingsTypes {
 };
 
 const ProfileSettings: React.FC<ProfileSettingsTypes> = ({
-    user
+    user,
 }) => {
     return (
         <Card>
