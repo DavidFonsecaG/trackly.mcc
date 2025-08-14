@@ -1,14 +1,26 @@
+import { useState } from "react";
 import Card from "../ui/Card";
 import CardBody from "../ui/CardBody";
 import CardTitle from "../ui/CardTitle";
 
 interface PasswordSettingsTypes {
-
+    handleUpdatePsswrd: (oldPsswrd: string, newPsswrd: string) => void;
 };
 
 const PasswordSettings: React.FC<PasswordSettingsTypes> = ({
-    
+    handleUpdatePsswrd,
 }) => {
+
+    const [psswrd, setPsswrd] = useState({ password: "", newPassword: "", confirmPassword: "" });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setPsswrd((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
     return (
         <Card>
             <CardTitle title={"Password"} />
@@ -26,11 +38,11 @@ const PasswordSettings: React.FC<PasswordSettingsTypes> = ({
                         id="password"
                         name="password"
                         type="password"
-                        autoComplete="current-password"
                         placeholder="Enter password"
-                        // value={}
-                        // onChange={}
+                        value={psswrd.password}
+                        onChange={handleInputChange}
                         required
+                        autoComplete="off"
                         className="w-full px-4.5 h-12 rounded-full text-sm outline-none transition-colors border-[1.5px] border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300 placeholder:text-neutral-300 pr-14"
                     />
                 </div>
@@ -42,14 +54,14 @@ const PasswordSettings: React.FC<PasswordSettingsTypes> = ({
                             </label>
                         </div>
                         <input
-                            id="new-password"
-                            name="new-password"
+                            id="newPassword"
+                            name="newPassword"
                             type="password"
-                            autoComplete="new-password"
                             placeholder="Enter new password"
-                            // value={}
-                            // onChange={}
+                            value={psswrd.newPassword}
+                            onChange={handleInputChange}
                             required
+                            autoComplete="off"
                             className="w-full px-4.5 h-12 rounded-full text-sm outline-none transition-colors border-[1.5px] border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300 placeholder:text-neutral-300 pr-14"
                         />
                     </div>
@@ -60,19 +72,23 @@ const PasswordSettings: React.FC<PasswordSettingsTypes> = ({
                             </label>
                         </div>
                         <input
-                            id="confirm-password"
-                            name="confirm-password"
+                            id="confirmPassword"
+                            name="confirmPassword"
                             type="password"
-                            autoComplete="confirm-password"
                             placeholder="Confirm new password"
-                            // value={}
-                            // onChange={}
+                            value={psswrd.confirmPassword}
+                            onChange={handleInputChange}
                             required
+                            autoComplete="off"
                             className="w-full px-4.5 h-12 rounded-full text-sm outline-none transition-colors border-[1.5px] border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300 placeholder:text-neutral-300 pr-14"
                         />
                     </div>
                 </div>
-                <button className="px-7 h-12 rounded-full text-sm max-w-fit bg-primary text-white cursor-pointer hover:bg-primary/90">Update Password</button>                  
+                <button
+                    type="button"
+                    onClick={() => handleUpdatePsswrd(psswrd.password, psswrd.newPassword)} 
+                    className="px-7 h-12 rounded-full text-sm max-w-fit bg-primary text-white cursor-pointer hover:bg-primary/90"
+                >Update Password</button>
             </CardBody>
         </Card>
     )

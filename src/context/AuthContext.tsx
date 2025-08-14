@@ -9,6 +9,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
+  updateUser: (password: string, newPassword: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -63,12 +64,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateUser = async (password: string, newPassword: string,) => {
+    try {
+      const res = await api.post("/auth/update", {password, newPassword});
+      console.log(res.data);
+    } catch (err: any) {
+      console.error("Failed to update user:", err.response?.data?.message || err.message);
+    }
+  };
+
   useEffect(() => {
     fetchUser()
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, signup }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, signup, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
