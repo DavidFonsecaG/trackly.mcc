@@ -6,7 +6,13 @@ import PasswordSettings from "./PasswordSettings";
 import TrackerSettings from "./TrackerSettings";
 import ScrollMenu from './ScrollMenu';
 
-const Settings = () => {
+interface SettingsTypes{
+    setNotification: (message: string | null) => void
+};
+
+const Settings: React.FC<SettingsTypes> = ({
+    setNotification
+}) => {
 
     const { user, updateUser } = useAuth();
     const profileRef = useRef<HTMLDivElement>(null);
@@ -18,8 +24,9 @@ const Settings = () => {
         {title: "Security", subtitle: "Change password", icon: LockIcon, ref: securityRef},
     ];
 
-    const handleUpdatePsswrd = (password: string, newPassword: string) => {
-        updateUser(password, newPassword);
+    const handleUpdatePsswrd = async (password: string, newPassword: string) => {
+        const message = await updateUser(password, newPassword);
+        setNotification(message);
     };
 
     return (
@@ -38,7 +45,9 @@ const Settings = () => {
                 </section>
                 <section ref={securityRef}>
                     <PasswordSettings 
-                        handleUpdatePsswrd={handleUpdatePsswrd} />
+                        handleUpdatePsswrd={handleUpdatePsswrd}
+                        setNotification={setNotification}
+                    />
                 </section>
             </div>
         </div>

@@ -24,22 +24,28 @@ const ProfileSettings: React.FC<ProfileSettingsTypes> = ({
                 <div>
                     <div className="mb-4 text-sm text-primary font-semibold">Display name</div>
                     <div>
-                        <input 
-                            type="n"
+                        <input
+                            id="name"
+                            name="name"
+                            type="name"
                             placeholder="Enter name" 
-                            value={user?.name}
-                            required
+                            value={user?.name || ""}
+                            readOnly
+                            autoComplete="off"
                             className="w-full px-4.5 h-12 rounded-full text-sm outline-none transition-colors border-[1.5px] border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300 placeholder:text-t-secondary/50 pr-14"/>
                     </div>
                 </div>
                 <div>
                     <div className="mb-4 text-sm text-primary font-semibold">Email</div>
                     <div>
-                        <input 
+                        <input
+                            id="email"
+                            name="email"
                             type="email"
                             placeholder="Enter email" 
-                            value={user?.email}
-                            required
+                            value={user?.email || ""}
+                            readOnly
+                            autoComplete="off"
                             className="w-full px-4.5 h-12 rounded-full text-sm outline-none transition-colors border-[1.5px] border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300 placeholder:text-t-secondary/50 pr-14"/>
                     </div>
                 </div>                                
