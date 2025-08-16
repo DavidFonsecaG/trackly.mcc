@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import { useAuth } from "../context/AuthContext";
 import LeftPanel from "../components/auth/LeftPanel";
@@ -18,7 +17,7 @@ const LoginPage = () => {
 
 	const handleLogin = (e: { preventDefault: () => void; }) => {
 		e.preventDefault();
-		
+
 		login(email, password);
 	};
 
