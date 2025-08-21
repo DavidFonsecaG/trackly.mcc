@@ -179,14 +179,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (user) {
       fetchStudents()
-        .then((students) => {
-          setStudents(students);
-          return fetchStudentDocuments(students.map(s => s.id));
-        })
-        .then(setStudentDocuments)
-        .catch((err: any) => 
-          console.error("Failed to fecth students", err.response?.data?.message || err.message)
-        );
+      .then((students) => {
+        setStudents(students);
+        return fetchStudentDocuments(students.map(s => s.id));
+      })
+      .then(setStudentDocuments)
+      .catch((err: any) => 
+        console.error("Failed to fecth students", err.response?.data?.message || err.message)
+      );
     } else {
       setStudents([]);
       setStudentDocuments([]);

@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     try {
       await api.post("/auth/logout");
-      setUser(null);
       navigate("/login");
+      setUser(null);
     } catch (err: any) {
       console.error("Login failed:", err.response?.data?.message || err.message );
     }
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(res.data);
     } catch (err: any) {
       if (err.response?.status === 401) {
-        //
+        setUser(null);
       } else {
         console.error("Failed to fetch user:", err.response?.data?.message || err.message);
       }
