@@ -7,21 +7,27 @@ import createColor from "../../utils/createColor";
 function Dashboard() {
 
     const { students } = useAppContext();
-    
+    const defaults = {
+        incomplete: 0,
+        complete: 0,
+    };
+
     const stats = Object.entries(
         students.reduce<Record<string, number>>((acc, student) => {
             const status = student.status;
             if (!status) return acc;
-            
+
             acc[status] = (acc[status] || 0) + 1;
             return acc;
-        }, {})
-    ).map(([status, amount]) => ({
+        }, { ...defaults })
+    )
+    .map(([status, amount]) => ({
         status,
         amount,
-        change: true,
-        percentage: "23%",
+        change: amount > 0,
+        percentage: amount > 0 ? "23%" : "0%",
     }));
+    
 
     const [ active, setActive ] = useState<string>("incomplete");
 

@@ -9,15 +9,16 @@ interface RecentStudentsTypes {
 const RecentStudents: React.FC<RecentStudentsTypes> = ({
     students,
 }) => {
+    const count = students.length;
     return (
         <div className="p-5 max-lg:px-3 max-lg:py-4">
             <div className="mb-6">
                 <div className="flex items-center gap-3 ">
-                    <div className="text-[1.125rem] font-medium tracking-[-0.01em]">10 new students today!</div>
+                    <div className="text-[1.125rem] font-medium tracking-[-0.01em]">{count} new students today!</div>
                 </div>
-                <div className="text-sm text-primary/50">Send a welcome message to all new students.</div>
+                <div className="text-sm text-primary/50">{count >= 0 ? "Add student to strat seeing your metrics." : "Send a welcome message to all new students."}</div>
             </div>
-            <div className="flex text-sm text-primary/60 font-medium max-md:overflow-auto max-md:-mx-6 max-md:px-6 max-md:scrollbar-none">
+            {count > 0 && <div className="flex text-sm text-primary/60 font-medium max-md:overflow-auto max-md:-mx-6 max-md:px-6 max-md:scrollbar-none">
                 {students.map(({name, color}, idx) => (
                     <div
                         key={idx}
@@ -38,7 +39,7 @@ const RecentStudents: React.FC<RecentStudentsTypes> = ({
                         <div className="mt-4 text-button text-t-secondary transition-colors group-hover:text-t-primary">View all</div>
                     </Link>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 };
