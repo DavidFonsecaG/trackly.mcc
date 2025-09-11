@@ -4,6 +4,7 @@ import { useAuth } from "./AuthContext";
 import { useStudentFetcher } from "../hooks/useStudentFetcher";
 import { useStudentActions } from "../hooks/useStudentActions";
 import { useDocumentActions } from "../hooks/useDocumentActions";
+import { dummyStudents, dummyStudentDocuments } from "../data/dummy";
 
 interface AppContextType {
   students: Student[];
@@ -188,8 +189,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         console.error("Failed to fecth students", err.response?.data?.message || err.message)
       );
     } else {
-      setStudents([]);
-      setStudentDocuments([]);
+      setStudents(dummyStudents);
+      setStudentDocuments(dummyStudentDocuments);
     }
   }, [user]);
 

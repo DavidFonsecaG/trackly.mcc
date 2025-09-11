@@ -33,14 +33,14 @@ const ProgressBar: FC<ProgressBarProps> = ({ studentId }) => {
         if (percentage < 99 && percentage > 30)
             return "pending"
         else return "incomplete"
-    }
+    };
 
     return (
         <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full">
                 <div 
                     className={`h-2 rounded-full ${colors[getColor() as keyof typeof colors]}`} 
-                    style={{width: `${percentage}%`}}
+                    style={{width: `${percentage == 0 ? 3 : percentage}%`}}
                 ></div>
             </div> 
             <p className="hidden sm:flex text-end">{percentage}%</p>
