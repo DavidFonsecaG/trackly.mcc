@@ -16,7 +16,13 @@ const RecentStudents: React.FC<RecentStudentsTypes> = ({
                 <div className="flex items-center gap-3 ">
                     <div className="text-[1.125rem] font-medium tracking-[-0.01em]">{count} new students today!</div>
                 </div>
-                <div className="text-sm text-primary/50">{count >= 0 ? "Add student to strat seeing your metrics." : "Send a welcome message to all new students."}</div>
+                <div className="flex gap-2 text-sm text-primary/50">{count == 0 
+                    ? <>
+                        <span>Add student to strat seeing your metrics.</span> 
+                        <Link className="flex items-center font-medium gap-1 border-b-[1.5px] border-white text-primary hover:border-primary" to="/tracker">Go to tracker <ArrowRight className="w-4 h-4"/></Link>
+                      </>
+                    : "Send a welcome message to all new students."}
+                </div>
             </div>
             {count > 0 && <div className="flex text-sm text-primary/60 font-medium max-md:overflow-auto max-md:-mx-6 max-md:px-6 max-md:scrollbar-none">
                 {students.map(({name, color}, idx) => (
@@ -28,7 +34,7 @@ const RecentStudents: React.FC<RecentStudentsTypes> = ({
                                 <span className="text-primary">{displayInitials(name)}</span>
                             </div>
                         </div>
-                        <div className="mt-4 text-button text-t-secondary max-md:truncate">{name.split(" ")[0]}</div>
+                        <div className="mt-4 max-md:truncate">{name.split(" ")[0]}</div>
                     </div>
                 ))}
                 <div className="flex-1 px-2 py-8 text-center max-md:shrink-0 max-md:flex-auto max-md:w-30">
@@ -36,7 +42,7 @@ const RecentStudents: React.FC<RecentStudentsTypes> = ({
                         <div className="flex justify-center items-center size-16 rounded-full ring-[1.5px] ring-gray-100 transition-colors group-hover:ring-primary/30 group-hover:shadow-md">
                             <ArrowRight className="w-4 h-4"/>
                         </div>
-                        <div className="mt-4 text-button text-t-secondary transition-colors group-hover:text-t-primary">View all</div>
+                        <div className="mt-4 transition-colors group-hover:text-primary">View all</div>
                     </Link>
                 </div>
             </div>}

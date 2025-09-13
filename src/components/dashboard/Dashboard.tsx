@@ -49,7 +49,7 @@ function Dashboard() {
     );
 
     return (
-        <div className="flex w-full gap-4">
+        <div className="flex flex-col md:flex-row w-full gap-3 md:gap-4">
             <div className="w-full">
                 <OverviewCard
                     stats={stats}
@@ -59,7 +59,7 @@ function Dashboard() {
                 />
             </div>
 
-            <div className="w-md">
+            <div className="w-full md:w-md">
                 <TotalAppsCard 
                     apps={totalApps}
                 />

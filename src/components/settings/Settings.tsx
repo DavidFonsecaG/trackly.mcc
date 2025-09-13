@@ -31,7 +31,7 @@ const Settings: React.FC<SettingsTypes> = ({
 
     return (
         <div className="flex w-full gap-4">
-            <div className="w-md">
+            <div className="hidden lg:inline w-md">
                 <ScrollMenu 
                     menuItems={settings} 
                     user={user}/>

@@ -7,7 +7,7 @@ const GoogleButton: React.FC<GoogleButtonProps> = ({
 }) => {
 
     const handleClick = () => {
-		window.location.href = "/api/auth/google";
+		window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
 	};
 
     return (

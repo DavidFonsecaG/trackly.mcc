@@ -33,7 +33,7 @@ function Layout() {
                     {open && <Banner text={"You're in demo mode"} action={handleClose}/>}
                     <Header />
                     <div className="flex h-full overflow-hidden">
-                        <div className="hidden md:flex h-full">
+                        <div className="hidden lg:flex h-full">
                             <SidebarMenu />
                         </div>
                         <div className="flex flex-col w-full h-full">

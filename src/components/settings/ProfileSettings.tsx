@@ -16,10 +16,10 @@ const ProfileSettings: React.FC<ProfileSettingsTypes> = ({
             <CardBody>
                 <div className="flex items-center">
                     <div className="relative">
-                        <img src="avatar.jpg" alt="avatar" className="rounded-full size-20" />
+                        <img src={user?.picture} alt={user?.name} className="rounded-full min-w-20 size-20" />
                         <input accept="image/*" type="file" className="absolute inset-0 opacity-0 cursor-pointer"/>
                     </div>
-                    <div className="pl-4 text-xs text-primary/50 font-normal max-w-88">Update your avatar by clicking the image beside. 288x288 px size recommended in PNG or JPG format only.</div>
+                    <div className="pl-4 text-[0.7rem] text-primary/70 max-w-88">Update your avatar by clicking the image beside. 288x288 px size recommended in PNG or JPG format only.</div>
                 </div>
                 <div>
                     <div className="mb-4 text-sm text-primary font-semibold">Display name</div>

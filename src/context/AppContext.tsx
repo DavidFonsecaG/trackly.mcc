@@ -176,7 +176,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [studentDocuments, selectedStudent]);
 
   useEffect(() => {
-    if (user?.id) {
+    if (user) {
       listStudents()
       .then((students) => {
         setStudents(students);

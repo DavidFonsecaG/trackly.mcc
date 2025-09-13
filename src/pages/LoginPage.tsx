@@ -17,7 +17,6 @@ const LoginPage = () => {
 
 	const handleLogin = (e: { preventDefault: () => void; }) => {
 		e.preventDefault();
-
 		login(email, password);
 	};
 
