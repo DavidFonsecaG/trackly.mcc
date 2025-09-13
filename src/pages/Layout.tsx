@@ -29,10 +29,12 @@ function Layout() {
         <>
             {loading
                 ? <Loader />
-                : <div className="relative flex flex-col h-screen w-full bg-background">
-                    {open && <Banner text={"You're in demo mode"} action={handleClose}/>}
-                    <Header />
-                    <div className="flex h-full overflow-hidden">
+                : <div className="relative flex flex-col h-dvh w-full bg-background">
+                    <div className="sticky top-0 z-100">
+                        {open && <Banner text={"You're in demo mode"} action={handleClose}/>}
+                        <Header />
+                    </div>
+                    <div className="flex flex-1 overflow-hidden">
                         <div className="hidden lg:flex h-full">
                             <SidebarMenu />
                         </div>

@@ -22,7 +22,7 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="flex w-full min-h-screen bg-background">
+        <div className="flex w-full h-dvh bg-background">
             <LeftPanel />
 
             <div className="flex flex-col w-full lg:w-2/4 items-center justify-center px-6 lg:px-20">

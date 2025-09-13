@@ -40,7 +40,7 @@ const ProgressBar: FC<ProgressBarProps> = ({ studentId }) => {
             <div className="w-full bg-gray-200 rounded-full">
                 <div 
                     className={`h-2 rounded-full ${colors[getColor() as keyof typeof colors]}`} 
-                    style={{width: `${percentage == 0 ? 3 : percentage}%`}}
+                    style={{width: `${percentage == 0 ? 5 : percentage}%`}}
                 ></div>
             </div> 
             <p className="hidden sm:flex text-end">{percentage}%</p>

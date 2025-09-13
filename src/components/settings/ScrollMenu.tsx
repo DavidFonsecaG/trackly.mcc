@@ -35,9 +35,9 @@ const ScrollMenu: React.FC<ScrolMenuTypes> = ({
                         >
                             {user && user!.name === item.title 
                                 ? <img src={user.picture} alt={user.name} className="rounded-full size-11" />  
-                                :    <div className={`flex justify-center items-center size-11 rounded-full bg-background text-primary/50`}>
-                                        <item.icon className="w-5 h-5"/>
-                                    </div>}
+                                : <div className={`flex justify-center items-center size-11 rounded-full bg-background text-primary/50`}>
+                                    <item.icon className="w-5 h-5"/>
+                                  </div>}
                             <div className="pl-4 text-start overflow-hidden">
                                 <div className="text-sm text-primary font-semibold">{item.title}</div>
                                 <div className="text-[0.7rem] text-primary/70">{item.subtitle}</div>

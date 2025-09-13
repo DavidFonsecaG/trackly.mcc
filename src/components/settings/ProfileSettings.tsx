@@ -2,6 +2,7 @@ import Card from "../ui/Card";
 import type { User } from "../../types";
 import CardTitle from "../ui/CardTitle";
 import CardBody from "../ui/CardBody";
+import { User as UserLogo } from "lucide-react";
 
 interface ProfileSettingsTypes {
     user: User | null;
@@ -16,7 +17,12 @@ const ProfileSettings: React.FC<ProfileSettingsTypes> = ({
             <CardBody>
                 <div className="flex items-center">
                     <div className="relative">
-                        <img src={user?.picture} alt={user?.name} className="rounded-full min-w-20 size-20" />
+                        {user 
+                            ? <img src={user?.picture} alt={user?.name} className="rounded-full min-w-20 size-20" />
+                            : <div className={`flex justify-center items-center min-w-20 size-20 rounded-full bg-background text-primary/50`}>
+                                <UserLogo className="w-9 h-9"/>
+                              </div>
+                        }
                         <input accept="image/*" type="file" className="absolute inset-0 opacity-0 cursor-pointer"/>
                     </div>
                     <div className="pl-4 text-[0.7rem] text-primary/70 max-w-88">Update your avatar by clicking the image beside. 288x288 px size recommended in PNG or JPG format only.</div>
