@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Student, StudentDocument, Document } from "../types";
 import { useAuth } from "./AuthContext";
-import { useStudentFetcher } from "../hooks/useStudentFetcher";
 import { useStudentActions } from "../hooks/useStudentActions";
 import { useDocumentActions } from "../hooks/useDocumentActions";
 import { dummyStudents, dummyStudentDocuments } from "../data/dummy";
@@ -34,9 +33,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
-  const { fetchStudents, fetchStudentDocuments } = useStudentFetcher();
-  const { createStudent, deleteStudent, updateStudentOnServer } = useStudentActions();
-  const { createStudentDocuments, updateStudentDocuments, deleteStudentDocument } = useDocumentActions();
+  const { listStudents, createStudent, deleteStudent, updateStudentOnServer } = useStudentActions();
+  const { listStudentDocumentsById, createStudentDocuments, updateStudentDocuments, deleteStudentDocument } = useDocumentActions();
 
   const [students, setStudents] = useState<Student[]>([]);
   const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>([]);
@@ -178,16 +176,14 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [studentDocuments, selectedStudent]);
 
   useEffect(() => {
-    if (user) {
-      fetchStudents()
+    if (user?.id) {
+      listStudents()
       .then((students) => {
         setStudents(students);
-        return fetchStudentDocuments(students.map(s => s.id));
+        return listStudentDocumentsById(students.map(s => s.id));
       })
       .then(setStudentDocuments)
-      .catch((err: any) => 
-        console.error("Failed to fecth students", err.response?.data?.message || err.message)
-      );
+      .catch((err: any) => console.error("Failed to fecth students", err.response?.data?.message || err.message));
     } else {
       setStudents(dummyStudents);
       setStudentDocuments(dummyStudentDocuments);

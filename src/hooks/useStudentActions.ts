@@ -1,21 +1,10 @@
-import api from "../api/axios";
-import { type Student } from "../types";
+import { studentService } from "../services/studentService";
 
 export const useStudentActions = () => {
-    const createStudent = async (student: Partial<Student>): Promise<Student> => {
-        const res = await api.post("/student/create", {student})
-        return res.data;
+    return {
+        listStudents: studentService.list,
+        createStudent: studentService.create,
+        deleteStudent: studentService.delete,
+        updateStudentOnServer: studentService.update
     };
-
-    const deleteStudent = async (studentId: string): Promise<Student> => {
-        const res = await api.delete(`/student/delete/${studentId}`);
-        return res.data;
-    };
-
-    const updateStudentOnServer = async (student: Student): Promise<Student> => {
-        const res = await api.post("/student/update", {student});
-        return res.data
-    };
-
-    return { createStudent, deleteStudent, updateStudentOnServer };
 };

@@ -16,7 +16,7 @@ const Loader = () => {
             }, 800);
             return () => clearTimeout(timeout);
         };
-    });
+    }, [loading]);
 
     return (
         <div className="z-100 flex items-center justify-center fixed inset-0 w-full h-full top-0">

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { User } from '../types';
-import api from '../api/axios';
+import apiClient from '../services/apiClient';
 
 interface AuthContextType {
   user: User | null;
@@ -21,17 +21,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await api.post("/auth/login", { email, password });
+      setLoading(true);
+      const res = await apiClient.post("/auth/login", { email, password });
       setUser(res.data);
       navigate("/login/loading");
     } catch (err: any) {
       console.error("Login failed:", err.response?.data?.message || err.message );
+    }  finally {
+      setLoading(false);
     }
   };
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout");
+      await apiClient.post("/auth/logout");
       navigate("/login");
       setUser(null);
     } catch (err: any) {
@@ -41,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signup = async (name: string, email: string, password: string) => {
     try {
-      const res = await api.post("/auth/register", {name, email, password});
+      const res = await apiClient.post("/auth/register", {name, email, password});
       setUser(res.data);
       navigate("/");
     } catch (err: any) {
@@ -51,14 +54,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await api.get("/auth/me");
+      const res = await apiClient.get("/auth/me");
       setUser(res.data);
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        setUser(null);
-      } else {
-        console.error("Failed to fetch user:", err.response?.data?.message || err.message);
-      }
+    } catch {
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -66,7 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const updateUser = async (password: string, newPassword: string): Promise<string> => {
     try {
-      const res = await api.post("/auth/update", {password, newPassword});
+      const res = await apiClient.post("/auth/update", {password, newPassword});
       return res.data.message
     } catch (err: any) {
       if (err.response?.status === 401) {
