@@ -17,10 +17,7 @@ function Layout() {
 
     useEffect(() => {
         if (!user) {
-            const timeout = setTimeout(() => {
-                setOpen(true);;
-            }, 100);
-            return () => clearTimeout(timeout);
+            setOpen(true);;
         } else {
             setOpen(false);
         }
