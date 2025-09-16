@@ -1,7 +1,6 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useContext, type ReactNode } from 'react';
+import { useAuthProvider } from '../hooks/useAuthProvider';
 import type { User } from '../types';
-import apiClient from '../services/apiClient';
 
 interface AuthContextType {
   user: User | null;
@@ -15,76 +14,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
-  const login = async (email: string, password: string) => {
-    try {
-      setLoading(true);
-      const res = await apiClient.post("/auth/login", { email, password });
-      setUser(res.data);
-      navigate("/login/loading");
-    } catch (err: any) {
-      console.error("Login failed:", err.response?.data?.message || err.message );
-    }  finally {
-      setLoading(false);
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await apiClient.post("/auth/logout");
-      navigate("/login");
-      setUser(null);
-    } catch (err: any) {
-      console.error("Login failed:", err.response?.data?.message || err.message );
-    }
-  };
-
-  const signup = async (name: string, email: string, password: string) => {
-    try {
-      const res = await apiClient.post("/auth/register", {name, email, password});
-      setUser(res.data);
-      navigate("/");
-    } catch (err: any) {
-      console.error("Signup failed:", err.response?.data?.message || err.message );
-    }
-  };
-
-  const fetchUser = async () => {
-    try {
-      const res = await apiClient.get("/auth/me");
-      setUser(res.data);
-    } catch {
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateUser = async (password: string, newPassword: string): Promise<string> => {
-    try {
-      const res = await apiClient.post("/auth/update", {password, newPassword});
-      return res.data.message
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        return "Invalid credentials. Please check your password.";
-      }
-      console.error("Failed to update user:", err.response?.data?.message || err.message);
-      return "Not able to update!";
-    }
-  };
-
-  useEffect(() => {
-    fetchUser()
-  }, []);
-
-  return (
-    <AuthContext.Provider value={{ user, loading, login, logout, signup, updateUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  const auth = useAuthProvider();
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 };
 
 export const useAuth = (): AuthContextType => {

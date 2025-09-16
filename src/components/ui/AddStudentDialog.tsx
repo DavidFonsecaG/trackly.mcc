@@ -207,7 +207,7 @@ const AddStudentDialog = () => {
                             <button
                                 type="button"
                                 onClick={handleClose}
-                                className="flex w-20 justify-center rounded-full bg-card border border-red-200 py-1 px-3 text-red-500 leading-6 hover:shadow-sm cursor-pointer"
+                                className="flex w-20 justify-center rounded-full bg-card border-[1.5px] border-red-200 py-1 px-3 text-red-500 leading-6 hover:shadow-sm cursor-pointer"
                             >
                                 Cancel
                             </button>
