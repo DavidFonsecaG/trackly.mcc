@@ -12,4 +12,4 @@
 
 ## Getting Started
 
-Visit the project: [trackly.mcc](https://github.com/DavidFonsecaG/trackly.mcc)
+Visit the project: [trackly.mcc](https://trackly-mcc.vercel.app/)
