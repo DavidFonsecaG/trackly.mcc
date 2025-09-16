@@ -1,22 +1,11 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const Loader = () => {
-    const { loading } = useAuth();
-    const navigate = useNavigate();
-
     const [scaleIn, setScaleIn] = useState(false);
 
     useEffect(() => {
         setScaleIn(true);
-        if (!loading){
-            const timeout = setTimeout(() => {
-                navigate("/");
-            }, 800);
-            return () => clearTimeout(timeout);
-        };
-    }, [loading]);
+    }, []);
 
     return (
         <div className="z-100 flex items-center justify-center fixed inset-0 w-full h-full top-0">

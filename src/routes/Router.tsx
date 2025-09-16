@@ -5,13 +5,13 @@ import TrackerPage from "../pages/TrackerPage";
 import SettingsPage from "../pages/SettingsPage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
-import Loader from "../components/ui/Loader";
+import OAuthCallback from "../pages/OAuthCallback";
 
 function Router() {
 	return(
 		<Routes>
 			<Route path="/login" element={<LoginPage />} />
-			<Route path="/login/loading" element={<Loader />}/>
+			<Route path="/login/loading" element={<OAuthCallback />}/>
 			<Route path="/signup" element={<SignupPage />} />
 			<Route path="/" element={<Layout />}>
 				<Route index element={<DashboardPage />} />
