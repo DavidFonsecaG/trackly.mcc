@@ -20,7 +20,7 @@ export const useAuthProvider = () => {
             setLoading(true);
             const userData = await loginUser(email, password);
             setUser(userData);
-            navigate("/login/loading");
+            navigate("/");
         } catch (err: any) {
             console.error("Login failed:", err.response?.data?.message || err.message );
         } finally {

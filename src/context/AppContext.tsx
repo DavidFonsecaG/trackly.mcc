@@ -32,7 +32,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { listStudents, createStudent, deleteStudent, updateStudentOnServer } = useStudentActions();
   const { listStudentDocumentsById, createStudentDocuments, updateStudentDocuments, deleteStudentDocument } = useDocumentActions();
 
@@ -176,6 +176,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [studentDocuments, selectedStudent]);
 
   useEffect(() => {
+    if (loading) return;
     if (user) {
       listStudents()
       .then((students) => {
@@ -188,7 +189,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setStudents(dummyStudents);
       setStudentDocuments(dummyStudentDocuments);
     }
-  }, [user]);
+  }, [user, loading]);
 
   return (
     <AppContext.Provider
