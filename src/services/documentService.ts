@@ -21,5 +21,4 @@ export const documentService = {
         const res = await apiClient.delete(`/document/delete/${studentId}`);
         return res.data;
     },
-
-}
+};

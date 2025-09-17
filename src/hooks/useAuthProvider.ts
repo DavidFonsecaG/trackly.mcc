@@ -30,44 +30,50 @@ export const useAuthProvider = () => {
     
     const logout = async () => {
         try {
+            setLoading(true);
             await logoutUser();
             setUser(null);
             navigate("/login");
         } catch (err: any) {
             console.error("Logout failed:", err.response?.data?.message || err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
     const signup = async (name: string, email: string, password: string) => {
         try {
-        const userData = await signupUser(name, email, password);
-        setUser(userData);
-        navigate("/");
+            setLoading(true);
+            const userData = await signupUser(name, email, password);
+            setUser(userData);
+            navigate("/");
         } catch (err: any) {
-        console.error("Signup failed:", err.response?.data?.message || err.message);
+            console.error("Signup failed:", err.response?.data?.message || err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
     const fetchUser = async () => {
         try {
-        const userData = await fetchCurrentUser();
-        setUser(userData);
+            const userData = await fetchCurrentUser();
+            setUser(userData);
         } catch {
-        setUser(null);
+            setUser(null);
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 
     const updateUser = async (password: string, newPassword: string) => {
         try {
-        return await updateUserPassword(password, newPassword);
+            return await updateUserPassword(password, newPassword);
         } catch (err: any) {
-        if (err.response?.status === 401) {
-            return "Invalid credentials. Please check your password.";
-        }
-        console.error("Failed to update user:", err.response?.data?.message || err.message);
-        return "Not able to update!";
+            if (err.response?.status === 401) {
+                return "Invalid credentials. Please check your password.";
+            }
+            console.error("Failed to update user:", err.response?.data?.message || err.message);
+            return "Not able to update!";
         }
     };
 
