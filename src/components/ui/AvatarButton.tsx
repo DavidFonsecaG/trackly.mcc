@@ -44,6 +44,7 @@ const AvatarButton: React.FC<AvatarButtonTypes> = ({
                         className="flex px-4 py-2 rounded-lg items-center gap-2 leading-none cursor-pointer hover:bg-background" role="menuitem" 
                         id="menu-item-0"
                         to="/settings"
+                        onClick={() => setOpen(false)}
                     ><UserIcon className="w-4 h-4"/>Edit Profile</Link>
                     <div  
                         className="flex px-4 py-2 rounded-lg gap-2 cursor-pointer hover:bg-background" role="menuitem" 
