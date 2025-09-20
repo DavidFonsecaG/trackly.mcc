@@ -1,9 +1,7 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import type { Student, StudentDocument } from "../types";
-import { listStudents, createStudent, updateStudentOnServer, deleteStudent } from "../services/studentService";
-import { listStudentDocumentsById, createStudentDocuments, updateStudentDocuments, deleteStudentDocument } from "../services/documentService";
 
-type AppActions = {
+export type AppActions = {
   listStudents: () => Promise<Student[]>;
   listStudentDocumentsById: (ids: string[]) => Promise<StudentDocument[]>;
   createStudent: (payload: Partial<Student>) => Promise<Student>;
@@ -14,7 +12,7 @@ type AppActions = {
   deleteStudentDocument: (studentId: string) => Promise<StudentDocument>;
 };
 
-export const useBaseAppProvider = (actions: AppActions) => {
+export const useAppProvider = (actions: AppActions) => {
   const [students, setStudents] = useState<Student[]>([]);
   const [studentDocuments, setStudentDocuments] = useState<StudentDocument[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -24,24 +22,13 @@ export const useBaseAppProvider = (actions: AppActions) => {
   const [notification, setNotification] = useState<string | null>(null);
   const [deleted, setDeleted] = useState<{ deletedStudent: Student; deletedStudentDocument: StudentDocument } | null>(null);
 
-  const fetchInitial = useCallback(async () => {
-    try {
-      const s = await actions.listStudents();
-      setStudents(s);
-      const docs = await actions.listStudentDocumentsById(s.map((st) => st.id));
-      setStudentDocuments(docs);
-    } catch (err: any) {
-      console.error("Failed to fetch students/documents:", err?.response?.data?.message || err?.message || err);
-    }
-  }, []);
-
   const setStudent = async (newStudent: Partial<Student>, newStudentDocument: Partial<StudentDocument>) => {
     try {
       const createdStudent = await actions.createStudent(newStudent);
-      setStudents((prevStudents) => [...prevStudents, createdStudent]);
+      setStudents((prev) => [...prev, createdStudent]);
 
       const createdStudentDocument = await actions.createStudentDocuments(createdStudent.id, newStudentDocument);
-      setStudentDocuments((prevDocs) => [...prevDocs, createdStudentDocument]);
+      setStudentDocuments((prev) => [...prev, createdStudentDocument]);
     } catch (err: any) {
       console.error("Failed to create student and documents:", err?.response?.data?.message || err?.message || err);
     }
@@ -50,10 +37,10 @@ export const useBaseAppProvider = (actions: AppActions) => {
   const updateStudent = async (editedStudent: Student, editedStudentDocuments: StudentDocument) => {
     try {
       const updatedStudent = await actions.updateStudentOnServer(editedStudent);
-      setStudents((prevStudents) => prevStudents.map((student) => (student.id === editedStudent.id ? updatedStudent : student)));
+      setStudents((prev) => prev.map((s) => (s.id === editedStudent.id ? updatedStudent : s)));
 
       const updatedStudentDoc = await actions.updateStudentDocuments(editedStudent.id, editedStudentDocuments);
-      setStudentDocuments((prevDocs) => prevDocs.map((d) => (d.studentId === editedStudent.id ? updatedStudentDoc : d)));
+      setStudentDocuments((prev) => prev.map((d) => (d.studentId === editedStudent.id ? updatedStudentDoc : d)));
     } catch (err: any) {
       console.error("Failed to update student and documents:", err?.response?.data?.message || err?.message || err);
     }
@@ -62,10 +49,10 @@ export const useBaseAppProvider = (actions: AppActions) => {
   const removeStudent = async (studentId: string) => {
     try {
       const deletedStudent = await actions.deleteStudent(studentId);
-      setStudents((prevStudents) => prevStudents.filter((student) => student.id !== studentId));
+      setStudents((prev) => prev.filter((s) => s.id !== studentId));
 
       const deletedStudentDocument = await actions.deleteStudentDocument(studentId);
-      setStudentDocuments((prevDocs) => prevDocs.filter((studentDoc) => studentDoc.studentId !== studentId));
+      setStudentDocuments((prev) => prev.filter((d) => d.studentId !== studentId));
 
       setDeleted({ deletedStudent, deletedStudentDocument });
       setNotification("Student deleted");
@@ -88,25 +75,16 @@ export const useBaseAppProvider = (actions: AppActions) => {
     try {
       const doc = studentDocuments.find((doc) => doc.studentId === studentId);
       if (!doc) return;
-
       const updatedStudentDoc = await actions.updateStudentDocuments(studentId, doc);
-      setStudentDocuments((prevDocs) => prevDocs.map((d) => (d.studentId === studentId ? updatedStudentDoc : d)));
+      setStudentDocuments((prev) => prev.map((d) => (d.studentId === studentId ? updatedStudentDoc : d)));
     } catch (err: any) {
       console.error("Failed to sync student documents:", err?.response?.data?.message || err?.message || err);
     }
   };
 
-  const getStudentDocuments = (studentId: string) => {
-    return studentDocuments.find((doc) => doc.studentId === studentId)?.documents;
-  };
+  const getStudentDocuments = (studentId: string) => studentDocuments.find((d) => d.studentId === studentId)?.documents;
 
-  const updateDocumentStatus = (
-    studentId: string,
-    documentId: string,
-    submitted: boolean | null,
-    required: boolean = true,
-    notes?: string
-  ) => {
+  const updateDocumentStatus = (studentId: string, documentId: string, submitted: boolean | null, required = true, notes?: string) => {
     setStudentDocuments((prevDocs) =>
       prevDocs.map((studentDoc) =>
         studentDoc.studentId === studentId
@@ -129,9 +107,29 @@ export const useBaseAppProvider = (actions: AppActions) => {
     );
   };
 
-  const updateSearchTerm = (term: string) => {
-    setSearchTerm(term);
-  };
+  const updateSearchTerm = (term: string) => setSearchTerm(term);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const s = await actions.listStudents();
+        if (!mounted) return;
+        setStudents(s);
+
+        const docs = await actions.listStudentDocumentsById(s.map((st) => st.id));
+        if (!mounted) return;
+        setStudentDocuments(docs);
+      } catch (err: any) {
+        console.error("Failed to fetch students/documents:", err?.response?.data?.message || err?.message || err);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [actions]);
 
   useEffect(() => {
     if (!selectedStudent) return;
@@ -144,21 +142,11 @@ export const useBaseAppProvider = (actions: AppActions) => {
     if (submittedRequiredDocs.length === requiredDocs.length) status = "complete";
 
     if (status !== selectedStudent.status) {
-      const updatedStudent = {
-        ...selectedStudent,
-        status,
-        lastUpdated: new Date().toISOString(),
-      };
-
+      const updatedStudent = { ...selectedStudent, status, lastUpdated: new Date().toISOString() };
       setSelectedStudent(updatedStudent);
-
-      setStudents((prevStudents) => prevStudents.map((s) => (s.id === selectedStudent.id ? updatedStudent : s)));
+      setStudents((prev) => prev.map((s) => (s.id === selectedStudent.id ? updatedStudent : s)));
     }
   }, [studentDocuments, selectedStudent]);
-
-  useEffect(() => {
-    fetchInitial();
-  }, [fetchInitial]);
 
   return {
     students,
@@ -183,19 +171,4 @@ export const useBaseAppProvider = (actions: AppActions) => {
     setDeleted,
     syncStudentWithServer,
   } as const;
-};
-
-export const useAppProvider = () => {
-  const actions = {
-    listStudents: () => listStudents(),
-    listStudentDocumentsById: (ids: string[]) => listStudentDocumentsById(ids),
-    createStudent: (payload: Partial<Student>) => createStudent(payload),
-    createStudentDocuments: (studentId: string, payload: Partial<StudentDocument>) => createStudentDocuments(studentId, payload),
-    updateStudentOnServer: (student: Student) => updateStudentOnServer(student),
-    updateStudentDocuments: (studentId: string, payload: StudentDocument) => updateStudentDocuments(studentId, payload),
-    deleteStudent: (studentId: string) => deleteStudent(studentId),
-    deleteStudentDocument: (studentId: string) => deleteStudentDocument(studentId),
-  };
-
-  return useBaseAppProvider(actions);
 };

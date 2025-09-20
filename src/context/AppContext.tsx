@@ -1,8 +1,11 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { Student, StudentDocument, Document } from "../types";
 import { useAuth } from "./AuthContext";
 import { useAppProvider } from "../hooks/useAppProvider";
-import { useDemoAppProvider } from "../hooks/useDemoAppProvider";
+import { listStudents, createStudent, updateStudentOnServer, deleteStudent } from "../services/studentService";
+import { listStudentDocumentsById, createStudentDocuments, updateStudentDocuments, deleteStudentDocument } from "../services/documentService";
+import { demoActions } from "../demo/demoActions";
+
 
 interface AppContextType {
   students: Student[];
@@ -32,7 +35,25 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
     const { user } = useAuth();
-    const app = user ? useAppProvider() : useDemoAppProvider();
+
+    const actions = useMemo(() => {
+        if (user) {
+            return {
+                listStudents: () => listStudents(),
+                listStudentDocumentsById: (ids: string[]) => listStudentDocumentsById(ids),
+                createStudent: (payload: Partial<Student>) => createStudent(payload),
+                createStudentDocuments: (studentId: string, payload: Partial<StudentDocument>) => createStudentDocuments(studentId, payload),
+                updateStudentOnServer: (student: Student) => updateStudentOnServer(student),
+                updateStudentDocuments: (studentId: string, payload: StudentDocument) => updateStudentDocuments(studentId, payload),
+                deleteStudent: (studentId: string) => deleteStudent(studentId),
+                deleteStudentDocument: (studentId: string) => deleteStudentDocument(studentId),
+            };
+        }
+        return demoActions();
+    }, [user]);
+    
+    const app = useAppProvider(actions);
+
     return <AppContext.Provider value={app}>{children}</AppContext.Provider>;
 };
 
