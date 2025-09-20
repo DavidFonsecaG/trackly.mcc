@@ -1,5 +1,5 @@
 import type { Student, StudentDocument } from "../types";
-import { dummyStudents, dummyStudentDocuments } from "../data/dummy";
+import { dummyStudents, dummyStudentDocuments } from "./data/dummy";
 
 export const demoActions = () => {
     let students = [...dummyStudents];

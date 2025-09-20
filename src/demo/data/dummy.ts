@@ -1,4 +1,4 @@
-import type { Student, StudentDocument } from "../types";
+import type { Student, StudentDocument } from "../../types";
 
 export const dummyStudents: Student[] = [
   {
@@ -83,7 +83,7 @@ export const dummyStudents: Student[] = [
     name: "Hector Ramirez",
     email: "hector.ramirez@example.com",
     applicationType: "transfer-in",
-    term: "Fall 2025",
+    term: "Winter 2026",
     program: "AAS in Business",
     schedule: "2 Day - Morning",
     status: "complete",
@@ -94,7 +94,7 @@ export const dummyStudents: Student[] = [
     name: "Isabella Nguyen",
     email: "isabella.nguyen@example.com",
     applicationType: "abroad",
-    term: "Fall 2025",
+    term: "Winter 2026",
     program: "AAS in Marketing",
     schedule: "3 Day - Evening",
     status: "complete",
@@ -105,7 +105,7 @@ export const dummyStudents: Student[] = [
     name: "Jason Brown",
     email: "jason.brown@example.com",
     applicationType: "abroad",
-    term: "Fall 2025",
+    term: "Winter 2026",
     program: "English as a Second Language",
     schedule: "4 Day - Morning",
     status: "incomplete",
@@ -116,7 +116,7 @@ export const dummyStudents: Student[] = [
     name: "Katherine Wilson",
     email: "katherine.wilson@example.com",
     applicationType: "domestic",
-    term: "Fall 2025",
+    term: "Winter 2026",
     program: "English as a Second Language",
     schedule: "4 Day - Morning",
     status: "complete",
@@ -127,7 +127,7 @@ export const dummyStudents: Student[] = [
     name: "Leo Chen",
     email: "leo.chen@example.com",
     applicationType: "COEL",
-    term: "Fall 2025",
+    term: "Winter 2026",
     program: "AAS in Business",
     schedule: "2 Day - Morning",
     status: "complete",
