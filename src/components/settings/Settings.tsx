@@ -41,7 +41,7 @@ const Settings: React.FC<SettingsTypes> = ({
                     <ProfileSettings user={user}/>
                 </section>
                 <section ref={trackerRef}>
-                    <TrackerSettings />
+                    <TrackerSettings setNotification={setNotification} />
                 </section>
                 <section ref={securityRef}>
                     <PasswordSettings 

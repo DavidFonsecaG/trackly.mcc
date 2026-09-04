@@ -38,7 +38,11 @@ const MobileTable: React.FC<MobileTableTypes> = ({
                         </div>
                     </div>
                     <div className="w-full">
-                        <ProgressBar studentId={student.id} />
+                        {student.status === "cancelled" ? (
+                            <span className="w-fit px-2 py-1 rounded-md text-[0.6rem] border-[1.5px] bg-rose-500/5 text-rose-600 border-rose-600/15">Cancelled</span>
+                        ) : (
+                            <ProgressBar studentId={student.id} />
+                        )}
                     </div>
                 </div>
             ))}

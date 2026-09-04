@@ -73,7 +73,11 @@ const DesktopTable: React.FC<DesktopTableTypes> = ({
                                 </div>
                             </td>
                             <td className="px-4 py-4 md:w-50 lg:w-70 xl:w-100">
-                                <ProgressBar studentId={student.id} />
+                                {student.status === "cancelled" ? (
+                                    <span className="w-fit px-2 py-1 rounded-md text-[0.6rem] border-[1.5px] bg-rose-500/5 text-rose-600 border-rose-600/15">Cancelled</span>
+                                ) : (
+                                    <ProgressBar studentId={student.id} />
+                                )}
                             </td>
                             <td className="hidden text-primary lg:table-cell pl-4 py-4">{formatDate(student.lastUpdated)}</td>
                             <td className="hidden lg:table-cell px-4 py-4 w-4 items-end">

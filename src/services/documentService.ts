@@ -7,7 +7,7 @@ export const listStudentDocumentsById = async (ids: string[]): Promise<StudentDo
 };
 
 export const createStudentDocuments = async (studentId: string, doc: Partial<StudentDocument>): Promise<StudentDocument> => {
-    const res = await apiClient.post("document/create", { studentId, studentDocument: doc});
+    const res = await apiClient.post("/document/create", { studentId, studentDocument: doc});
     return res.data;
 };
 

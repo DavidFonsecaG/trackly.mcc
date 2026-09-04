@@ -13,7 +13,7 @@ export interface Student {
     term: string;
     program: string;
     schedule: string;
-    status: "incomplete" | "complete" | "submitted";
+    status: "incomplete" | "complete" | "submitted" | "cancelled";
     lastUpdated: string;
 }
 
@@ -29,6 +29,20 @@ export interface Document {
 export interface StudentDocument {
     studentId: string;
     documents: Document[];
+}
+
+export interface ApplicationType {
+    id: string;
+    name: string;
+    color: string; // palette key, see src/config/colorPalette.ts
+    documents: string[];
+}
+
+export interface TrackerConfig {
+    applicationTypes: ApplicationType[];
+    terms: string[];
+    programs: string[];
+    schedules: string[];
 }
 
 export const requiredDocumentsByType = {

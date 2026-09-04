@@ -82,6 +82,55 @@ export const useAppProvider = (actions: AppActions) => {
     }
   };
 
+  // Persists a student's documents AND recomputes the application's
+  // complete/incomplete status from those documents (leaving a cancelled
+  // application untouched). Used by the documents matrix, which edits
+  // students that aren't the currently-selected one.
+  const saveStudentDocuments = async (studentId: string) => {
+    try {
+      const doc = studentDocuments.find((d) => d.studentId === studentId);
+      if (!doc) return;
+
+      const updatedStudentDoc = await actions.updateStudentDocuments(studentId, doc);
+      setStudentDocuments((prev) => prev.map((d) => (d.studentId === studentId ? updatedStudentDoc : d)));
+
+      const student = students.find((s) => s.id === studentId);
+      if (student && student.status !== "cancelled") {
+        const requiredDocs = doc.documents.filter((d) => d.required);
+        const submittedRequiredDocs = requiredDocs.filter((d) => d.submitted);
+        const status: Student["status"] =
+          requiredDocs.length > 0 && submittedRequiredDocs.length === requiredDocs.length
+            ? "complete"
+            : "incomplete";
+
+        if (status !== student.status) {
+          const updatedStudent = { ...student, status, lastUpdated: new Date().toISOString() };
+          setStudents((prev) => prev.map((s) => (s.id === studentId ? updatedStudent : s)));
+          await actions.updateStudentOnServer(updatedStudent);
+        }
+      }
+    } catch (err: any) {
+      console.error("Failed to save student documents:", err?.response?.data?.message || err?.message || err);
+    }
+  };
+
+  // Sets an application-level status (e.g. cancelling / reactivating) and
+  // persists it.
+  const setApplicationStatus = async (studentId: string, status: Student["status"]) => {
+    try {
+      const student = students.find((s) => s.id === studentId);
+      if (!student) return;
+
+      const updatedStudent = { ...student, status, lastUpdated: new Date().toISOString() };
+      setStudents((prev) => prev.map((s) => (s.id === studentId ? updatedStudent : s)));
+      if (selectedStudent?.id === studentId) setSelectedStudent(updatedStudent);
+
+      await actions.updateStudentOnServer(updatedStudent);
+    } catch (err: any) {
+      console.error("Failed to update application status:", err?.response?.data?.message || err?.message || err);
+    }
+  };
+
   const getStudentDocuments = (studentId: string) => studentDocuments.find((d) => d.studentId === studentId)?.documents;
 
   const updateDocumentStatus = (studentId: string, documentId: string, submitted: boolean | null, required = true, notes?: string) => {
@@ -133,6 +182,7 @@ export const useAppProvider = (actions: AppActions) => {
 
   useEffect(() => {
     if (!selectedStudent) return;
+    if (selectedStudent.status === "cancelled") return;
 
     const updatedDocs = studentDocuments.find((doc) => doc.studentId === selectedStudent.id)?.documents || [];
     const requiredDocs = updatedDocs.filter((doc) => doc.required);
@@ -164,6 +214,8 @@ export const useAppProvider = (actions: AppActions) => {
     setStudent,
     updateStudent,
     updateStudentDocs,
+    saveStudentDocuments,
+    setApplicationStatus,
     removeStudent,
     notification,
     setNotification,

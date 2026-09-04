@@ -46,8 +46,8 @@ function Layout() {
                 <div className="hidden lg:flex h-full">
                     <SidebarMenu />
                 </div>
-                <div className="flex flex-col w-full h-full">
-                    <main className="h-full w-full overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/50 [&::-webkit-scrollbar-track]:bg-background">
+                <div className="flex flex-col w-full min-w-0 h-full">
+                    <main className="h-full w-full min-w-0 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary/50 [&::-webkit-scrollbar-track]:bg-background">
                         <Outlet />
                     </main>
                 </div>

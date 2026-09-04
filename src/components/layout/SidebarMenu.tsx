@@ -1,8 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { House, GalleryVerticalEnd, Moon, Sun, Settings } from "lucide-react";
+import { useTheme } from "../../context/ThemeContext";
 
 function SidebarMenu() {
     const location = useLocation().pathname;
+    const { theme, setTheme } = useTheme();
 
     const links = [
         {name: "Dashboard", to: "/", icon: House},
@@ -21,14 +23,24 @@ function SidebarMenu() {
                         </Link>                        
                     ))}
                 </div>
-                <div className="flex group flex-col w-10 p-1 bg-card rounded-full items-center gap-1 cursor-pointer hover:shadow-sm">
-                    <button className="flex size-8 rounded-full items-center justify-center text-primary/50 cursor-pointer group-hover:text-primary">
+                <div className="flex flex-col w-10 p-1 bg-card rounded-full items-center gap-1 hover:shadow-sm">
+                    <button
+                        onClick={() => setTheme("dark")}
+                        aria-label="Dark mode"
+                        aria-pressed={theme === "dark"}
+                        className={`flex size-8 rounded-full items-center justify-center cursor-pointer transition-colors ${theme === "dark" ? "bg-background text-primary" : "text-primary/50 hover:text-primary"}`}
+                    >
                         <Moon className="h-4 w-4" />
                     </button>
-                    <button className="flex size-8 bg-background rounded-full items-center justify-center cursor-pointer group-hover:text-primary">
+                    <button
+                        onClick={() => setTheme("light")}
+                        aria-label="Light mode"
+                        aria-pressed={theme === "light"}
+                        className={`flex size-8 rounded-full items-center justify-center cursor-pointer transition-colors ${theme === "light" ? "bg-background text-primary" : "text-primary/50 hover:text-primary"}`}
+                    >
                         <Sun className="h-4 w-4" />
                     </button>
-                </div> 
+                </div>
             </div>
         </div>
     )

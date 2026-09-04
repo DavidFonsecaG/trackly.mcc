@@ -1,20 +1,17 @@
+import { useTrackerConfig } from "../../context/TrackerConfigContext";
+import { paletteColor } from "../../config/colorPalette";
 import capitalizeString from "../../utils/capitalizeString";
 
 const ApplicationTypeBadge: React.FC<{ type: string }> = ({ type }) => {
-    const colors = {
-        abroad: 'bg-indigo-700/5 text-indigo-700 border-indigo-700/15',
-        COS: 'bg-blue-700/5 text-blue-700 border-blue-700/15',
-        'transfer-in': 'bg-teal-700/5 text-teal-700 border-teal-700/15',
-        domestic: 'bg-orange-600/5 text-orange-600 border-orange-600/15',
-        reinstatement: 'bg-pink-700/5 text-pink-700 border-pink-700/15',
-        'abroad-approved': 'bg-lime-700/5 text-lime-700 border-lime-700/15',
-        'COS-approved': 'bg-amber-700/5 text-amber-700 border-amber-700/15',
-        COEL: 'bg-cyan-700/5 text-cyan-700 border-cyan-700/15',
-    };
+    const { getType } = useTrackerConfig();
+    const appType = getType(type);
+
+    const classes = paletteColor(appType?.color ?? "gray").badge;
+    const label = appType?.name ?? capitalizeString(type);
 
     return (
-        <span className={`w-fit px-2 py-1 rounded-md text-[0.6rem] border-[1.5px] ${colors[type as keyof typeof colors]}`}>
-        {capitalizeString(type)}
+        <span className={`w-fit px-2 py-1 rounded-md text-[0.6rem] border-[1.5px] ${classes}`}>
+            {label}
         </span>
     );
 };

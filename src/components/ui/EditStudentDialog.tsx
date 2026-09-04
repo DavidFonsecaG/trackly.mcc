@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { requiredDocumentsByType, type StudentDocument, type Student } from "../../types";
+import { type StudentDocument, type Student } from "../../types";
 import ApplicationTypeBadge from "./ApplicationTypeBadge";
 import { useAppContext } from "../../context/AppContext";
+import { useTrackerConfig } from "../../context/TrackerConfigContext";
 import DropdownInput from "./DropdownInput";
 import displayInitials from "../../utils/displayInitials";
 import createColor from "../../utils/createColor";
 
 const EditStudentDialog = () => {
     const { editStudent, setEditStudent, updateStudent, getStudentDocuments } = useAppContext();
+    const { config } = useTrackerConfig();
     if (!editStudent) return null;
 
-    const terms = ["Fall 2025", "Winter 2026", "Spring 2026"];
-    const programs = ["English as a Second Language", "Professional English", "English for Academic Purposes", "English for Healthcare", "AAS in Business", "AAS in Marketing", "AAS in Accounting", "AAS in Information Technology"];
-    const schedules = ["4 Day - Morning", "2 Day - Morning", "3 Day - Evening"];
+    const { applicationTypes, terms, programs, schedules } = config;
 
     const initialState: Student = {
         id: editStudent.id,
@@ -56,22 +56,25 @@ const EditStudentDialog = () => {
         }));
     };
 
-    const handleSelectAppType = (type: keyof typeof requiredDocumentsByType) => {
-        if (appType == type) return;
+    const handleSelectAppType = (typeId: string) => {
+        if (appType == typeId) return;
 
-        setAppType(type);
-        setEditedStudent((prev) => ({ ...prev, applicationType: type }));
+        const type = applicationTypes.find((t) => t.id === typeId);
+        if (!type) return;
+
+        setAppType(typeId);
+        setEditedStudent((prev) => ({ ...prev, applicationType: typeId }));
         setEditedStudentDocuments((prevDoc) => (
             {
                 ...prevDoc!,
-                documents: requiredDocumentsByType[type].map((name, index) => {
+                documents: type.documents.map((name, index) => {
                     const existing = studentDocuments!.documents.find((doc) => doc.name === name);
                     if (existing) return existing;
                     return {
                         id: `d${index + 1}`,
                         name,
                         required: true,
-                        submitted: false,    
+                        submitted: false,
                     };
                 }),
             }
@@ -160,14 +163,14 @@ const EditStudentDialog = () => {
                                 <div className="space-y-2">
                                     <label className="block font-medium leading-none">Type</label>
                                     <div className="flex flex-wrap rounded-lg px-3 py-2 gap-1.5 border-[1.5px] border-neutral-200/60 hover:border-neutral-300 focus:border-neutral-300">
-                                        {Object.keys(requiredDocumentsByType).map((type) => (
-                                            <button 
-                                                key={type}
-                                                className={`flex rounded-md items-center cursor-pointer ${appType === type ? "outline-2 outline-offset-1 outline-primary" : "hover:outline-2 hover:outline-offset-1"}`}
+                                        {applicationTypes.map((type) => (
+                                            <button
+                                                key={type.id}
+                                                className={`flex rounded-md items-center cursor-pointer ${appType === type.id ? "outline-2 outline-offset-1 outline-primary" : "hover:outline-2 hover:outline-offset-1"}`}
                                                 type="button"
-                                                onClick={() => handleSelectAppType(type as keyof typeof requiredDocumentsByType)}
+                                                onClick={() => handleSelectAppType(type.id)}
                                             >
-                                                <ApplicationTypeBadge type={type as keyof typeof requiredDocumentsByType} />
+                                                <ApplicationTypeBadge type={type.id} />
                                             </button>
                                         ))}
                                     </div>

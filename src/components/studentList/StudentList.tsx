@@ -1,9 +1,10 @@
 import { useAppContext } from "../../context/AppContext";
 import type { Student } from "../../types";
 import { useState } from "react";
-import ListHeader from "./ListHeader";
+import ListHeader, { type TrackerView } from "./ListHeader";
 import MobileTable from "./MobileTable";
 import DesktopTable from "./DesktopTable";
+import DocumentMatrix from "./DocumentMatrix";
 import Card from "../ui/Card";
 
 const StudentList = () => {    
@@ -19,6 +20,13 @@ const StudentList = () => {
     } = useAppContext();
 
     const [sortConfig, setSortConfig] = useState<{ key: keyof Student; direction: "asc" | "desc"}>({key: "applicationType", direction: "asc"});
+    const [view, setView] = useState<TrackerView>(() => (localStorage.getItem("TrackerView") as TrackerView) || "list");
+
+    const updateView = (next: TrackerView) => {
+        setView(next);
+        localStorage.setItem("TrackerView", next);
+    };
+
     const terms = ["All Terms", ...new Set(students.map(student => student.term))];
 
     const filteredStudents = students
@@ -65,33 +73,45 @@ const StudentList = () => {
     };
 
     return (
-        <div className="flex w-full">
-            <Card>
+        <div className="flex w-full min-w-0">
+            <Card className="min-w-0">
                 <ListHeader
                     searchTerm={searchTerm}
                     terms={terms}
                     updateSearchTerm={updateSearchTerm}
                     setAddStudent={setAddStudent}
+                    view={view}
+                    setView={updateView}
                 />
 
-                <div className="flex w-full text-sm text-start bg-card rounded-b-3xl pt-3 md:pb-6">
-                    <div className="md:hidden w-full text-left dark:text-gray-400">
-                        <MobileTable 
+                <div className="flex w-full min-w-0 text-sm text-start bg-card rounded-b-3xl pt-3 md:pb-6">
+                    {view === "documents" ? (
+                        <DocumentMatrix
                             filteredStudents={filteredStudents}
                             handleRowClick={handleRowClick}
                             setAddStudent={setAddStudent}
                         />
-                    </div>
-                    <div className="hidden md:flex w-full">
-                        <DesktopTable
-                            filteredStudents={filteredStudents}
-                            handleRowClick={handleRowClick}
-                            setAddStudent={setAddStudent}
-                            handleSort={handleSort}
-                            handleDelete={handleDelete}
-                            setEditStudent={setEditStudent} 
-                        />
-                    </div>
+                    ) : (
+                        <>
+                            <div className="md:hidden w-full text-left dark:text-gray-400">
+                                <MobileTable
+                                    filteredStudents={filteredStudents}
+                                    handleRowClick={handleRowClick}
+                                    setAddStudent={setAddStudent}
+                                />
+                            </div>
+                            <div className="hidden md:flex w-full">
+                                <DesktopTable
+                                    filteredStudents={filteredStudents}
+                                    handleRowClick={handleRowClick}
+                                    setAddStudent={setAddStudent}
+                                    handleSort={handleSort}
+                                    handleDelete={handleDelete}
+                                    setEditStudent={setEditStudent}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </Card>
         </div>

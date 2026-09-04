@@ -23,6 +23,8 @@ interface AppContextType {
   setStudent: (student: Partial<Student>, studentDocument: Partial<StudentDocument>) => void;
   updateStudent: (editedStudent: Student, editedStudentDocuments: StudentDocument) => void;
   updateStudentDocs: (studentId: string) => void;
+  saveStudentDocuments: (studentId: string) => void;
+  setApplicationStatus: (studentId: string, status: Student["status"]) => void;
   removeStudent: (studentId: string) => void;
   notification: string | null;
   setNotification: (message: string | null) => void;
